@@ -1,0 +1,8 @@
+//
+// Created by Logib on 2024/12/3.
+//
+
+#ifndef KEYRHYTHM_CHARTANALYZER_H
+#define KEYRHYTHM_CHARTANALYZER_H
+
+#endif //KEYRHYTHM_CHARTANALYZER_H
