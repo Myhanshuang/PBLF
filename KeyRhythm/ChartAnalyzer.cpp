@@ -241,6 +241,7 @@ Chart getChart(const char *ChartFileName){
     }
 
     delete[] tChart;
+    tMeasure ->NxtMea = nullptr;
     fclose(chartFile);
     return NowPlay;
 }
