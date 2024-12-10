@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "E:/C series Projects/KeyRhythm/cmake-build-debug",
-		"source" : "E:/C series Projects/KeyRhythm"
+		"build" : "E:/Gits/PBLF/KeyRhythm/cmake-build-debug",
+		"source" : "E:/Gits/PBLF/KeyRhythm"
 	},
 	"version" : 
 	{
