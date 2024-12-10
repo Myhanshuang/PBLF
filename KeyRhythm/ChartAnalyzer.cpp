@@ -1,112 +1,8 @@
-#include <iostream>
-#include <exception>
-#include <cstdio>
-#include <cstring>
+//
+// Created by Logib on 2024/12/10.
+//
 
-#define FloatMinute 60000.0f
-/**
- * @brief trans beat to timestamp
- *
- * @details according to [a, b, c] in .mz file
- * @param eb everybeat
- * @param a which bar
- * @param b which beat/measure
- * @param c the division
- *
- * @return timestamp (int)
- */
-#define BeatToTime(eb, a, b, c) (int )(eb * (float )(a - 1) + eb / (float )c * (float )b + 0.5f)
-
-#define Exception0 "No chart file"
-///< @brief cannot find the chart file
-#define Exception1 "Lose meta data"
-///< @brief cannot find metadata in chart file
-#define Exception2 "Lose column info or bar begin info"
-///< @brief cannot fine "mode_ext" in chart file
-#define Exception3 "Lose BPM or unit beat of bar"
-///< @brief cannot fine beat info in chart file
-#define Exception4 "Lose note in chart"
-///< @brief cannot fine note in chart file
-#define Exception5 "Chart format error"
-///< @brief cannot fine "column" or beat of note in chart file
-
-/**
- * @brief The chart data
- * @details It included a head of metadata and several bar s
- * @param BPM (&Keys)
- ***/
-class Chart;
-class Chart{
-public :
-    float BeatsPerMinute = 0.0f, EveryBeat = 0.0f;
-    int NoteCount = 0, Column = 0, Offset = 0;
-    class Measure;
-    Measure *ChartHead = nullptr;
-
-    explicit Chart(const int Keys){
-        this ->Column = Keys;
-        this ->ChartHead = nullptr;
-        //this ->CHS -= new [4];
-    }
-    Chart(){
-        this ->Column = 4;
-        this ->ChartHead = nullptr;
-    }
-    ~Chart();
-
-};
-
-/**
- * @brief The mini-est chart unit
- *
- * @details signed keys of every timestamp
- * about hold's end (if there is) and next Measure
- * it is a singly linked list
- * @param Keys
- */
-class Chart :: Measure{
-public :
-    bool ifHold = false;
-    int timeStamp = 0;
-    int *timeTable = nullptr;
-    char *Bar = nullptr;
-    Measure *NxtMea = nullptr;
-
-    Measure(){
-        this ->timeStamp = 0;
-        this ->timeTable = nullptr;
-        this ->NxtMea = nullptr;
-    }
-    explicit Measure(const int Keys){
-        this ->timeStamp = 0;
-        this ->timeTable = nullptr;
-        this ->NxtMea = nullptr;
-        this ->Bar=new char [Keys];
-    }
-    ~Measure(){
-        delete[] this ->Bar;
-        delete[] this ->timeTable;
-    }
-    void* operator new(size_t size, void* phead){
-        return phead;
-    }
-
-};
-
-Chart :: ~Chart(){
-    Chart :: Measure *temp = ChartHead, *preMea = nullptr;
-    if (temp != nullptr){
-        while(temp -> NxtMea != nullptr)
-        {
-            preMea = temp;
-            temp = temp ->NxtMea;
-            preMea ->~Measure();
-            delete preMea;
-            return ;
-        }
-        delete ChartHead;
-    }
-}
+#include "ChartAnalyzer.h"
 
 /**
  * @brief use KMP to get the position of the keyword
@@ -114,7 +10,7 @@ Chart :: ~Chart(){
  * @param Length
  * @param KeyWord
  * @return \c bool ( 1 = found )
- */
+ ***/
 bool getKeyWord(FILE *File, const int Length, const char *KeyWord){
     char c = '\0';
     auto nxt = new short [Length+1];
@@ -151,7 +47,7 @@ bool getKeyWord(FILE *File, const int Length, const char *KeyWord){
  * @param KeyWord1
  * @param KeyWord2
  * @return \c short ( 1 = found 1, 2 = found 2, 0 = all not found)
- */
+ ***/
 short getKeyWords(FILE *File, const int Length1, const int Length2, const char *KeyWord1, const char *KeyWord2){
     char c = '\0';
     auto nxt1 = new short [Length1+1];
@@ -212,16 +108,15 @@ short getKeyWords(FILE *File, const int Length1, const int Length2, const char *
 /**
  * @brief　to get chart
  *
- *
  * @param ChartFileName
  * @return Chart
- */
+ ***/
 Chart getChart(const char *ChartFileName){
     short t = 0;
 
     FILE *chartFile = fopen(ChartFileName, "r");
     //打开谱面文件，我这段先写malody谱面的情况，osu谱面以后再考虑，因为两种的格式不大一样
-    if (chartFile == nullptr) throw ChartError0;
+    if (chartFile == nullptr) throw ChartError(0);
     t = 0;
 /*
  * 打算采用时间戳取代具体的节拍，即导入时算出时间戳
@@ -248,9 +143,9 @@ Chart getChart(const char *ChartFileName){
 		    }
 	    },
      */
-    if ( !getKeyWord(chartFile, 4, "meta") ) throw ChartError1;
-    if ( !getKeyWord(chartFile, 8, "mode_ext") ) throw ChartError2;
-    if ( !getKeyWord(chartFile, 6, "column") ) throw ChartError2;
+    if ( !getKeyWord(chartFile, 4, "meta") ) throw ChartError(1);
+    if ( !getKeyWord(chartFile, 8, "mode_ext") ) throw ChartError(2);
+    if ( !getKeyWord(chartFile, 6, "column") ) throw ChartError(2);
     fscanf_s(chartFile, "%hd", &t);
     Chart NowPlay(t);
     //获取bpm，同时确认每小节的时长
@@ -263,10 +158,10 @@ Chart getChart(const char *ChartFileName){
      */
 
 
-    if ( !getKeyWord(chartFile, 4, "time") ) throw ChartError3;
-    if ( !fscanf_s(chartFile, "%*hd%*hd%hd", &t)) throw ChartError3;
+    if ( !getKeyWord(chartFile, 4, "time") ) throw ChartError(3);
+    if ( !fscanf_s(chartFile, "%*hd%*hd%hd", &t)) throw ChartError(3);
     NowPlay.EveryBeat = FloatMinute / (float )t;
-    if ( !getKeyWord(chartFile, 3, "bpm") ) throw ChartError3;
+    if ( !getKeyWord(chartFile, 3, "bpm") ) throw ChartError(3);
     fscanf_s(chartFile, "%f", &NowPlay.BeatsPerMinute);
     NowPlay.EveryBeat /= NowPlay.BeatsPerMinute;
 
@@ -282,7 +177,7 @@ Chart getChart(const char *ChartFileName){
 	    },
      */
 
-    if ( !getKeyWord(chartFile, 4, "note") ) throw ChartError4;
+    if ( !getKeyWord(chartFile, 4, "note") ) throw ChartError(4);
 
     /* int tBar,  tBeat, tDivision, tTimeStamp, tKey;
      * tChart[0]  [1]   [2]        [3]         [8]
@@ -298,7 +193,7 @@ Chart getChart(const char *ChartFileName){
 
     while (!feof(chartFile)){
         if ( !getKeyWord(chartFile, 4, "beat") ){
-            if (!feof(chartFile)) throw ChartError5;
+            if (!feof(chartFile)) throw ChartError(5);
             delete[] tChart;
             tMeasure ->NxtMea = nullptr;
             return NowPlay;
@@ -310,9 +205,7 @@ Chart getChart(const char *ChartFileName){
         // tChart[3] = (int )(EveryBeat * (float )(tChart[0] - 1) + EveryBeat / (float )tChart[2] * (float )tChart[1] + 0.5f);
 
         if (tMeasure->timeStamp != tChart[3]){
-            if (NowPlay.ChartHead == nullptr){
-                NowPlay.ChartHead = tMeasure;
-            }
+            if (NowPlay.ChartHead == nullptr) NowPlay.ChartHead = tMeasure;
             preMea = tMeasure;
             ptrMea = (void* )new char[sizeof(temple)];
             tMeasure = new(ptrMea) Chart :: Measure(NowPlay.Column);
@@ -320,7 +213,7 @@ Chart getChart(const char *ChartFileName){
         }
 
         t = getKeyWords(chartFile, 7, 6, "endbeat", "column");
-        if (!t) throw  ChartError5;
+        if (!t) throw  ChartError(5);
 
         if (t == 1){
             ///< @brief to deal the hold key
@@ -334,7 +227,7 @@ Chart getChart(const char *ChartFileName){
                 tMeasure->timeTable = new int [NowPlay.Column];
                 memset(tMeasure->timeTable, 0, sizeof(int )*NowPlay.Column);
             }
-            if (!getKeyWord(chartFile, 6, "column")) throw ChartError5;
+            if (!getKeyWord(chartFile, 6, "column")) throw ChartError(5);
 
             fscanf_s(chartFile, "%d", &tChart[8]);
             tMeasure->timeTable[ tChart[8] ] = tChart[7];
@@ -348,14 +241,6 @@ Chart getChart(const char *ChartFileName){
     }
 
     delete[] tChart;
-    //ptrMea = (char *) ptrMea;
-    //delete[] ptrMea;
     fclose(chartFile);
     return NowPlay;
-}
-
-int main() {
-    std::cout << "Hello, World!" << std::endl;
-    getChart("1.txt");
-    return 0;
 }
