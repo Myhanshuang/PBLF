@@ -11,14 +11,15 @@ PlayWindow::PlayWindow(QWidget *parent)
 {
     // Set the game window size and other properties
     setFixedSize(800, 600);
-    gameTimer->setInterval(16);  // ~60 FPS
+    gameTimer->setInterval(8);  // ~120 FPS
+    //every time the timer times out, the timerEvent() function is called, to repaint the UI
     connect(gameTimer, &QTimer::timeout, this, &PlayWindow::timerEvent);
 }
 
 PlayWindow::~PlayWindow() {
     delete gameTimer;
 }
-
+// waiting for fix logic
 void PlayWindow::loadChart(const Chart& chart) {
     currentChart = chart;
     elapsedTime = 0;
@@ -34,6 +35,8 @@ void PlayWindow::startGame() {
 void PlayWindow::stopGame() {
     gameRunning = false;
     gameTimer->stop();
+    //turn to another page
+    emit gameOver();
 }
 
 void PlayWindow::paintEvent(QPaintEvent *event) {

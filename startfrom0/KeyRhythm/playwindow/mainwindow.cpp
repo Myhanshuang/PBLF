@@ -1,14 +1,38 @@
 #include "mainwindow.h"
-#include "./ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , stackedWidget(new QStackedWidget(this))
+    , playWindow(new PlayWindow(this))
+    , resultsPage(new ResultsPage(this))
 {
-    ui->setupUi(this);
+    // ui->setupUi(this);
+    setupUi();
+
+    connect(playWindow, & PlayWindow::gameOver, this, [this](){
+        stackedWidget -> setCurrentWidget(resultsPage);
+    });
+}
+
+void MainWindow::setupUi()
+{
+    stackedWidget = new QStackedWidget(this);
+    playWindow = new PlayWindow(this);
+    resultsPage = new ResultsPage(this);
+
+    stackedWidget->addWidget(playWindow);
+    stackedWidget->addWidget(resultsPage);
+
+    setCentralWidget(stackedWidget);
+
+    connect(playWindow, &PlayWindow::gameOver, [=]() {
+        stackedWidget->setCurrentWidget(resultsPage);
+        resultsPage->displayResults();
+    });
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete resultsPage;
+    delete playWindow;
 }

@@ -15,6 +15,7 @@ public:
     explicit PlayWindow(QWidget *parent = nullptr);
     ~PlayWindow();
 
+    //load the chart
     void loadChart(const Chart& chart);
     void startGame();
     void stopGame();
@@ -24,6 +25,9 @@ protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void timerEvent(QTimerEvent *event) override;
+
+signals:
+    void gameOver();
 
 private:
     Chart currentChart;
