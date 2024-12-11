@@ -1,0 +1,110 @@
+[
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Debug\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Debug -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -g -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Debug\\keyrythme_autogen\\mocs_compilation_Debug.cpp.obj -c E:\\PBLF\\keyrythme\\build\\keyrythme_autogen\\mocs_compilation_Debug.cpp",
+  "file": "E:\\PBLF\\keyrythme\\build\\keyrythme_autogen\\mocs_compilation_Debug.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Debug\\keyrythme_autogen\\mocs_compilation_Debug.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Debug\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Debug -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -g -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Debug\\main.cpp.obj -c E:\\PBLF\\keyrythme\\main.cpp",
+  "file": "E:\\PBLF\\keyrythme\\main.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Debug\\main.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Debug\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Debug -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -g -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Debug\\mainwindow.cpp.obj -c E:\\PBLF\\keyrythme\\mainwindow.cpp",
+  "file": "E:\\PBLF\\keyrythme\\mainwindow.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Debug\\mainwindow.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Debug\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Debug -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -g -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Debug\\ChartAnalyzer.cpp.obj -c E:\\PBLF\\keyrythme\\ChartAnalyzer.cpp",
+  "file": "E:\\PBLF\\keyrythme\\ChartAnalyzer.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Debug\\ChartAnalyzer.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Debug\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Debug -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -g -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Debug\\chartRenderer.cpp.obj -c E:\\PBLF\\keyrythme\\chartRenderer.cpp",
+  "file": "E:\\PBLF\\keyrythme\\chartRenderer.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Debug\\chartRenderer.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Debug\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Debug -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -g -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Debug\\checkerresult.cpp.obj -c E:\\PBLF\\keyrythme\\checkerresult.cpp",
+  "file": "E:\\PBLF\\keyrythme\\checkerresult.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Debug\\checkerresult.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Release\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Release -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Release\\keyrythme_autogen\\mocs_compilation_Release.cpp.obj -c E:\\PBLF\\keyrythme\\build\\keyrythme_autogen\\mocs_compilation_Release.cpp",
+  "file": "E:\\PBLF\\keyrythme\\build\\keyrythme_autogen\\mocs_compilation_Release.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Release\\keyrythme_autogen\\mocs_compilation_Release.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Release\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Release -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Release\\main.cpp.obj -c E:\\PBLF\\keyrythme\\main.cpp",
+  "file": "E:\\PBLF\\keyrythme\\main.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Release\\main.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Release\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Release -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Release\\mainwindow.cpp.obj -c E:\\PBLF\\keyrythme\\mainwindow.cpp",
+  "file": "E:\\PBLF\\keyrythme\\mainwindow.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Release\\mainwindow.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Release\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Release -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Release\\ChartAnalyzer.cpp.obj -c E:\\PBLF\\keyrythme\\ChartAnalyzer.cpp",
+  "file": "E:\\PBLF\\keyrythme\\ChartAnalyzer.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Release\\ChartAnalyzer.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Release\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Release -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Release\\chartRenderer.cpp.obj -c E:\\PBLF\\keyrythme\\chartRenderer.cpp",
+  "file": "E:\\PBLF\\keyrythme\\chartRenderer.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Release\\chartRenderer.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"Release\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_Release -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O3 -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\Release\\checkerresult.cpp.obj -c E:\\PBLF\\keyrythme\\checkerresult.cpp",
+  "file": "E:\\PBLF\\keyrythme\\checkerresult.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\Release\\checkerresult.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"RelWithDebInfo\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_RelWithDebInfo -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\keyrythme_autogen\\mocs_compilation_RelWithDebInfo.cpp.obj -c E:\\PBLF\\keyrythme\\build\\keyrythme_autogen\\mocs_compilation_RelWithDebInfo.cpp",
+  "file": "E:\\PBLF\\keyrythme\\build\\keyrythme_autogen\\mocs_compilation_RelWithDebInfo.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\keyrythme_autogen\\mocs_compilation_RelWithDebInfo.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"RelWithDebInfo\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_RelWithDebInfo -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\main.cpp.obj -c E:\\PBLF\\keyrythme\\main.cpp",
+  "file": "E:\\PBLF\\keyrythme\\main.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\main.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"RelWithDebInfo\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_RelWithDebInfo -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\mainwindow.cpp.obj -c E:\\PBLF\\keyrythme\\mainwindow.cpp",
+  "file": "E:\\PBLF\\keyrythme\\mainwindow.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\mainwindow.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"RelWithDebInfo\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_RelWithDebInfo -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\ChartAnalyzer.cpp.obj -c E:\\PBLF\\keyrythme\\ChartAnalyzer.cpp",
+  "file": "E:\\PBLF\\keyrythme\\ChartAnalyzer.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\ChartAnalyzer.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"RelWithDebInfo\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_RelWithDebInfo -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\chartRenderer.cpp.obj -c E:\\PBLF\\keyrythme\\chartRenderer.cpp",
+  "file": "E:\\PBLF\\keyrythme\\chartRenderer.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\chartRenderer.cpp.obj"
+},
+{
+  "directory": "E:/PBLF/keyrythme/build",
+  "command": "d:\\qt\\Tools\\mingw1310_64\\bin\\g++.exe -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64 -DCMAKE_INTDIR=\\\"RelWithDebInfo\\\" -IE:/PBLF/keyrythme/build/keyrythme_autogen/include_RelWithDebInfo -isystem D:/qt/6.8.1/mingw_64/include/QtCore -isystem D:/qt/6.8.1/mingw_64/include -isystem D:/qt/6.8.1/mingw_64/mkspecs/win32-g++ -isystem D:/qt/6.8.1/mingw_64/include/QtWidgets -isystem D:/qt/6.8.1/mingw_64/include/QtGui -O2 -g -DNDEBUG -std=gnu++17 -o CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\checkerresult.cpp.obj -c E:\\PBLF\\keyrythme\\checkerresult.cpp",
+  "file": "E:\\PBLF\\keyrythme\\checkerresult.cpp",
+  "output": "CMakeFiles\\keyrythme.dir\\RelWithDebInfo\\checkerresult.cpp.obj"
+}
+]

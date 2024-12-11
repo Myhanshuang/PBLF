@@ -1,0 +1,205 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-53bca14f120c43851b33.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "keyrythme",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme-Debug-5ec3ac252275ba7731d6.json",
+					"name" : "keyrythme",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme_autogen-Debug-fa323c09ffb5b9802cad.json",
+					"name" : "keyrythme_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme_autogen_timestamp_deps-Debug-8ffc3ec65cff4909a79c.json",
+					"name" : "keyrythme_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-8c6f36c72c4f011c02e5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "keyrythme",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme-Release-35dae9a534a9f19b1ee2.json",
+					"name" : "keyrythme",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme_autogen-Release-69a9d8ea594f4278f467.json",
+					"name" : "keyrythme_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme_autogen_timestamp_deps-Release-8ffc3ec65cff4909a79c.json",
+					"name" : "keyrythme_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-RelWithDebInfo-26d7479d1fed6d1b83d0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "keyrythme",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme-RelWithDebInfo-f736393ccf6ee72f803a.json",
+					"name" : "keyrythme",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme_autogen-RelWithDebInfo-cdbd9d0dedee804564f9.json",
+					"name" : "keyrythme_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "keyrythme_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-keyrythme_autogen_timestamp_deps-RelWithDebInfo-8ffc3ec65cff4909a79c.json",
+					"name" : "keyrythme_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/PBLF/keyrythme/build",
+		"source" : "E:/PBLF/keyrythme"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
