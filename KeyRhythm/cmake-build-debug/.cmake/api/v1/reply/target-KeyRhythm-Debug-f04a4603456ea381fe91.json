@@ -54,7 +54,10 @@
 			[
 				0,
 				2,
-				3
+				3,
+				6,
+				9,
+				10
 			]
 		}
 	],
@@ -93,14 +96,21 @@
 			[
 				0,
 				2,
-				3
+				3,
+				6,
+				9,
+				10
 			]
 		},
 		{
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				1
+				1,
+				4,
+				5,
+				7,
+				8
 			]
 		}
 	],
@@ -126,7 +136,45 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "Try_Catch templete.cpp",
+			"path" : "Try_Catch template.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Chart.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "ChartError.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Chart.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "ChartWork.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "ChartKMP.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ChartKMP.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "ChartWork.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

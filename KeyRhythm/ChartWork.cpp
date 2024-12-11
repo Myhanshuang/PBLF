@@ -1,123 +1,36 @@
 //
-// Created by Logib on 2024/12/10.
+// Created by Logib on 2024/12/11.
 //
 
-#include "ChartAnalyzer.h"
-
 /**
- * @brief use KMP to get the position of the keyword
- * @param File
- * @param Length
- * @param KeyWord
- * @return \c bool ( 1 = found )
+ * @author \b Logib
+ *
  ***/
-bool getKeyWord(FILE *File, const int Length, const char *KeyWord){
-    char c = '\0';
-    auto nxt = new short [Length+1];
-    nxt[0] = -1;
-    for (short i = 0, j = -1; i < Length-1; ){
-        if (j == -1 || KeyWord[i] == KeyWord[j]){
-            ++i;
-            ++j;
-            nxt[i] = j;
-        }
-        else j = nxt[j];
-    }
-    short j = -1;
-    while (!feof(File)){
-        if (j == -1 || c == KeyWord[j]){
-            c = (char )fgetc(File);
-            ++j;
-        }
-        else j = nxt[j];
-        if (j == Length){
-            delete[] nxt;
-            return true;
-        }
-    }
-    delete[] nxt;
-    return false;
-}
 
-/**
- * @brief use multiple KMP to get the position of the keywords
- * @param File
- * @param Length1
- * @param Length2
- * @param KeyWord1
- * @param KeyWord2
- * @return \c short ( 1 = found 1, 2 = found 2, 0 = all not found)
- ***/
-short getKeyWords(FILE *File, const int Length1, const int Length2, const char *KeyWord1, const char *KeyWord2){
-    char c = '\0';
-    auto nxt1 = new short [Length1+1];
-    auto nxt2 = new short [Length2+1];
-    nxt1[0] = -1, nxt2[0] = -1;
-    for (short i = 0, j = -1; i < Length1-1; ){
-        if (j == -1 || KeyWord1[i] == KeyWord1[j]){
-            ++i;
-            ++j;
-            nxt1[i] = j;
-        }
-        else j = nxt1[j];
-    }
-    for (short i = 0, j = -1; i < Length2-1; ){
-        if (j == -1 || KeyWord2[i] == KeyWord2[j]){
-            ++i;
-            ++j;
-            nxt2[i] = j;
-        }
-        else j = nxt2[j];
-    }
-    short j1 = -1, j2 = -1;
-    bool f1, f2;
-    while (!feof(File)){
-        f1 = (j1 == -1 || c == KeyWord1[j1]);
-        f2 = (j2 == -1 || c == KeyWord2[j2]);
-        if (f1 && f2){
-            c = (char )fgetc(File);
-            ++j1;
-            ++j2;
-        }
-        else {
-            while (!f1){
-                j1 = nxt1[j1];
-                f1 = (j1 == -1 || c == KeyWord1[j1]);
-            }
-            while (!f2){
-                j2 = nxt2[j2];
-                f2 = (j2 == -1 || c == KeyWord2[j2]);
-            }
-        }
-        if (j1 == Length1){
-            delete[] nxt1;
-            delete[] nxt2;
-            return 1;
-        }
-        if (j2 == Length2){
-            delete[] nxt1;
-            delete[] nxt2;
-            return 2;
-        }
-    }
-    delete[] nxt1;
-    delete[] nxt2;
-    return 0;
-}
+#ifndef KEYRHYTHM_CHART_H
+#include "Chart.h"
+#endif
+
+#ifndef KEYRHYTHM_CHARTERROR_H
+#include "ChartError.h"
+#endif
+
+#ifndef KEYRHYTHM_CHARTKMP_H
+#include "ChartKMP.h"
+#endif
+
 
 /**
  * @brief　to get chart
  *
  * @param ChartFileName
- * @return Chart
+ * @return \c Chart NowPlay
  ***/
-Chart getChart(const char *ChartFileName){
-    short t = 0;
+Chart getChart(FILE *chartFile){
 
-    FILE *chartFile = fopen(ChartFileName, "r");
     //打开谱面文件，我这段先写malody谱面的情况，osu谱面以后再考虑，因为两种的格式不大一样
     if (chartFile == nullptr) throw ChartError(0);
-    t = 0;
+    short t = 0;
 /*
  * 打算采用时间戳取代具体的节拍，即导入时算出时间戳
  */
@@ -194,6 +107,7 @@ Chart getChart(const char *ChartFileName){
     while (!feof(chartFile)){
         if ( !getKeyWord(chartFile, 4, "beat") ){
             if (!feof(chartFile)) throw ChartError(5);
+            tMeasure ->timeStamp = tChart[3];
             delete[] tChart;
             tMeasure ->NxtMea = nullptr;
             return NowPlay;
@@ -204,12 +118,17 @@ Chart getChart(const char *ChartFileName){
         tChart[3] = BeatToTime(NowPlay.EveryBeat, tChart[0], tChart[1], tChart[2]);
         // tChart[3] = (int )(EveryBeat * (float )(tChart[0] - 1) + EveryBeat / (float )tChart[2] * (float )tChart[1] + 0.5f);
 
-        if (tMeasure->timeStamp != tChart[3]){
+        if (tMeasure ->timeStamp != tChart[3]){
+            ///< @brief to end the previous node and connect to new next node
+
             if (NowPlay.ChartHead == nullptr) NowPlay.ChartHead = tMeasure;
+            ///@brief if the list is empty, then the new become the first
+
             preMea = tMeasure;
             ptrMea = (void* )new char[sizeof(temple)];
             tMeasure = new(ptrMea) Chart :: Measure(NowPlay.Column);
             preMea ->NxtMea = tMeasure;
+            tMeasure ->timeStamp = tChart[3];
         }
 
         t = getKeyWords(chartFile, 7, 6, "endbeat", "column");
@@ -223,6 +142,8 @@ Chart getChart(const char *ChartFileName){
             // tChart[7] = (int )(EveryBeat * (float )(tChart[4] - 1) + EveryBeat / (float )tChart[6] * (float )tChart[5] + 0.5f);
 
             if (!tMeasure->ifHold){
+                ///< @brief if there isn't hold, then create
+
                 tMeasure->ifHold = true;
                 tMeasure->timeTable = new int [NowPlay.Column];
                 memset(tMeasure->timeTable, 0, sizeof(int )*NowPlay.Column);
@@ -233,15 +154,30 @@ Chart getChart(const char *ChartFileName){
             tMeasure->timeTable[ tChart[8] ] = tChart[7];
             tMeasure->Bar[ tChart[8] ] = 2;
         }
+
         else {
             ///< @brief to deal the normal key
+
             fscanf_s(chartFile, "%d", &tChart[8]);
             tMeasure->Bar[ tChart[8] ] = 1;
         }
     }
 
+    tMeasure ->timeStamp = tChart[3];
     delete[] tChart;
     tMeasure ->NxtMea = nullptr;
     fclose(chartFile);
     return NowPlay;
+}
+
+
+void changeJudgment(int *NewJudge){
+    int ptr = 0;
+    if ( !(*NewJudge) ) throw ChartError(6);
+    else *MaxOffset = *NewJudge;
+    while (NewJudge[++ptr]){
+        if (NewJudge[ptr] < NewJudge[ptr-1]) throw ChartError(6);
+        MaxOffset[ptr] = NewJudge[ptr];
+    }
+    while (ptr < 8) MaxOffset[ptr++] = InfOffset;
 }

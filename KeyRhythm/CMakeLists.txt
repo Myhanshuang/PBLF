@@ -4,6 +4,12 @@ project(KeyRhythm)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(KeyRhythm main.cpp
-        ChartAnalyzer.h
-        ChartAnalyzer.cpp
-        "Try_Catch templete.cpp")
+        "Try_Catch template.cpp"
+        Chart.h
+        Chart.cpp
+        ChartWork.h
+        ChartWork.cpp
+        ChartKMP.h
+        ChartKMP.cpp
+        ChartError.h
+)
