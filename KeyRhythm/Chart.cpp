@@ -126,5 +126,8 @@ Result :: Result(short Key, int Dis, bool HoldEnd) {
     this ->Column = Key;
     this ->Offset = Dis;
     this ->ifHoldEnd = HoldEnd;
-    this ->Judgment =
+    for (short i = 0; MaxOffset[i] != InfOffset; ++i){
+        if (Dis > MaxOffset[i]) continue;
+        this ->Judgment = i;
+    }
 }

@@ -122,13 +122,15 @@ public :
  ***/
 class Result{
 public :
-    short Column, Judgment;
-    int Offset;
+    short Column = -1, Judgment = -1;
+    int Offset = -1;
     bool ifHoldEnd;
     Result();
     Result(short Key, int Dis, bool HoldEnd);
     Result(const Result& R);
 };
+
+class
 
 
 #ifndef KEYRHYTHM_CHARTWORK_H
