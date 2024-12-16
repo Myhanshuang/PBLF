@@ -21,6 +21,9 @@
 #include <cstring>
 #endif //_GLIBCXX_CSTRING
 
+#ifndef _GLIBCXX_CMATH
+#include <cmath>
+#endif //_GLIBCXX_CMATH
 
 #ifndef FloatMinute
 #define FloatMinute 60000.0f
@@ -44,8 +47,13 @@
  *
  * @return timestamp (int)
  */
-#define BeatToTime(eb, a, b, c) (int )(eb * (float )(a - 1) + eb / (float )c * (float )b + 0.5f)
+#define BeatToTime(eb, a, b, c) (int )std::round(eb * (long double )a + eb / (long double )c * (long double )b)
 #endif
+
+extern int MaxOffset[8];
+
+class Chart;
+
 
 /**
  * @class Chart
@@ -55,12 +63,14 @@
  ***/
 class Chart{
 public :
-    float BeatsPerMinute = 0.0f, EveryBeat = 0.0f;
-    int NoteCount = 0, Column = 0, Offset = 0;
+    long double BeatsPerMinute = 0.0l, EveryBeat = 0.0l;
+    int NoteCount = 0, Offset = 0;
+    short Column = 0;
     class Measure;
     Measure *ChartHead = nullptr;
 
     explicit Chart(int Keys);
+    Chart(const Chart& C);
     Chart();
     ~Chart();
 
@@ -108,7 +118,6 @@ public :
         this ->timeStamp = Right ->timeStamp;
         this ->timeTable = Right ->timeTable;
         this ->Bar = Right ->Bar;
-        this ->NxtMea = Right ->NxtMea;
         return *this;
     }
 
@@ -130,8 +139,7 @@ public :
     Result(const Result& R);
 };
 
-class
-
+//class
 
 #ifndef KEYRHYTHM_CHARTWORK_H
 #include "ChartWork.h"

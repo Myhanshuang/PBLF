@@ -14,19 +14,18 @@
 #include "Chart.h"
 #endif
 
-#ifndef KEYRHYTHM_CHARTKMP_H
-#include "ChartKMP.h"
+#ifndef KEYRHYTHM_CHARTREAD_H
+#include "ChartRead.h"
 #endif
 
 /**
  * @brief　to get chart
  *
- * @param chartFile
- * @return Chart
+ * @param chartFile, NowPlay
  ***/
-Chart getChart(FILE *chartFile);
+void getChart(FILE *chartFile, Chart& NowPlay);
 
-extern int MaxOffset[8];
-void changeJudgment(int *NewJudge);
+
+void changeJudgment(const int *NewJudge);
 
 #endif //KEYRHYTHM_CHARTWORK_H

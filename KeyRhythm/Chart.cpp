@@ -6,6 +6,8 @@
 #include "Chart.h"
 #endif
 
+int MaxOffset[8] = {0};
+
 /**
  * @class Chart
  * @brief initialize Chart with param
@@ -23,6 +25,15 @@ Chart :: Chart(const int Keys){
 Chart :: Chart(){
      this ->Column = 4;
      this ->ChartHead = nullptr;
+}
+
+Chart ::Chart(const Chart &C) {
+    this ->ChartHead = C.ChartHead;
+    this ->Column = C.Column;
+    this ->Offset = C.Offset;
+    this ->BeatsPerMinute = C.BeatsPerMinute;
+    this ->EveryBeat = C.EveryBeat;
+    this ->NoteCount = C.NoteCount;
 }
 
 /**
@@ -54,6 +65,7 @@ Chart :: Measure :: Measure(const int Keys){
     this ->timeTable = nullptr;
     this ->NxtMea = nullptr;
     this ->Bar=new char [Keys];
+    memset(this ->Bar, 0, sizeof (char )*Keys);
 }
 
 /**
@@ -65,6 +77,7 @@ Chart :: Measure :: Measure(){
     this ->timeTable = nullptr;
     this ->NxtMea = nullptr;
     this ->Bar=new char [4];
+    memset(this ->Bar, 0, sizeof (char )*4);
 }
 
 /**

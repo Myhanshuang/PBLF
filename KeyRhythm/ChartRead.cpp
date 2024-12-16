@@ -7,6 +7,59 @@
 #endif //_GLIBCXX_CSTDIO
 
 /**
+ * @brief get value in file (int)
+ * @param File
+ * @param val
+ */
+void getValueInt(FILE *File, int& val){
+    val = 0;
+    char ch = (char )getc(File);
+    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    while (ch < '9'+1 && ch > '0'-1){
+        val = (val << 3) + (val << 1) + ch - '0';
+        ch = (char )getc(File);
+    }
+}
+
+/**
+ * @brief get value in file (short)
+ * @param File
+ * @param val
+ */
+void getValueShort(FILE *File, short & val){
+    val = 0;
+    char ch = (char )getc(File);
+    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    while (ch < '9'+1 && ch > '0'-1){
+        val = static_cast <short>((val << 3) + (val << 1) + ch - '0');
+        ch = (char )getc(File);
+    }
+}
+
+/**
+ * @brief get value in file (short)
+ * @param File
+ * @param val
+ */
+void getValueLDouble(FILE *File, long double& val){
+    val = 0.0l;
+    char ch = (char )getc(File);
+    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    while (ch < '9'+1 && ch > '0'-1){
+        val = val*10.0l + ch - '0';
+        ch = (char )getc(File);
+    }
+    if (ch != '.') return ;
+    long double p = 0.1;
+    ch = (char )getc(File);
+    while (ch < '9'+1 && ch > '0'-1){
+        val += (ch - '0')*p;
+        p/=10;
+        ch = (char )getc(File);
+    }
+}
+
+/**
  * @brief use KMP to get the position of the keyword
  * @param File
  * @param Length

@@ -7,8 +7,29 @@
  *
  ***/
 
-#ifndef KEYRHYTHM_CHARTKMP_H
-#define KEYRHYTHM_CHARTKMP_H
+#ifndef KEYRHYTHM_CHARTREAD_H
+#define KEYRHYTHM_CHARTREAD_H
+
+/**
+ * @brief get value in file (int)
+ * @param File
+ * @param val
+ */
+void getValueInt(FILE *File, int& val);
+
+/**
+ * @brief get value in file (short)
+ * @param File
+ * @param val
+ */
+void getValueShort(FILE *File, short& val);
+
+/**
+ * @brief get value in file (short)
+ * @param File
+ * @param val
+ */
+void getValueLDouble(FILE *File, long double& val);
 
 /**
  * @brief use KMP to get the position of the keyword
@@ -30,4 +51,4 @@ bool getKeyWord(FILE *File, int Length, const char *KeyWord);
  ***/
 short getKeyWords(FILE *File, int Length1, int Length2, const char *KeyWord1, const char *KeyWord2);
 
-#endif //KEYRHYTHM_CHARTKMP_H
+#endif //KEYRHYTHM_CHARTREAD_H

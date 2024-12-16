@@ -15,18 +15,16 @@
 #include "ChartError.h"
 #endif
 
-#ifndef KEYRHYTHM_CHARTKMP_H
-#include "ChartKMP.h"
+#ifndef KEYRHYTHM_CHARTREAD_H
+#include "ChartRead.h"
 #endif
-
 
 /**
  * @brief　to get chart
  *
- * @param ChartFileName
- * @return \c Chart NowPlay
+ * @param chartFile, NowPlay
  ***/
-Chart getChart(FILE *chartFile){
+void getChart(FILE *chartFile, Chart &NowPlay){
 
     //打开谱面文件，我这段先写malody谱面的情况，osu谱面以后再考虑，因为两种的格式不大一样
     if (chartFile == nullptr) throw ChartError(0);
@@ -59,8 +57,8 @@ Chart getChart(FILE *chartFile){
     if ( !getKeyWord(chartFile, 4, "meta") ) throw ChartError(1);
     if ( !getKeyWord(chartFile, 8, "mode_ext") ) throw ChartError(2);
     if ( !getKeyWord(chartFile, 6, "column") ) throw ChartError(2);
-    fscanf_s(chartFile, "%hd", &t);
-    Chart NowPlay(t);
+    getValueShort(chartFile, t);
+    NowPlay.Column = t;
     //获取bpm，同时确认每小节的时长
     /*
      * 该位置js代码如下（.mc文件中无换行与缩进，该代码为样例）
@@ -72,10 +70,13 @@ Chart getChart(FILE *chartFile){
 
 
     if ( !getKeyWord(chartFile, 4, "time") ) throw ChartError(3);
-    if ( !fscanf_s(chartFile, "%*hd%*hd%hd", &t)) throw ChartError(3);
+    do {
+        getValueShort(chartFile, t);
+    }
+    while (!t);
     NowPlay.EveryBeat = FloatMinute / (float )t;
     if ( !getKeyWord(chartFile, 3, "bpm") ) throw ChartError(3);
-    fscanf_s(chartFile, "%f", &NowPlay.BeatsPerMinute);
+    getValueLDouble(chartFile, NowPlay.BeatsPerMinute);
     NowPlay.EveryBeat /= NowPlay.BeatsPerMinute;
 
     //接下来写入谱面文件到Chart内
@@ -98,29 +99,33 @@ Chart getChart(FILE *chartFile){
      * [4]     [5]      [6]          [7]
      */
     int *tChart = new int [9];
+    memset(tChart, 0, 9*sizeof (int ));
     const Chart :: Measure temple(NowPlay.Column);
 
     void *ptrMea = (void* )new char[sizeof(temple)];
     auto tMeasure = new(ptrMea) Chart :: Measure(NowPlay.Column);
     Chart :: Measure *preMea = nullptr;
 
+    /*tMeasure ->timeStamp = 0;
+    tMeasure ->Bar = new char [NowPlay.Column];
+    tMeasure ->NxtMea = nullptr;
+    tMeasure ->timeTable = nullptr;
+    tMeasure ->ifHold = false;*/
+
     while (!feof(chartFile)){
         if ( !getKeyWord(chartFile, 4, "beat") ){
             if (!feof(chartFile)) throw ChartError(5);
-            tMeasure ->timeStamp = tChart[3];
-            delete[] tChart;
-            tMeasure ->NxtMea = nullptr;
-            return NowPlay;
+            break ;
         }
 
-        fscanf_s(chartFile, "%d%d%d", &tChart[0], &tChart[1], &tChart[2]);
+        for (short i = 0; i < 3; ++i) getValueInt(chartFile, tChart[i]);
         ///< @brief to get the beat info and turn it into timestamp
         tChart[3] = BeatToTime(NowPlay.EveryBeat, tChart[0], tChart[1], tChart[2]);
         // tChart[3] = (int )(EveryBeat * (float )(tChart[0] - 1) + EveryBeat / (float )tChart[2] * (float )tChart[1] + 0.5f);
-
-        if (tMeasure ->timeStamp != tChart[3]){
+        //if (NowPlay.ChartHead == nullptr) printf("%f", NowPlay.EveryBeat);
+        if (tMeasure ->timeStamp > tChart[3]) break ;
+        if (tMeasure ->timeStamp < tChart[3]){
             ///< @brief to end the previous node and connect to new next node
-
             if (NowPlay.ChartHead == nullptr) NowPlay.ChartHead = tMeasure;
             ///@brief if the list is empty, then the new become the first
 
@@ -129,7 +134,14 @@ Chart getChart(FILE *chartFile){
             tMeasure = new(ptrMea) Chart :: Measure(NowPlay.Column);
             preMea ->NxtMea = tMeasure;
             tMeasure ->timeStamp = tChart[3];
+            /*tMeasure ->Bar = new char [NowPlay.Column];
+            tMeasure ->NxtMea = nullptr;
+            tMeasure ->timeTable = nullptr;
+            tMeasure ->ifHold = false;*/
         }
+
+        //printf("%5d %5d %5d with column:", tChart[0], tChart[1], tChart[2]);
+        ///< @brief for testing it can work well
 
         t = getKeyWords(chartFile, 7, 6, "endbeat", "column");
         if (!t) throw  ChartError(5);
@@ -137,20 +149,27 @@ Chart getChart(FILE *chartFile){
         if (t == 1){
             ///< @brief to deal the hold key
 
-            fscanf_s(chartFile, "%d%d%d", &tChart[4], &tChart[5], &tChart[6]);
+            for (short i = 4; i < 7; ++i) getValueInt(chartFile, tChart[i]);
             tChart[7] = BeatToTime(NowPlay.EveryBeat, tChart[4], tChart[5], tChart[6]);
             // tChart[7] = (int )(EveryBeat * (float )(tChart[4] - 1) + EveryBeat / (float )tChart[6] * (float )tChart[5] + 0.5f);
 
-            if (!tMeasure->ifHold){
+            if ( !tMeasure->ifHold ){
                 ///< @brief if there isn't hold, then create
 
                 tMeasure->ifHold = true;
                 tMeasure->timeTable = new int [NowPlay.Column];
                 memset(tMeasure->timeTable, 0, sizeof(int )*NowPlay.Column);
             }
-            if (!getKeyWord(chartFile, 6, "column")) throw ChartError(5);
+            if ( !getKeyWord(chartFile, 6, "column") ) throw ChartError(5);
 
-            fscanf_s(chartFile, "%d", &tChart[8]);
+            getValueInt(chartFile, tChart[8]);
+            if ( tChart[8] > NowPlay.Column-1 ){
+                NowPlay.ChartHead = nullptr;
+                preMea = nullptr;
+                ptrMea = (void* )new char[sizeof(temple)];
+                tMeasure = new(ptrMea) Chart :: Measure(NowPlay.Column);
+                continue ;
+            }
             tMeasure->timeTable[ tChart[8] ] = tChart[7];
             tMeasure->Bar[ tChart[8] ] = 2;
         }
@@ -158,20 +177,35 @@ Chart getChart(FILE *chartFile){
         else {
             ///< @brief to deal the normal key
 
-            fscanf_s(chartFile, "%d", &tChart[8]);
+            getValueInt(chartFile, tChart[8]);
+            if ( tChart[8] > NowPlay.Column-1 ){
+                NowPlay.ChartHead = nullptr;
+                preMea = nullptr;
+                ptrMea = (void* )new char[sizeof(temple)];
+                tMeasure = new(ptrMea) Chart :: Measure(NowPlay.Column);
+                /* tMeasure ->timeStamp = 0;
+                tMeasure ->Bar = new char [NowPlay.Column];
+                tMeasure ->NxtMea = nullptr;
+                tMeasure ->timeTable = nullptr;
+                tMeasure ->ifHold = false;*/
+                continue ;
+            }
             tMeasure->Bar[ tChart[8] ] = 1;
         }
     }
 
-    tMeasure ->timeStamp = tChart[3];
+    /** deal other data */
+    fseek(chartFile, 0, SEEK_SET);
+    if (getKeyWord(chartFile, 6, "offset")) getValueInt(chartFile, NowPlay.Offset);
+
+    /** end the list */
     delete[] tChart;
     tMeasure ->NxtMea = nullptr;
     fclose(chartFile);
-    return NowPlay;
 }
 
 
-void changeJudgment(int *NewJudge){
+void changeJudgment(const int *NewJudge){
     int ptr = 0;
     if ( !(*NewJudge) ) throw ChartError(6);
     else *MaxOffset = *NewJudge;

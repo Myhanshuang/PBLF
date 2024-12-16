@@ -9,7 +9,7 @@ add_executable(KeyRhythm main.cpp
         Chart.cpp
         ChartWork.h
         ChartWork.cpp
-        ChartKMP.h
-        ChartKMP.cpp
         ChartError.h
+        ChartRead.h
+        ChartRead.cpp
 )

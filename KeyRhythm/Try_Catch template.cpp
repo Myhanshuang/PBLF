@@ -1,12 +1,14 @@
 //
 // Created by Logib on 2024/12/10.
 //
-#include "ChartAnalyzer.h"
+#include "Chart.h"
+
+Chart A;
 
 // template 1
 bool func1(FILE *ChartFile){
     try {
-        Chart A = getChartFile(ChartFile);
+        getChart(ChartFile, A);
         return false;
     }
     catch (const char *ErrorLine){
@@ -18,7 +20,7 @@ bool func1(FILE *ChartFile){
 // template 2
 bool func2(FILE *ChartFile){
     try {
-        Chart A = getChartFile(ChartFile);
+        getChart(ChartFile, A);
         return false;
     }
     catch (const ChartError& e){
@@ -30,7 +32,7 @@ bool func2(FILE *ChartFile){
 // template 3
 bool func3(FILE *ChartFile){
     try {
-        Chart A = getChartFile(ChartFile);
+        getChart(ChartFile, A);
         return false;
     }
     catch (const ChartError& e){
