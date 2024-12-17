@@ -14,4 +14,6 @@ add_executable(KeyRhythm main.cpp
         ChartError.h
         ChartRead.h
         ChartRead.cpp
+        User.h
+        User.cpp
 )

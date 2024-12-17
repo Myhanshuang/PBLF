@@ -171,24 +171,6 @@ public :
     Result(const Result& R);
 };
 
-/**
- * @class User
- * @brief to save user data
- *
- * @details name[13], pswd[21]
- */
-class User{
-public :
-    char userName[13]{};
-    char Password[21]{};
-
-    User();
-
-    void save(FILE *Saving);
-    bool newUser(FILE *Saving);
-    bool correct(FILE *Saving);
-};
-
 #ifndef KEYRHYTHM_CHARTWORK_H
 #include "ChartWork.h"
 #endif //KEYRHYTHM_CHARTWORK_H
@@ -196,5 +178,9 @@ public :
 #ifndef KEYRHYTHM_CHARTERROR_H
 #include "ChartError.h"
 #endif //KEYRHYTHM_CHARTERROR_H
+
+#ifndef KEYRHYTHM_USER_H
+#include "User.h"
+#endif //KEYRHYTHM_USER_H
 
 #endif //KEYRHYTHM_CHART_H

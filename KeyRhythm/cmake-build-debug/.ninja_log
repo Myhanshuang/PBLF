@@ -1,18 +1,12 @@
 # ninja log v6
 423	5954	7561360071620203	CMakeFiles/KeyRhythm.dir/ChartRead.cpp.obj	acb82e12fe167513
 168	5231	7561484441682184	CMakeFiles/KeyRhythm.dir/base64/encode.c.obj	e269916ea3bdd632
-222	2216	7561502221124890	CMakeFiles/KeyRhythm.dir/main.cpp.obj	9b2308e4ae1f398b
+7	2478	7561505052854340	CMakeFiles/KeyRhythm.dir/main.cpp.obj	9b2308e4ae1f398b
 505	1813	7561502223963201	CMakeFiles/KeyRhythm.dir/base64/base64.c.obj	7f80b9d7374a9cc
 99	5230	7561484440983618	CMakeFiles/KeyRhythm.dir/base64/buffer.c.obj	6acb7dff392b9b5e
-470	2191	7561502223621273	CMakeFiles/KeyRhythm.dir/Try_Catch_template.cpp.obj	ca13819f743cae6a
-227	1755	7561503678050169	build.ninja	c782bbe6422d1340
-481	2137	7561502223715829	CMakeFiles/KeyRhythm.dir/Chart.cpp.obj	fbd2954367fca69a
-492	2167	7561502223838073	CMakeFiles/KeyRhythm.dir/ChartWork.cpp.obj	1c9e67637fed3d59
-1180	1466	7561487142201479	KeyRhythm.exe	a3fd3695d7fc1761
-158	5267	7561484441581530	CMakeFiles/KeyRhythm.dir/base64/decode.c.obj	11c9313752b8d4ad
-1	769	7561503678050169	build.ninja	c782bbe6422d1340
-7	2478	7561505052854340	CMakeFiles/KeyRhythm.dir/main.cpp.obj	9b2308e4ae1f398b
 30	2480	7561505053068071	CMakeFiles/KeyRhythm.dir/Try_Catch_template.cpp.obj	ca13819f743cae6a
-62	2497	7561505053397396	CMakeFiles/KeyRhythm.dir/ChartWork.cpp.obj	1c9e67637fed3d59
+1	769	7561519911044981	build.ninja	c782bbe6422d1340
 45	2497	7561505053220483	CMakeFiles/KeyRhythm.dir/Chart.cpp.obj	fbd2954367fca69a
+62	2497	7561505053397396	CMakeFiles/KeyRhythm.dir/ChartWork.cpp.obj	1c9e67637fed3d59
 2498	2670	7561505077749556	KeyRhythm.exe	7af299b7c1c3ac0e
+158	5267	7561484441581530	CMakeFiles/KeyRhythm.dir/base64/decode.c.obj	11c9313752b8d4ad
