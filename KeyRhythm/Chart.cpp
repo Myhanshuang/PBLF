@@ -119,6 +119,10 @@ Chart :: Measure :: Measure(const Chart :: Measure &M) {
     this ->NxtMea = M.NxtMea;
 }
 
+Chart :: ChartAct ::ChartAct(){
+    memset(this ->judgeResult, 0, sizeof (int )*9);
+}
+
 /**
  * @class Result
  * @brief constructor of Result

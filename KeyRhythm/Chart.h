@@ -130,6 +130,9 @@ class Chart :: ChartAct{
 public :
     long double Accurency = 100.0l;
     int Combo = 0, Score = 0;
+    int judgeResult[9]{};
+
+    ChartAct();
 
     ChartAct& operator =(ChartAct *Right){
         this ->Accurency = Right ->Accurency;
