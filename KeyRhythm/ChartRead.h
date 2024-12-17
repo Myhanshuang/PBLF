@@ -38,26 +38,20 @@ void getValueLDouble(FILE *File, long double& val);
 /**
  * @brief use KMP to get the position of the keyword
  * @param File
- * @param Length
  * @param KeyWord
  * @return \c bool ( 1 = found )
  ***/
-bool getKeyWord(FILE *File, int Length, const char *KeyWord);
+bool getKeyWord(FILE *File, const char *KeyWord);
 
 /**
  * @brief use multiple KMP to get the position of the keywords
  * @param File
- * @param Length1
- * @param Length2
  * @param KeyWord1
  * @param KeyWord2
  * @return \c short ( 1 = found 1, 2 = found 2, 0 = all not found)
  ***/
-short getKeyWords(FILE *File, int Length1, int Length2, const char *KeyWord1, const char *KeyWord2);
+short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2);
 
 void putWords(FILE *File, const char *Words);
-
-void base64(char *Origin);
-
 
 #endif //KEYRHYTHM_CHARTREAD_H

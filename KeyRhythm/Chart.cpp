@@ -172,13 +172,14 @@ User :: User(){
     memset(this ->userName, 0, sizeof(char )*21);
 }
 
-void User ::save(FILE *Saving){
+void User :: save(FILE *Saving){
     if (this ->userName[0] == '\0') throw ChartError(7);
     if (this ->userName[12] != '\0') throw ChartError(8);
     putc((int )'\n', Saving);
     putWords(Saving, this ->userName);
     putc((int )'\n', Saving);
-    base64(this ->Password);
-    putWords(Saving, this ->Password);
+    char *encode = nullptr;
+    encode = base64_encode(this ->Password, static_cast <int >(strlen((const char *) this ->Password)));
+    putWords(Saving, encode);
     putc((int )'\n', Saving);
 }

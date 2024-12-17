@@ -54,9 +54,9 @@ void getChart(FILE *chartFile, Chart &NowPlay){
 		    }
 	    },
      */
-    if ( !getKeyWord(chartFile, 4, "meta") ) throw ChartError(1);
-    if ( !getKeyWord(chartFile, 8, "mode_ext") ) throw ChartError(2);
-    if ( !getKeyWord(chartFile, 6, "column") ) throw ChartError(2);
+    if ( !getKeyWord(chartFile, "meta") ) throw ChartError(1);
+    if ( !getKeyWord(chartFile, "mode_ext") ) throw ChartError(2);
+    if ( !getKeyWord(chartFile, "column") ) throw ChartError(2);
     getValueShort(chartFile, t);
     NowPlay.Column = t;
     //获取bpm，同时确认每小节的时长
@@ -69,13 +69,13 @@ void getChart(FILE *chartFile, Chart &NowPlay){
      */
 
 
-    if ( !getKeyWord(chartFile, 4, "time") ) throw ChartError(3);
+    if ( !getKeyWord(chartFile, "time") ) throw ChartError(3);
     do {
         getValueShort(chartFile, t);
     }
     while (!t);
     NowPlay.EveryBeat = FloatMinute / (float )t;
-    if ( !getKeyWord(chartFile, 3, "bpm") ) throw ChartError(3);
+    if ( !getKeyWord(chartFile, "bpm") ) throw ChartError(3);
     getValueLDouble(chartFile, NowPlay.BeatsPerMinute);
     NowPlay.EveryBeat /= NowPlay.BeatsPerMinute;
 
@@ -91,7 +91,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
 	    },
      */
 
-    if ( !getKeyWord(chartFile, 4, "note") ) throw ChartError(4);
+    if ( !getKeyWord(chartFile, "note") ) throw ChartError(4);
 
     /* int tBar,  tBeat, tDivision, tTimeStamp, tKey;
      * tChart[0]  [1]   [2]        [3]         [8]
@@ -113,7 +113,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
     tMeasure ->ifHold = false;*/
 
     while (!feof(chartFile)){
-        if ( !getKeyWord(chartFile, 4, "beat") ){
+        if ( !getKeyWord(chartFile, "beat") ){
             if (!feof(chartFile)) throw ChartError(5);
             break ;
         }
@@ -142,7 +142,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
         //printf("%5d %5d %5d with column:", tChart[0], tChart[1], tChart[2]);
         ///< @brief for testing it can work well
 
-        t = getKeyWords(chartFile, 7, 6, "endbeat", "column");
+        t = getKeyWords(chartFile, "endbeat", "column");
         if (!t) throw  ChartError(5);
 
         if (t == 1){
@@ -159,7 +159,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
                 tMeasure->timeTable = new int [NowPlay.Column];
                 memset(tMeasure->timeTable, 0, sizeof(int )*NowPlay.Column);
             }
-            if ( !getKeyWord(chartFile, 6, "column") ) throw ChartError(5);
+            if ( !getKeyWord(chartFile, "column") ) throw ChartError(5);
 
             getValueInt(chartFile, tChart[8]);
             if ( tChart[8] > NowPlay.Column-1 ){
@@ -170,7 +170,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
                 continue ;
             }
             tMeasure->timeTable[ tChart[8] ] = tChart[7];
-            tMeasure->Bar[ tChart[8] ] = 2;
+            NowPlay.NoteCount += (int )(tMeasure->Bar[ tChart[8] ] = 2);
         }
 
         else {
@@ -190,12 +190,13 @@ void getChart(FILE *chartFile, Chart &NowPlay){
                 continue ;
             }
             tMeasure->Bar[ tChart[8] ] = 1;
+            ++NowPlay.NoteCount;
         }
     }
 
     /** deal other data */
     fseek(chartFile, 0, SEEK_SET);
-    if (getKeyWord(chartFile, 6, "offset")) getValueInt(chartFile, NowPlay.Offset);
+    if (getKeyWord(chartFile, "offset")) getValueInt(chartFile, NowPlay.Offset);
 
     /** end the list */
     delete[] tChart;

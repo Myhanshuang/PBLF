@@ -25,6 +25,10 @@
 #include <cmath>
 #endif //_GLIBCXX_CMATH
 
+#ifndef _BASE64_H_
+#include "base64/base64.h"
+#endif
+
 #ifndef FloatMinute
 #define FloatMinute 60000.0f
 ///< @def FloatMinute
@@ -126,16 +130,23 @@ public :
 
 };
 
+/**
+ * @class ChartAct
+ * @brief the variable data in playing chart
+ * @details judgeResult is used to save judging results
+ * and the [8] can be used to save misses
+ * \n or can use minus to show misses
+ */
 class Chart :: ChartAct{
 public :
-    long double Accurency = 100.0l;
+    long double Accuracy = 100.0l;
     int Combo = 0, Score = 0;
     int judgeResult[9]{};
 
     ChartAct();
 
     ChartAct& operator =(ChartAct *Right){
-        this ->Accurency = Right ->Accurency;
+        this ->Accuracy = Right ->Accuracy;
         this ->Combo = Right ->Combo;
         this ->Score = Right ->Score;
         return *this;
