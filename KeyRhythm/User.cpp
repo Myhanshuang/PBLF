@@ -22,8 +22,10 @@ User :: User(){
  * @param Saving (\c FILE )
  */
 void User :: save(FILE *Saving){
-    if (this ->userName[0] == '\0') throw ChartError(7);
-    if (this ->userName[12] != '\0') throw ChartError(8);
+    if (this ->userName[0] == '\0' || this ->userName[12] != '\0')
+        throw ChartError(7);
+    if (this ->Password[0] == '\0' || this ->Password[20] != '\0')
+        throw ChartError(8);
     putc((int )'\n', Saving);
     putWords(Saving, this ->userName);
     putc((int )'\n', Saving);

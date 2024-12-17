@@ -46,12 +46,12 @@
 ///< @brief invalid judgment time setting
 ///< @addtogroup ErrorException
 
-#define Exception7 "User data error: Empty username"
-///< @brief user name is a non-empty string
+#define Exception7 "User data error: Empty username or too long username"
+///< @brief user name is a non-empty string with the length of 12-char
 ///< @addtogroup ErrorException
 
-#define Exception8 "User data error: Too long username"
-///< @brief user name is a 12-char long string
+#define Exception8 "User data error: Empty password or too long password"
+///< @brief password is a non-empty string with the length of 20-char
 ///< @addtogroup ErrorException
 
 #define Exception9 "User data error: Searching a new user"

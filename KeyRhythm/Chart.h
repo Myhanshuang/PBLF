@@ -28,7 +28,7 @@
 #ifndef BASE64_H
 extern "C"{
 #include "base64/base64.h"
-};
+}
 #endif
 
 #ifndef FloatMinute
