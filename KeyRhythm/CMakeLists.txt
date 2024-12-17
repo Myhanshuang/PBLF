@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(KeyRhythm main.cpp
         "Try_Catch template.cpp"
+        base64/base64.h
+        base64/base64.c
         Chart.h
         Chart.cpp
         ChartWork.h
@@ -12,6 +14,4 @@ add_executable(KeyRhythm main.cpp
         ChartError.h
         ChartRead.h
         ChartRead.cpp
-        base64/base64.h
-        base64/base64.c
 )

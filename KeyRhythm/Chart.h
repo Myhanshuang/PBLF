@@ -25,8 +25,10 @@
 #include <cmath>
 #endif //_GLIBCXX_CMATH
 
-#ifndef _BASE64_H_
+#ifndef BASE64_H
+extern "C"{
 #include "base64/base64.h"
+};
 #endif
 
 #ifndef FloatMinute
@@ -183,6 +185,8 @@ public :
     User();
 
     void save(FILE *Saving);
+    bool newUser(FILE *Saving);
+    bool correct(FILE *Saving);
 };
 
 #ifndef KEYRHYTHM_CHARTWORK_H

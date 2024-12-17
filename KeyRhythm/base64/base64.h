@@ -1,35 +1,32 @@
-#ifndef _BASE64_H_
-#define _BASE64_H_
+    /***********************************************************
+    * Base64 library                                           *
+    * @author Ahmed Elzoughby                                  *
+    * @date July 23, 2017                                      *
+    * Purpose: encode and decode base64 format                 *
+    ***********************************************************/
 
-#ifdef __cplusplus
-extern "C"{
-#endif
+#ifndef BASE64_H
+#define BASE64_H
 
-/* --------------------------------------------------------------------------*/
-/**
- * @Synopsis base64 encode
- *
- * @Param src data before encode
- * @Param length data length
- *
- * @Returns data after encoded, need free.
- */
-/* ----------------------------------------------------------------------------*/
-extern char *base64_encode(char *src, int length);
+#include <stdlib.h>
+#include <string.h>
+#include <memory.h>
 
-/* --------------------------------------------------------------------------*/
-/**
- * @Synopsis base64 decode
- *
- * @Param dest data encoded
- *
- * @Returns data decoded
- */
-/* ----------------------------------------------------------------------------*/
-extern char *base64_decode(char *src, int *destlen);
 
-#ifdef __cplusplus
-}
-#endif
+/***********************************************
+Encodes ASCII string into base64 format string
+@param plain ASCII string to be encoded
+@return encoded base64 format string
+***********************************************/
+char* base64_encode(char* plain);
 
-#endif // _BASE64_H_
+
+/***********************************************
+decodes base64 format string into ASCII string
+@param plain encoded base64 format string
+@return ASCII string to be encoded
+***********************************************/
+char* base64_decode(char* cipher);
+
+
+#endif //BASE64_H

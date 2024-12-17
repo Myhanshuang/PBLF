@@ -22,23 +22,23 @@
 ///< @brief cannot find the \b chart \b file
 ///< @addtogroup ErrorException
 
-#define Exception1 "Lose meta data"
+#define Exception1 "Chart data error: Lose meta data"
 ///< @brief cannot find \b metadata in chart file
 ///< @addtogroup ErrorException
 
-#define Exception2 "Lose column info or bar begin info"
+#define Exception2 "Chart data error: Lose column info or bar begin info"
 ///< @brief cannot find \b "mode_ext" in chart file
 ///< @addtogroup ErrorException
 
-#define Exception3 "Lose BPM or unit beat of bar"
+#define Exception3 "Chart data error: Lose BPM or unit beat of bar"
 ///< @brief cannot find \b beat \b info in chart file
 ///< @addtogroup ErrorException
 
-#define Exception4 "Lose note in chart"
+#define Exception4 "Chart data error: Lose note in chart"
 ///< @brief cannot find \b note in chart file
 ///< @addtogroup ErrorException
 
-#define Exception5 "Chart format error"
+#define Exception5 "Chart data error: Chart format error"
 ///< @brief cannot find \b "column" or \b beat of note in chart file
 ///< @addtogroup ErrorException
 
@@ -47,6 +47,8 @@
 #define Exception7 "User data error: Empty username"
 
 #define Exception8 "User data error: Too long username"
+
+#define Exception9 "User data error: Searching a new user"
 
 class ChartError : public std :: exception{
 public :
@@ -73,6 +75,7 @@ public :
             case 6: return Exception6;
             case 7: return Exception7;
             case 8: return Exception8;
+            case 9: return Exception9;
 
             default :
                 return nullptr;
