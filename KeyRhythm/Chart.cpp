@@ -14,9 +14,10 @@ int KeyCode[9] = {0};
  * @brief initialize Chart with param
  * @param Keys
  ***/
-Chart :: Chart(const int Keys){
+Chart :: Chart(const short Keys){
     this ->Column = Keys;
     this ->ChartHead = nullptr;
+    this ->Acting = new Chart :: ChartAct;
 }
 
 /**
@@ -28,6 +29,11 @@ Chart :: Chart(){
      this ->ChartHead = nullptr;
 }
 
+/**
+ * @class Chart
+ * @brief create new chart with old one
+ * @param C
+ */
 Chart ::Chart(const Chart &C) {
     this ->ChartHead = C.ChartHead;
     this ->Column = C.Column;
@@ -35,6 +41,7 @@ Chart ::Chart(const Chart &C) {
     this ->BeatsPerMinute = C.BeatsPerMinute;
     this ->EveryBeat = C.EveryBeat;
     this ->NoteCount = C.NoteCount;
+    this ->Acting = C.Acting;
 }
 
 /**
@@ -61,7 +68,7 @@ Chart :: ~Chart(){
  * @brief initialize Measure with param
  * @param Keys
  ***/
-Chart :: Measure :: Measure(const int Keys){
+Chart :: Measure :: Measure(const short Keys){
     this ->timeStamp = 0;
     this ->timeTable = nullptr;
     this ->NxtMea = nullptr;
@@ -135,7 +142,13 @@ Result :: Result(const Result &R) {
     this ->ifHoldEnd = R.ifHoldEnd;
 }
 
-
+/**
+ * @class Result
+ * @brief set result
+ * @param Key
+ * @param Dis
+ * @param HoldEnd
+ */
 Result :: Result(short Key, int Dis, bool HoldEnd) {
     this ->Column = Key;
     this ->Offset = Dis;
@@ -144,4 +157,24 @@ Result :: Result(short Key, int Dis, bool HoldEnd) {
         if (Dis > MaxOffset[i]) continue;
         this ->Judgment = i;
     }
+}
+
+/**
+ * @class User
+ * @brief initialize user data
+ */
+User :: User(){
+    memset(this ->userName, 0, sizeof(char )*13);
+    memset(this ->userName, 0, sizeof(char )*21);
+}
+
+void User ::save(FILE *Saving){
+    if (this ->userName[0] == '\0') throw ChartError(7);
+    if (this ->userName[12] != '\0') throw ChartError(8);
+    putc((int )'\n', Saving);
+    putWords(Saving, this ->userName);
+    putc((int )'\n', Saving);
+    base64(this ->Password);
+    putWords(Saving, this ->Password);
+    putc((int )'\n', Saving);
 }

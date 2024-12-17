@@ -68,9 +68,11 @@ public :
     int NoteCount = 0, Offset = 0;
     short Column = 0;
     class Measure;
+    class ChartAct;
     Measure *ChartHead = nullptr;
+    ChartAct *Acting = nullptr;
 
-    explicit Chart(int Keys);
+    explicit Chart(short Keys);
     Chart(const Chart& C);
     Chart();
     ~Chart();
@@ -105,7 +107,7 @@ public :
     char *Bar = nullptr;
     Measure *NxtMea = nullptr;
 
-    explicit Measure(int Keys);
+    explicit Measure(short Keys);
     Measure();
     Measure(const Measure& M);
     ~Measure();
@@ -124,6 +126,19 @@ public :
 
 };
 
+class Chart :: ChartAct{
+public :
+    long double Accurency = 100.0l;
+    int Combo = 0, Score = 0;
+
+    ChartAct& operator =(ChartAct *Right){
+        this ->Accurency = Right ->Accurency;
+        this ->Combo = Right ->Combo;
+        this ->Score = Right ->Score;
+        return *this;
+    }
+};
+
 /**
  * @class Result
  * @brief to show the result of a note
@@ -140,10 +155,16 @@ public :
     Result(const Result& R);
 };
 
+/**
+ * @class User
+ * @brief to save user data
+ *
+ * @details name[13], pswd[21]
+ */
 class User{
 public :
-    char userName[13];
-    char Password[21];
+    char userName[13]{};
+    char Password[21]{};
 
     User();
 

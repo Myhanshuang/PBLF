@@ -160,3 +160,11 @@ short getKeyWords(FILE *File, const int Length1, const int Length2, const char *
     delete[] nxt2;
     return 0;
 }
+
+void putWords(FILE *File, const char *Words){
+    for (short t = 0; Words[t] != '\0'; ++t) putc((int )Words[t], File);
+}
+
+void base64(char* Origin){
+
+}

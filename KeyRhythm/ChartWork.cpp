@@ -122,7 +122,6 @@ void getChart(FILE *chartFile, Chart &NowPlay){
         ///< @brief to get the beat info and turn it into timestamp
         tChart[3] = BeatToTime(NowPlay.EveryBeat, tChart[0], tChart[1], tChart[2]);
         // tChart[3] = (int )(EveryBeat * (float )(tChart[0] - 1) + EveryBeat / (float )tChart[2] * (float )tChart[1] + 0.5f);
-        //if (NowPlay.ChartHead == nullptr) printf("%f", NowPlay.EveryBeat);
         if (tMeasure ->timeStamp > tChart[3]) break ;
         if (tMeasure ->timeStamp < tChart[3]){
             ///< @brief to end the previous node and connect to new next node

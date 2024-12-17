@@ -10,6 +10,10 @@
 #ifndef KEYRHYTHM_CHARTREAD_H
 #define KEYRHYTHM_CHARTREAD_H
 
+#ifndef _GLIBCXX_CSTDIO
+#include <cstdio>
+#endif //_GLIBCXX_CSTDIO
+
 /**
  * @brief get value in file (int)
  * @param File
@@ -50,5 +54,10 @@ bool getKeyWord(FILE *File, int Length, const char *KeyWord);
  * @return \c short ( 1 = found 1, 2 = found 2, 0 = all not found)
  ***/
 short getKeyWords(FILE *File, int Length1, int Length2, const char *KeyWord1, const char *KeyWord2);
+
+void putWords(FILE *File, const char *Words);
+
+void base64(char *Origin);
+
 
 #endif //KEYRHYTHM_CHARTREAD_H

@@ -44,6 +44,10 @@
 
 #define Exception6 "Judgment setting error"
 
+#define Exception7 "User data error: Empty username"
+
+#define Exception8 "User data error: Too long username"
+
 class ChartError : public std :: exception{
 public :
     short *ErrorCode;
@@ -67,6 +71,8 @@ public :
             case 4: return Exception4;
             case 5: return Exception5;
             case 6: return Exception6;
+            case 7: return Exception7;
+            case 8: return Exception8;
 
             default :
                 return nullptr;
