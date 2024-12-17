@@ -7,6 +7,7 @@
 #endif
 
 int MaxOffset[8] = {0};
+int KeyCode[9] = {0};
 
 /**
  * @class Chart

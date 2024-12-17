@@ -52,6 +52,7 @@
 
 extern int MaxOffset[8];
 
+
 class Chart;
 
 
@@ -139,7 +140,15 @@ public :
     Result(const Result& R);
 };
 
-//class
+class User{
+public :
+    char userName[13];
+    char Password[21];
+
+    User();
+
+    void save(FILE *Saving);
+};
 
 #ifndef KEYRHYTHM_CHARTWORK_H
 #include "ChartWork.h"

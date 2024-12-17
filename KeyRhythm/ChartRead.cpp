@@ -54,7 +54,7 @@ void getValueLDouble(FILE *File, long double& val){
     ch = (char )getc(File);
     while (ch < '9'+1 && ch > '0'-1){
         val += (ch - '0')*p;
-        p/=10;
+        p/=10.0l;
         ch = (char )getc(File);
     }
 }
