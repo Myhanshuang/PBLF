@@ -43,12 +43,20 @@
 ///< @addtogroup ErrorException
 
 #define Exception6 "Judgment setting error"
+///< @brief invalid judgment time setting
+///< @addtogroup ErrorException
 
 #define Exception7 "User data error: Empty username"
+///< @brief user name is a non-empty string
+///< @addtogroup ErrorException
 
 #define Exception8 "User data error: Too long username"
+///< @brief user name is a 12-char long string
+///< @addtogroup ErrorException
 
 #define Exception9 "User data error: Searching a new user"
+///< @brief a new user need be saved before correct
+///< @addtogroup ErrorException
 
 class ChartError : public std :: exception{
 public :

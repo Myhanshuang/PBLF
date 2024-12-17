@@ -33,12 +33,12 @@ extern "C"{
 
 #ifndef FloatMinute
 #define FloatMinute 60000.0f
-///< @def FloatMinute
+///< @def Float Minute
 #endif
 
 #ifndef InfOffset
 #define InfOffset 0x7ffffff
-///< @def FloatMinute
+///< @def Infinity Offset
 #endif
 
 #ifndef BeatToTime

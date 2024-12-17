@@ -227,6 +227,10 @@ bool User :: correct(FILE *Saving) {
     tmp[t]='\0';
     char *decode = base64_decode(tmp);
     delete[] tmp;
-    if ( strcmp(decode, this ->Password) != 0) return false;
+    if ( strcmp(decode, this ->Password) != 0){
+        free(decode);
+        return false;
+    }
+    free(decode);
     return true;
 }
