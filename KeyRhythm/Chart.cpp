@@ -29,6 +29,7 @@ Chart :: Chart(const short Keys){
 Chart :: Chart(){
      this ->Column = 4;
      this ->ChartHead = nullptr;
+    this ->Acting = new Chart :: ChartAct;
 }
 
 /**

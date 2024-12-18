@@ -78,3 +78,7 @@ bool User :: correct(FILE *Saving) {
     free(decode);
     return true;
 }
+
+void User :: playSave(FILE *History, Chart::ChartAct CA) {
+
+}

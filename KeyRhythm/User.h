@@ -21,6 +21,7 @@ public :
     void save(FILE *Saving);
     bool newUser(FILE *Saving);
     bool correct(FILE *Saving);
+    void playSave(FILE *History, Chart :: ChartAct CA);
 };
 
 #endif //KEYRHYTHM_USER_H
