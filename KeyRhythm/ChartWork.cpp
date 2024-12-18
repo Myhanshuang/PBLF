@@ -74,10 +74,10 @@ void getChart(FILE *chartFile, Chart &NowPlay){
         getValueShort(chartFile, t);
     }
     while (!t);
-    NowPlay.EveryBeat = FloatMinute / (float )t;
+    NowPlay.everyBeat = FloatMinute / (float )t;
     if ( !getKeyWord(chartFile, "bpm") ) throw ChartError(3);
-    getValueLDouble(chartFile, NowPlay.BeatsPerMinute);
-    NowPlay.EveryBeat /= NowPlay.BeatsPerMinute;
+    getValueLDouble(chartFile, NowPlay.beatsPerMinute);
+    NowPlay.everyBeat /= NowPlay.beatsPerMinute;
 
     //接下来写入谱面文件到Chart内
     /*
@@ -120,8 +120,8 @@ void getChart(FILE *chartFile, Chart &NowPlay){
 
         for (short i = 0; i < 3; ++i) getValueInt(chartFile, tChart[i]);
         ///< @brief to get the beat info and turn it into timestamp
-        tChart[3] = BeatToTime(NowPlay.EveryBeat, tChart[0], tChart[1], tChart[2]);
-        // tChart[3] = (int )(EveryBeat * (float )(tChart[0] - 1) + EveryBeat / (float )tChart[2] * (float )tChart[1] + 0.5f);
+        tChart[3] = BeatToTime(NowPlay.everyBeat, tChart[0], tChart[1], tChart[2]);
+        // tChart[3] = (int )(everyBeat * (float )(tChart[0] - 1) + everyBeat / (float )tChart[2] * (float )tChart[1] + 0.5f);
         if (tMeasure ->timeStamp > tChart[3]) break ;
         if (tMeasure ->timeStamp < tChart[3]){
             ///< @brief to end the previous node and connect to new next node
@@ -149,8 +149,8 @@ void getChart(FILE *chartFile, Chart &NowPlay){
             ///< @brief to deal the hold key
 
             for (short i = 4; i < 7; ++i) getValueInt(chartFile, tChart[i]);
-            tChart[7] = BeatToTime(NowPlay.EveryBeat, tChart[4], tChart[5], tChart[6]);
-            // tChart[7] = (int )(EveryBeat * (float )(tChart[4] - 1) + EveryBeat / (float )tChart[6] * (float )tChart[5] + 0.5f);
+            tChart[7] = BeatToTime(NowPlay.everyBeat, tChart[4], tChart[5], tChart[6]);
+            // tChart[7] = (int )(everyBeat * (float )(tChart[4] - 1) + everyBeat / (float )tChart[6] * (float )tChart[5] + 0.5f);
 
             if ( !tMeasure->ifHold ){
                 ///< @brief if there isn't hold, then create
@@ -170,7 +170,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
                 continue ;
             }
             tMeasure->timeTable[ tChart[8] ] = tChart[7];
-            NowPlay.NoteCount += (int )(tMeasure->Bar[ tChart[8] ] = 2);
+            NowPlay.noteCount += (int )(tMeasure->Bar[ tChart[8] ] = 2);
         }
 
         else {
@@ -190,13 +190,14 @@ void getChart(FILE *chartFile, Chart &NowPlay){
                 continue ;
             }
             tMeasure->Bar[ tChart[8] ] = 1;
-            ++NowPlay.NoteCount;
+            ++NowPlay.noteCount;
         }
     }
 
     /** deal other data */
     fseek(chartFile, 0, SEEK_SET);
     if (getKeyWord(chartFile, "offset")) getValueInt(chartFile, NowPlay.Offset);
+    NowPlay.accPerNote = 100.0l/(NowPlay.noteCount);
 
     /** end the list */
     delete[] tChart;

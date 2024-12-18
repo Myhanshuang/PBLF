@@ -46,7 +46,7 @@ extern "C"{
  * @brief trans beat to timestamp
  *
  * @details according to [a, b, c] in .mz file
- * @param eb everybeat
+ * @param eb everyBeat
  * @param a which bar
  * @param b which beat/measure
  * @param c the division
@@ -70,8 +70,8 @@ class Chart;
  ***/
 class Chart{
 public :
-    long double BeatsPerMinute = 0.0l, EveryBeat = 0.0l;
-    int NoteCount = 0, Offset = 0;
+    long double beatsPerMinute = 0.0l, everyBeat = 0.0l, accPerNote = 0.0l;
+    int noteCount = 0, Offset = 0;
     short Column = 0;
     class Measure;
     class ChartAct;
@@ -85,9 +85,9 @@ public :
 
     Chart& operator =(Chart *Right){
         //memcpy(this, Right, sizeof (*Right) );
-        this ->BeatsPerMinute = Right ->BeatsPerMinute;
-        this ->EveryBeat = Right ->EveryBeat;
-        this ->NoteCount = Right ->NoteCount;
+        this ->beatsPerMinute = Right ->beatsPerMinute;
+        this ->everyBeat = Right ->everyBeat;
+        this ->noteCount = Right ->noteCount;
         this ->Column = Right ->Column;
         this ->Offset = Right ->Offset;
         this ->ChartHead = Right ->ChartHead;
@@ -142,7 +142,7 @@ public :
 class Chart :: ChartAct{
 public :
     long double Accuracy = 100.0l;
-    int Combo = 0, Score = 0;
+    int Combo = 0, Score = 0, maxCombo = 0;
     int judgeResult[9]{};
 
     ChartAct();
@@ -151,6 +151,8 @@ public :
         this ->Accuracy = Right ->Accuracy;
         this ->Combo = Right ->Combo;
         this ->Score = Right ->Score;
+        this ->maxCombo = Right ->maxCombo;
+        memcpy(this ->judgeResult, Right ->judgeResult, sizeof (int )*9);
         return *this;
     }
 };

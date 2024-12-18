@@ -5,7 +5,6 @@
 #ifndef KEYRHYTHM_USER_H
 #define KEYRHYTHM_USER_H
 
-
 /**
  * @class User
  * @brief to save user data

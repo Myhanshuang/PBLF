@@ -40,9 +40,9 @@ Chart ::Chart(const Chart &C) {
     this ->ChartHead = C.ChartHead;
     this ->Column = C.Column;
     this ->Offset = C.Offset;
-    this ->BeatsPerMinute = C.BeatsPerMinute;
-    this ->EveryBeat = C.EveryBeat;
-    this ->NoteCount = C.NoteCount;
+    this ->beatsPerMinute = C.beatsPerMinute;
+    this ->everyBeat = C.everyBeat;
+    this ->noteCount = C.noteCount;
     this ->Acting = C.Acting;
 }
 
@@ -121,7 +121,7 @@ Chart :: Measure :: Measure(const Chart :: Measure &M) {
     this ->NxtMea = M.NxtMea;
 }
 
-Chart :: ChartAct ::ChartAct(){
+Chart :: ChartAct :: ChartAct(){
     memset(this ->judgeResult, 0, sizeof (int )*9);
 }
 
