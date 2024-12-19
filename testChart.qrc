@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/testbackground.jpg</file>
+        <file>img/continue.png</file>
+        <file>img/exit.png</file>
+        <file>img/restart.png</file>
+        <file>Chart/testChart.mp3</file>
+        <file>Chart/testChart.png</file>
+        <file>Chart/testChart.mc</file>
+    </qresource>
+</RCC>
