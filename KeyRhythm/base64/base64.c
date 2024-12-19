@@ -17,7 +17,7 @@ char* base64_encode(char* plain) {
 
     char counts = 0;
     char buffer[3];
-    char* cipher = malloc(strlen(plain) * 4 / 3 + 4);
+    char* cipher = (char *)malloc(strlen(plain) * 4 / 3 + 4);
     int i = 0, c = 0;
 
     for(i = 0; plain[i] != '\0'; i++) {
@@ -52,7 +52,7 @@ char* base64_decode(char* cipher) {
 
     char counts = 0;
     char buffer[4];
-    char* plain = malloc(strlen(cipher) * 3 / 4);
+    char* plain = (char *)malloc(strlen(cipher) * 3 / 4);
     int i = 0, p = 0;
 
     for(i = 0; cipher[i] != '\0'; i++) {
@@ -60,11 +60,11 @@ char* base64_decode(char* cipher) {
         for(k = 0 ; k < 64 && base46_map[k] != cipher[i]; k++);
         buffer[counts++] = k;
         if(counts == 4) {
-            plain[p++] = (buffer[0] << 2) + (buffer[1] >> 4);
+            plain[p++] = (char )((buffer[0] << 2) + (buffer[1] >> 4));
             if(buffer[2] != 64)
-                plain[p++] = (buffer[1] << 4) + (buffer[2] >> 2);
+                plain[p++] = (char )((buffer[1] << 4) + (buffer[2] >> 2));
             if(buffer[3] != 64)
-                plain[p++] = (buffer[2] << 6) + buffer[3];
+                plain[p++] = (char )((buffer[2] << 6) + buffer[3]);
             counts = 0;
         }
     }
