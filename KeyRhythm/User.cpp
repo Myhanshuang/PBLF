@@ -79,6 +79,6 @@ bool User :: correct(FILE *Saving) {
     return true;
 }
 
-void User :: playSave(FILE *History, Chart::ChartAct CA) {
+void UserSaveData :: save(FILE *History) {
 
 }

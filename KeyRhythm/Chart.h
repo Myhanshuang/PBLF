@@ -57,7 +57,7 @@ extern "C"{
 #endif
 
 extern int MaxOffset[8];
-
+extern int KeyCode[9];
 
 class Chart;
 

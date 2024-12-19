@@ -9,7 +9,7 @@
  * @class User
  * @brief to save user data
  *
- * @details name[13], pswd[21]
+ * @details name[13], password[21]
  */
 class User{
 public :
@@ -21,7 +21,16 @@ public :
     void save(FILE *Saving);
     bool newUser(FILE *Saving);
     bool correct(FILE *Saving);
-    void playSave(FILE *History, Chart :: ChartAct CA);
+};
+
+class UserSaveData : public User, public Chart :: ChartAct{
+public :
+    int missKeys;
+    char ChartName[257]{};
+
+    UserSaveData();
+
+    void save(FILE *History);
 };
 
 #endif //KEYRHYTHM_USER_H
