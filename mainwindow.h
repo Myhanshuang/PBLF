@@ -2,22 +2,56 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidget>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QDir>
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
-QT_END_NAMESPACE
-
-class MainWindow : public QMainWindow
-{
+#include <QStackedWidget>
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    QWidget *mainWidget;
+    QLabel *titleLabel;
+    QLineEdit *searchBox;
+    QPushButton *importButton;
+    QLabel *usernameLabel;
+    QPushButton *settingsButton;
+    QListWidget *songList;
+    QLabel *previewImage;
+    QStackedWidget *stackedWidget;  // 声明 QStackedWidget
+    QString currentUserName;
+    int baseSongIndex;
+
+    void loadSongs();
+    void updateSongList(const QString &filter = "");
+
+
+private slots:
+    void displaySongImage(QListWidgetItem *item);
+    void searchSongs();
+    void importFolder();
+    void updateUsername(const QString &username);
+    void openSettings();
+    void showLogoutConfirmation();
+    void itemClicked(QListWidgetItem *item); // 在这里声明 itemClicked 槽函数
+public slots:
+    void switchToMainPage();  // 切换到主页面
+    void onRequestToRestartGame();  // 重新开始游戏
+    void onRequestToResultPage();
 };
+
+#ifndef KEYRHYTHM_SETTINGSWINDOW_H
+#include "SettingsWindow.h"
+#endif //KEYRHYTHM_CHARTWORK_H
+
+
 #endif // MAINWINDOW_H
