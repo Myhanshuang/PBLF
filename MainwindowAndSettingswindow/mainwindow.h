@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QDir>
 
+#include <QStackedWidget>
 class MainWindow : public QMainWindow {
     Q_OBJECT
 
@@ -26,12 +27,13 @@ private:
     QPushButton *settingsButton;
     QListWidget *songList;
     QLabel *previewImage;
-
+    QStackedWidget *stackedWidget;  // 声明 QStackedWidget
     QString currentUserName;
     int baseSongIndex;
 
     void loadSongs();
     void updateSongList(const QString &filter = "");
+
 
 private slots:
     void displaySongImage(QListWidgetItem *item);
@@ -41,6 +43,15 @@ private slots:
     void openSettings();
     void showLogoutConfirmation();
     void itemClicked(QListWidgetItem *item); // 在这里声明 itemClicked 槽函数
+public slots:
+    void switchToMainPage();  // 切换到主页面
+    void onRequestToRestartGame();  // 重新开始游戏
+    void onRequestToResultPage();
 };
+
+#ifndef KEYRHYTHM_SETTINGSWINDOW_H
+#include "SettingsWindow.h"
+#endif //KEYRHYTHM_CHARTWORK_H
+
 
 #endif // MAINWINDOW_H

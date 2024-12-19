@@ -1,6 +1,9 @@
-E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingswindow_autogen/EWIEGA46WW/moc_mainwindow.cpp: E:/QTPRO/PBLF/MainwindowAndSettingswindow/mainwindow.h \
-  E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingswindow_autogen/moc_predefs.h \
+E:/QTPRO/PBLF/MainwindowAndSettingsWindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/EWIEGA46WW/moc_mainwindow.cpp: E:/QTPRO/PBLF/MainwindowAndSettingsWindow/mainwindow.h \
+  E:/QTPRO/PBLF/MainwindowAndSettingsWindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/moc_predefs.h \
+  E:/QTPRO/PBLF/MainwindowAndSettingsWindow/SettingsWindow.h \
   E:/qt/6.8.1/mingw_64/include/QtCore/QDir \
+  E:/qt/6.8.1/mingw_64/include/QtCore/QFile \
+  E:/qt/6.8.1/mingw_64/include/QtCore/QTextStream \
   E:/qt/6.8.1/mingw_64/include/QtCore/q20functional.h \
   E:/qt/6.8.1/mingw_64/include/QtCore/q20iterator.h \
   E:/qt/6.8.1/mingw_64/include/QtCore/q20memory.h \
@@ -173,7 +176,9 @@ E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-De
   E:/qt/6.8.1/mingw_64/include/QtWidgets/QListWidget \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/QMainWindow \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/QPushButton \
+  E:/qt/6.8.1/mingw_64/include/QtWidgets/QStackedWidget \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/QVBoxLayout \
+  E:/qt/6.8.1/mingw_64/include/QtWidgets/QWidget \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qabstractbutton.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qabstractitemview.h \
@@ -194,6 +199,7 @@ E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-De
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qrubberband.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qsizepolicy.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qslider.h \
+  E:/qt/6.8.1/mingw_64/include/QtWidgets/qstackedwidget.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qstyle.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qstyleoption.h \
   E:/qt/6.8.1/mingw_64/include/QtWidgets/qtabbar.h \

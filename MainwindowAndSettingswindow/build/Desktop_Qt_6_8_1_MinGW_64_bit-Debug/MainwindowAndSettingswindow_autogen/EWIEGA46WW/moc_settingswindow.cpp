@@ -1,12 +1,12 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'settingswindow.h'
+** Meta object code from reading C++ file 'SettingsWindow.h'
 **
 ** Created by: The Qt Meta Object Compiler version 68 (Qt 6.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../../../../settingswindow.h"
+#include "../../../../SettingsWindow.h"
 #include <QtGui/qtextcursor.h>
 #include <QtCore/qmetatype.h>
 
@@ -17,7 +17,7 @@
 
 #include <QtCore/qxptype_traits.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'settingswindow.h' doesn't include <QObject>."
+#error "The header file 'SettingsWindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 68
 #error "This file was generated using the moc from 6.8.1. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -42,8 +42,11 @@ static constexpr auto qt_meta_stringdata_ZN14SettingsWindowE = QtMocHelpers::str
     "usernameUpdated",
     "",
     "name",
+    "loginSuccess",
+    "backToMainPage",
     "login",
-    "clearInputs"
+    "clearInputs",
+    "onBackClicked"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
 #error "qtmochelpers.h not found or too old."
@@ -55,24 +58,30 @@ Q_CONSTINIT static const uint qt_meta_data_ZN14SettingsWindowE[] = {
       12,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       3,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   32,    2, 0x06,    1 /* Public */,
+       1,    1,   50,    2, 0x06,    1 /* Public */,
+       4,    0,   53,    2, 0x06,    3 /* Public */,
+       5,    0,   54,    2, 0x06,    4 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       4,    0,   35,    2, 0x08,    3 /* Private */,
-       5,    0,   36,    2, 0x08,    4 /* Private */,
+       6,    0,   55,    2, 0x08,    5 /* Private */,
+       7,    0,   56,    2, 0x08,    6 /* Private */,
+       8,    0,   57,    2, 0x08,    7 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void,
+    QMetaType::Void,
 
  // slots: parameters
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -91,9 +100,15 @@ Q_CONSTINIT const QMetaObject SettingsWindow::staticMetaObject = { {
         // method 'usernameUpdated'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        // method 'loginSuccess'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'backToMainPage'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'login'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'clearInputs'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'onBackClicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -105,8 +120,11 @@ void SettingsWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->usernameUpdated((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 1: _t->login(); break;
-        case 2: _t->clearInputs(); break;
+        case 1: _t->loginSuccess(); break;
+        case 2: _t->backToMainPage(); break;
+        case 3: _t->login(); break;
+        case 4: _t->clearInputs(); break;
+        case 5: _t->onBackClicked(); break;
         default: ;
         }
     }
@@ -116,6 +134,20 @@ void SettingsWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _
             using _q_method_type = void (SettingsWindow::*)(const QString & );
             if (_q_method_type _q_method = &SettingsWindow::usernameUpdated; *reinterpret_cast<_q_method_type *>(_a[1]) == _q_method) {
                 *result = 0;
+                return;
+            }
+        }
+        {
+            using _q_method_type = void (SettingsWindow::*)();
+            if (_q_method_type _q_method = &SettingsWindow::loginSuccess; *reinterpret_cast<_q_method_type *>(_a[1]) == _q_method) {
+                *result = 1;
+                return;
+            }
+        }
+        {
+            using _q_method_type = void (SettingsWindow::*)();
+            if (_q_method_type _q_method = &SettingsWindow::backToMainPage; *reinterpret_cast<_q_method_type *>(_a[1]) == _q_method) {
+                *result = 2;
                 return;
             }
         }
@@ -141,14 +173,14 @@ int SettingsWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 6;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 6)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 6;
     }
     return _id;
 }
@@ -158,5 +190,17 @@ void SettingsWindow::usernameUpdated(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void SettingsWindow::loginSuccess()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
+}
+
+// SIGNAL 2
+void SettingsWindow::backToMainPage()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
 }
 QT_WARNING_POP

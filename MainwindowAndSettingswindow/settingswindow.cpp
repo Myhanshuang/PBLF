@@ -1,14 +1,22 @@
-#include "settingswindow.h"
+#include "SettingsWindow.h"
+#include "MainWindow.h"  // 包含 MainWindow.h 头文件，以便能够识别 MainWindow 类
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QKeyEvent>
 #include "Chart.h"
+
 // 在 settingswindow.cpp 中引用 KeyCode
 extern int KeyCode[9];
 
 SettingsWindow::SettingsWindow(QWidget *parent)
     : QWidget(parent)
 {
+    // 添加返回按钮
+    backButton = new QPushButton("<", this);  // 创建返回按钮
+    backButton->setFixedSize(30, 30);         // 设置按钮大小
+    backButton->setStyleSheet("font-size: 20px; font-weight: bold;");  // 设置按钮样式，便于显示 "<"
+
+
     // 登录部分
     usernameInput = new QLineEdit(this);
     usernameInput->setPlaceholderText("请输入用户名");
@@ -48,6 +56,7 @@ SettingsWindow::SettingsWindow(QWidget *parent)
 
     // 总布局
     QHBoxLayout *mainLayout = new QHBoxLayout;
+    mainLayout->addWidget(backButton);  // 将返回按钮添加到布局
     mainLayout->addLayout(loginLayout);
     mainLayout->addLayout(keyLayout);
 
@@ -57,6 +66,8 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     connect(loginButton, &QPushButton::clicked, this, &SettingsWindow::login);
     connect(cancelButton, &QPushButton::clicked, this, &SettingsWindow::clearInputs);
     connect(changeKeysButton, &QPushButton::clicked, this, &SettingsWindow::startKeyBinding);
+    connect(backButton, &QPushButton::clicked, this, &SettingsWindow::onBackClicked);  // 返回按钮点击信号
+
 
     // 设置可接受键盘事件
     setFocusPolicy(Qt::StrongFocus);
@@ -79,6 +90,8 @@ void SettingsWindow::login()
 
         if (username == storedUsername && password == storedPassword) {
             QMessageBox::information(this, "登录成功", "登录成功！");
+
+            emit loginSuccess();  // 发出登录成功信号，通知 MainWindow 切换到主页面
             emit usernameUpdated(username);
             close(); // 登录成功后关闭设置窗口
         } else {
@@ -87,6 +100,11 @@ void SettingsWindow::login()
     } else {
         QMessageBox::warning(this, "文件错误", "无法读取凭证文件！");
     }
+}
+
+void SettingsWindow::onBackClicked()
+{
+    emit backToMainPage();  // 发射信号，返回主页面
 }
 
 // 开始修改键位

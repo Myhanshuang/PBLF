@@ -6,7 +6,9 @@
 #include "Chart.h"
 #endif
 
-int MaxOffset[8] = {0};
+#include <cstring>
+
+int MaxOffset[8] = {16, 64-27, 70, 100, 151-27, InfOffset, InfOffset};
 int KeyCode[9] = {0};
 
 /**
@@ -14,9 +16,10 @@ int KeyCode[9] = {0};
  * @brief initialize Chart with param
  * @param Keys
  ***/
-Chart :: Chart(const int Keys){
+Chart :: Chart(const short Keys){
     this ->Column = Keys;
     this ->ChartHead = nullptr;
+    this ->Acting = new Chart :: ChartAct;
 }
 
 /**
@@ -26,15 +29,22 @@ Chart :: Chart(const int Keys){
 Chart :: Chart(){
      this ->Column = 4;
      this ->ChartHead = nullptr;
+    this ->Acting = new Chart :: ChartAct;
 }
 
+/**
+ * @class Chart
+ * @brief create new chart with old one
+ * @param C
+ */
 Chart ::Chart(const Chart &C) {
     this ->ChartHead = C.ChartHead;
     this ->Column = C.Column;
     this ->Offset = C.Offset;
-    this ->BeatsPerMinute = C.BeatsPerMinute;
-    this ->EveryBeat = C.EveryBeat;
-    this ->NoteCount = C.NoteCount;
+    this ->beatsPerMinute = C.beatsPerMinute;
+    this ->everyBeat = C.everyBeat;
+    this ->noteCount = C.noteCount;
+    this ->Acting = C.Acting;
 }
 
 /**
@@ -61,7 +71,7 @@ Chart :: ~Chart(){
  * @brief initialize Measure with param
  * @param Keys
  ***/
-Chart :: Measure :: Measure(const int Keys){
+Chart :: Measure :: Measure(const short Keys){
     this ->timeStamp = 0;
     this ->timeTable = nullptr;
     this ->NxtMea = nullptr;
@@ -112,6 +122,10 @@ Chart :: Measure :: Measure(const Chart :: Measure &M) {
     this ->NxtMea = M.NxtMea;
 }
 
+Chart :: ChartAct :: ChartAct(){
+    memset(this ->judgeResult, 0, sizeof (int )*9);
+}
+
 /**
  * @class Result
  * @brief constructor of Result
@@ -135,7 +149,13 @@ Result :: Result(const Result &R) {
     this ->ifHoldEnd = R.ifHoldEnd;
 }
 
-
+/**
+ * @class Result
+ * @brief set result
+ * @param Key
+ * @param Dis
+ * @param HoldEnd
+ */
 Result :: Result(short Key, int Dis, bool HoldEnd) {
     this ->Column = Key;
     this ->Offset = Dis;

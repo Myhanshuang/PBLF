@@ -25,14 +25,20 @@
 #include <cmath>
 #endif //_GLIBCXX_CMATH
 
+#ifndef BASE64_H
+//extern "C"{
+#include "base64/base64.h"
+//}
+#endif
+
 #ifndef FloatMinute
 #define FloatMinute 60000.0f
-///< @def FloatMinute
+///< @def Float Minute
 #endif
 
 #ifndef InfOffset
 #define InfOffset 0x7ffffff
-///< @def FloatMinute
+///< @def Infinity Offset
 #endif
 
 #ifndef BeatToTime
@@ -40,7 +46,7 @@
  * @brief trans beat to timestamp
  *
  * @details according to [a, b, c] in .mz file
- * @param eb everybeat
+ * @param eb everyBeat
  * @param a which bar
  * @param b which beat/measure
  * @param c the division
@@ -51,7 +57,7 @@
 #endif
 
 extern int MaxOffset[8];
-
+extern int KeyCode[9];
 
 class Chart;
 
@@ -64,22 +70,24 @@ class Chart;
  ***/
 class Chart{
 public :
-    long double BeatsPerMinute = 0.0l, EveryBeat = 0.0l;
-    int NoteCount = 0, Offset = 0;
+    long double beatsPerMinute = 0.0l, everyBeat = 0.0l, accPerNote = 0.0l;
+    int noteCount = 0, Offset = 0;
     short Column = 0;
     class Measure;
+    class ChartAct;
     Measure *ChartHead = nullptr;
+    ChartAct *Acting = nullptr;
 
-    explicit Chart(int Keys);
+    explicit Chart(short Keys);
     Chart(const Chart& C);
     Chart();
     ~Chart();
 
     Chart& operator =(Chart *Right){
         //memcpy(this, Right, sizeof (*Right) );
-        this ->BeatsPerMinute = Right ->BeatsPerMinute;
-        this ->EveryBeat = Right ->EveryBeat;
-        this ->NoteCount = Right ->NoteCount;
+        this ->beatsPerMinute = Right ->beatsPerMinute;
+        this ->everyBeat = Right ->everyBeat;
+        this ->noteCount = Right ->noteCount;
         this ->Column = Right ->Column;
         this ->Offset = Right ->Offset;
         this ->ChartHead = Right ->ChartHead;
@@ -105,7 +113,7 @@ public :
     char *Bar = nullptr;
     Measure *NxtMea = nullptr;
 
-    explicit Measure(int Keys);
+    explicit Measure(short Keys);
     Measure();
     Measure(const Measure& M);
     ~Measure();
@@ -125,6 +133,31 @@ public :
 };
 
 /**
+ * @class ChartAct
+ * @brief the variable data in playing chart
+ * @details judgeResult is used to save judging results
+ * and the [8] can be used to save misses
+ * \n or can use minus to show misses
+ */
+class Chart :: ChartAct{
+public :
+    long double Accuracy = 100.0l;
+    int Combo = 0, Score = 0, maxCombo = 0;
+    int judgeResult[9]{};
+
+    ChartAct();
+
+    ChartAct& operator =(ChartAct *Right){
+        this ->Accuracy = Right ->Accuracy;
+        this ->Combo = Right ->Combo;
+        this ->Score = Right ->Score;
+        this ->maxCombo = Right ->maxCombo;
+        memcpy(this ->judgeResult, Right ->judgeResult, sizeof (int )*9);
+        return *this;
+    }
+};
+
+/**
  * @class Result
  * @brief to show the result of a note
  *
@@ -140,16 +173,6 @@ public :
     Result(const Result& R);
 };
 
-class User{
-public :
-    char userName[13];
-    char Password[21];
-
-    User();
-
-    void save(FILE *Saving);
-};
-
 #ifndef KEYRHYTHM_CHARTWORK_H
 #include "ChartWork.h"
 #endif //KEYRHYTHM_CHARTWORK_H
@@ -157,5 +180,9 @@ public :
 #ifndef KEYRHYTHM_CHARTERROR_H
 #include "ChartError.h"
 #endif //KEYRHYTHM_CHARTERROR_H
+
+#ifndef KEYRHYTHM_USER_H
+#include "User.h"
+#endif //KEYRHYTHM_USER_H
 
 #endif //KEYRHYTHM_CHART_H

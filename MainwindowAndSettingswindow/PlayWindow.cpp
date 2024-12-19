@@ -1,28 +1,45 @@
 #include "PlayWindow.h"
-#include "Chart.h"
-#include "ClickablePixmapItem.h"
 
+#define PERFECT (16)
+#define GREATE (64 - 3 * 9)
+#define GOOD (97 - 3 * 9)
+#define BAD (127 - 3 * 9)
+#define MISS (151 - 3 * 9)
 
 PlayWindow::PlayWindow(QWidget* parent)
-    : QMainWindow(parent), scene(new QGraphicsScene(this)), view(new QGraphicsView(scene, this)), gameTimer(new QTimer(this)), gameTime(0) {
+    : QMainWindow(parent), scene(new QGraphicsScene(this)), view(new QGraphicsView(scene, this)), gameTimer(new QTimer(this)), gameTime(0) {//finished
 
     keyToColumn[Qt::Key_D] = 1; // Column 1
     keyToColumn[Qt::Key_F] = 2; // Column 2
     keyToColumn[Qt::Key_J] = 3; // Column 3
     keyToColumn[Qt::Key_K] = 4; // Column 4
-
     setupUI();
-
-
-    connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
-
 }
 
-PlayWindow::~PlayWindow() {
+void PlayWindow::start(){
+    //need to change
+    keyToColumn[Qt::Key_D] = 1; // Column 1
+    keyToColumn[Qt::Key_F] = 2; // Column 2
+    keyToColumn[Qt::Key_J] = 3; // Column 3
+    keyToColumn[Qt::Key_K] = 4; // Column 4
+
+    // keyToColumn[KeyCode[0]] = 1; // Column 1
+    // keyToColumn[KeyCode[1]] = 2; // Column 2
+    // keyToColumn[KeyCode[2]] = 3; // Column 3
+    // keyToColumn[KeyCode[3]] = 4; // Column 4
+    setupUI();
+    this->show();
+    startGame();
+}
+
+void PlayWindow::debug() {
+    qDebug() << "here ";
+}
+
+PlayWindow::~PlayWindow() { // finished
     delete scene;
     delete view;
 }
-
 
 QPixmap PlayWindow::createDarkenedImage(const QString &imagePath, qreal opacity) {//finished
     // Load the original image
@@ -122,9 +139,19 @@ void PlayWindow::PlayWindow::setupUI() { //finished
     //ensure the media
     auto musicSource = fileSource;
     musicSource.append(".mp3");
+    musicSource = "qrc" + musicSource;
+    musicPlayer = new QMediaPlayer(this);
+    // connect(musicPlayer, &QMediaPlayer::errorOccurred, this, &PlayWindow::debug);
+    musicPlayer->setSource(musicSource);
+    if(musicPlayer->error() != QMediaPlayer::NoError){
+        qDebug() << "Failed to load music!";
+    }
+    QAudioOutput *audioOutput = new QAudioOutput(this);
+    musicPlayer->setAudioOutput(audioOutput);
 
     // Checker Line
-    checkerLine = new QGraphicsLineItem(0, scene->height() * 3 / 4, scene->width(), scene->height() * 3 / 4);
+    checkerLineHeight = scene->height() * 3 / 4;
+    checkerLine = new QGraphicsLineItem(0, checkerLineHeight, scene->width(), checkerLineHeight);
     checkerLine->setPen(QPen(Qt::yellow, 4));
     scene->addItem(checkerLine);
 
@@ -133,7 +160,7 @@ void PlayWindow::PlayWindow::setupUI() { //finished
     statsLabel = new QLabel(this);
     statsLabel->setStyleSheet("background-color: rgba(0, 0, 0, 0.7); color: white; padding: 10px; border-radius: 5px;");
     statsLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    statsLabel->setText("Accuracy: 0\nScore: 0\nCombo: 100%");
+    statsLabel->setText("Accuracy:100.00\% \nScore: 0\nCombo: 0");
     statsLabel->setGeometry(scene->width() * 2 / 3 + 20, 10, 150, 100); // Position it to the right of channels
 
     // Load custom font
@@ -153,45 +180,72 @@ void PlayWindow::PlayWindow::setupUI() { //finished
     restartButton = nullptr;
     exitButton = nullptr;
     isPaused = false;
-
     loadChart();
 }
 
 void PlayWindow::showPauseMenu() { // finished
     // Stop the game
+    musicPlayer->pause();
     gameTimer->stop();
     isPaused = true;
 
     // Add a semi-transparent background
     pauseMenuBackground = new QGraphicsRectItem(0, 0, scene->width(), scene->height());
     pauseMenuBackground->setBrush(QBrush(QColor(0, 0, 0, 150))); // Semi-transparent black
+    pauseMenuBackground->setZValue(99); // Ensure it's above other items
     scene->addItem(pauseMenuBackground);
 
     // Add buttons
     continueButton = new ClickablePixmapItem(QPixmap(":/img/continue.png"));
-    restartButton = new ClickablePixmapItem(QPixmap(":/img/restart.png"));
+    continueButton -> setZValue(100);
+    // restartButton = new ClickablePixmapItem(QPixmap(":/img/restart.png"));
+    // restartButton -> setZValue(100);
     exitButton = new ClickablePixmapItem(QPixmap(":/img/exit.png"));
+    exitButton -> setZValue(100);
 
     // Position buttons in the center
     int centerX = scene->width() / 2;
     int centerY = scene->height() / 2;
     QSize buttonSize(scene->width() / 5, scene->height() / 10);
     continueButton->setPos(centerX , centerY - 100);
-    restartButton->setPos(centerX , centerY - 33);
+    // restartButton->setPos(centerX , centerY - 33);
     exitButton->setPos(centerX , centerY + 33);
 
     // Add buttons to the scene
     scene->addItem(continueButton);
-    scene->addItem(restartButton);
+    // scene->addItem(restartButton);
     scene->addItem(exitButton);
+
 
     // Connect button clicks to slots
     connect(continueButton, &ClickablePixmapItem::clicked, this, &PlayWindow::continueGame);
-    connect(restartButton, &ClickablePixmapItem::clicked, this, &PlayWindow::restartGame);
+    // connect(restartButton, &ClickablePixmapItem::clicked, this, &PlayWindow::restartGame);
     connect(exitButton, &ClickablePixmapItem::clicked, this, &PlayWindow::exitGame);
 }
 
 void PlayWindow::hidePauseMenu() { // finished
+
+    // attention word
+    QGraphicsTextItem *waiting;
+    waiting = new QGraphicsTextItem("Waiting for 1 second");
+    //setting the size of waiting
+    QFont font;
+    font.setPointSize(60);
+    waiting->setFont(font);
+
+    waiting -> setPos(scene -> width() / 2 - waiting -> boundingRect().width()/2, scene -> height() / 2 - waiting->boundingRect().height() / 2);
+    waiting -> setDefaultTextColor(Qt::red);
+    waiting -> setZValue(100);
+    scene -> addItem(waiting);
+    isPaused = false;
+    //wait 1000ms after pause to start
+    QElapsedTimer timer;
+    timer.start();
+
+    while (timer.elapsed() < 1000) {
+        QCoreApplication::processEvents();
+    }
+
     // Remove pause menu items
     if (pauseMenuBackground) {
         scene->removeItem(pauseMenuBackground);
@@ -214,10 +268,11 @@ void PlayWindow::hidePauseMenu() { // finished
         exitButton = nullptr;
     }
 
+
+    scene -> removeItem(waiting);
+    // delete waiting;
     // Resume the game
-    isPaused = false;
-    //wait 1000ms after pause to start
-    Sleep(1000);
+    musicPlayer->play();
     gameTimer->start();
 }
 
@@ -259,27 +314,25 @@ void PlayWindow::resizeEvent(QResizeEvent* event) {//finished
     // Update checker line position
     if (!scene->items().contains(checkerLine)) {
         // qDebug() << "CheckerLine is missing! Re-adding it.";
-        int checkerLineY = scene->height() * 3 / 4;
-        checkerLine = new QGraphicsLineItem(0, checkerLineY, scene->width(), checkerLineY);
-        checkerLine->setPen(QPen(Qt::darkGray, 4));
+        checkerLine = new QGraphicsLineItem(0, checkerLineHeight, scene->width(), checkerLineHeight);
+        checkerLine->setPen(QPen(Qt::yellow, 4));
         scene->addItem(checkerLine);
     } else {
         // Update checker line position
-        int checkerLineY = scene->height() * 4 / 5;
-        checkerLine->setLine(0, checkerLineY, scene->width(), checkerLineY);
+        checkerLine->setLine(0, checkerLineHeight, scene->width(), checkerLineHeight);
     }
 
     // Update channel positions
     drawChannels();
 }
 
-void PlayWindow::updateStats() {
+void PlayWindow::updateStats() {//finished
     // Update combo, score, and accuracy dynamically
-    statsLabel->setText(QString("Combo: %1\nScore: %2\nAccuracy: %3%")
-                            .arg(QString::number(accuracy, 'f', 2)
-                            .arg(score)
-                            .arg(combo)
-                            ));
+    statsLabel->setText(QString("Accuracy: %1\%\nScore: %2\nCombo: %3")
+                            .arg(QString::number(currentChart.Acting->Accuracy, 'f', 2)
+                            .arg(currentChart.Acting->Score)
+                            .arg(currentChart.Acting->Combo))
+                            );
 }
 
 void PlayWindow::drawChannels() {//finished
@@ -315,6 +368,7 @@ void PlayWindow::drawChannels() {//finished
         // Draw vertical line
         auto* line = new QGraphicsLineItem(x, 0, x, sceneHeight);
         line->setPen(QPen(Qt::white, 4));
+        line -> setZValue(3);
         scene->addItem(line);
 
         // Optional: Replace line with image
@@ -349,7 +403,7 @@ void PlayWindow::loadChart() { // finished
     try {
         // Parse the chart using the provided getChart function
         getChart(chartFile, currentChart);
-
+        stasticChart = currentChart;
         // Log successful chart loading
         qDebug() << "Chart loaded successfully!";
 
@@ -363,18 +417,31 @@ void PlayWindow::loadChart() { // finished
     fclose(chartFile);
 }
 
-void PlayWindow::startGame() {// maybe bug and error here
+void PlayWindow::addWaiting(QGraphicsTextItem * waiting){
+
+    waiting = new QGraphicsTextItem("Paused");
+    waiting -> setPos(scene -> width() / 2 - waiting -> boundingRect().width()/2, scene -> height() / 2 - waiting->boundingRect().height() / 2);
+    waiting -> setDefaultTextColor(Qt::red);
+    waiting -> setZValue(100);
+    //setting the size of waiting
+    QFont font;
+    font.setPointSize(60);
+    waiting->setFont(font);
+    scene -> addItem(waiting);
+}
+
+void PlayWindow::removeWaiting(QGraphicsTextItem * waiting) {
+    scene -> removeItem(waiting);
+    delete waiting;
+}
+
+void PlayWindow::startGame() {// finished
 
     //reset the data
-
-    gameTime = 0;
-    combo = 0;
-    score = 0;
-    accuracy = 100.0;
-    scene -> clear();
+    initGameState();
 
     auto backgroundSource = fileSource;
-    QPixmap darkenTheBackground = setOpacityImage(backgroundSource.append(".png"), 0.5);
+    QPixmap darkenTheBackground = createDarkenedImage(backgroundSource.append(".png"), 0.4);
     if (!darkenTheBackground.isNull()) {
         auto* bgItem = new QGraphicsPixmapItem(darkenTheBackground);
         bgItem->setZValue(-1); // Ensure the background is below other items
@@ -389,12 +456,12 @@ void PlayWindow::startGame() {// maybe bug and error here
     // Re-add the checker line
     int checkerLineY = scene->height() * 3 / 4;
     checkerLine = new QGraphicsLineItem(0, checkerLineY, scene->width(), checkerLineY);
-    checkerLine->setPen(QPen(Qt::darkGray, 4));
+    checkerLine->setPen(QPen(Qt::yellow, 4));
     scene->addItem(checkerLine);
 
     // Re-add the label box (stats display)
     statsLabel->setGeometry(scene->width() * 4 / 5, 8, scene->width() / 8, scene->height() / 8);
-    statsLabel->setText("Combo: 0\nScore: 0\nAccuracy: 100%");
+    statsLabel->setText("Accuracy: 100.00\%\nScore: 0\nCombo: 0");
     // Redraw the channels
     drawChannels();
     // Prepare the chart data
@@ -405,31 +472,96 @@ void PlayWindow::startGame() {// maybe bug and error here
 
     //wait 2 seconds before starting the game
 
-    Sleep(2000);
+    // attention word
+    QGraphicsTextItem *waiting;
+    waiting = new QGraphicsTextItem("Please be prepared...");
+    //setting the size of waiting
+    QFont font;
+    font.setPointSize(60);
+    waiting->setFont(font);
 
+    waiting -> setPos(scene -> width() / 2 - waiting -> boundingRect().width()/2, scene -> height() / 2 - waiting->boundingRect().height() / 2);
+    waiting -> setDefaultTextColor(Qt::red);
+    waiting -> setZValue(100);
+    scene -> addItem(waiting);
+
+    QElapsedTimer timer;
+    timer.start();
+    while (timer.elapsed() < 2000) {
+        QCoreApplication::processEvents();
+    }
+
+    scene -> removeItem(waiting);
+    delete waiting;
     // Load the first notes based on the chart
     spawnNotes();
 
+
     // 4. Start the game timer
+    musicPlayer->setPosition(0);
+    musicPlayer->play();
+    connect(musicPlayer, &QMediaPlayer::mediaStatusChanged, this, &PlayWindow::mediaStatusChanged);
+    musicPlayer->setPosition(0);
+
+    connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
     gameTimer->start(perFrame); // ~60 FPS
     qDebug() << "Game started!";
+    if(musicPlayer->isPlaying())qDebug() << "music is playing";
 }
 
-void PlayWindow::updateGame() {
-    // gameTime += perFrame; // Update game time (milliseconds)
-    // spawnNotes();
+void PlayWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status) {
+    if (status == QMediaPlayer::EndOfMedia) {
+        gameEnd();
+    }
+}
 
-    // // Move notes down
-    // for (auto note : notes) {
-    //     note->moveBy(0, speed); // Adjust speed as needed
-    //     if (note->y() > scene -> height()) {
-    //         scene->removeItem(note); // Remove missed notes
-    //         delete note ;
+void PlayWindow::addFileSource(QString path)//finished
+{
+    fileSource = path;
+}
 
-    //         combo = 0;
-    //         updateStats();
-    //     }
-    // }
+void PlayWindow::updateGame() { // finished
+    gameTime += perFrame; // Update game time (milliseconds)
+    // debug();
+    spawnNotes();
+    // Move notes down
+    for (auto pos = notes.begin(); pos < notes.end() ;pos ++) {
+        auto note = *pos;
+
+        note.item->moveBy(0, speed); // Adjust speed as needed
+
+        if(note.ifHold)
+        {
+            continue;
+            auto t = note.item -> y();
+            auto tt = note.length;
+            auto ttt = checkerLineHeight;
+            //# define MISS MaxOffset[0]
+            if (note.item -> y() + note.length - checkerLineHeight > MISS * speed / perFrame) {
+                scene->removeItem(note.item); // Remove missed notes
+                notes.erase(pos);
+                delete note.item ;
+                //update the accuracy logic
+                currentChart.Acting -> Accuracy -= currentChart.accPerNote;
+                currentChart.Acting -> maxCombo = fmax(currentChart.Acting -> maxCombo, currentChart.Acting -> Combo);
+                currentChart.Acting -> Combo = 0;
+                updateStats();
+            }
+        }
+        else
+        {
+            if (note.item -> y() - checkerLineHeight > MISS * speed / perFrame) {
+                scene->removeItem(note.item); // Remove missed notes
+                notes.erase(pos);
+                delete note.item ;
+                // update the accuracy logic
+                currentChart.Acting -> Accuracy -= currentChart.accPerNote;
+                currentChart.Acting -> maxCombo = fmax(currentChart.Acting -> maxCombo, currentChart.Acting -> Combo);
+                currentChart.Acting -> Combo = 0;
+                updateStats();
+            }
+        }
+    }
 
     // // Check for collisions (when notes reach the checker line)
     // //This is handled by the checkCollisions() function, which checks if any notes have been hit by the player.
@@ -439,77 +571,43 @@ void PlayWindow::updateGame() {
     // spawnNotes();
 }
 
-void PlayWindow::checkCollisions() {// by GPT all
-    // // Loop through all notes and check if they reach the checker line
-    // for (auto* note : notes) {
-    //     // Check if note is within the timing window (near checker line)
-    //     if (note->y() >= scene->height() * 3 / 4 - 10 && note->y() <= scene->height() * 3 / 4 + 10) {
-    //         // Find out which column this note is in (based on x position)
-    //         int noteColumn = note->x() / (scene->width() / currentChart.Column); // Adjust if needed
-
-    //         // Check if the player pressed the correct key for this column
-    //         if (keyToColumn.contains(lastKeyPressed) && keyToColumn[lastKeyPressed] == noteColumn) {
-    //             // The player hit the note
-    //             scene->removeItem(note);
-    //             notes.removeOne(note);
-    //             delete note;
-
-    //             // Update combo, score, and accuracy
-    //             combo++;
-    //             score += 100; // Adjust based on game rules
-    //             accuracy = (accuracy * (score / 100 - 1) + 100) / (score / 100);
-
-    //             // Update stats
-    //             updateStats();
-    //             return;
-    //         }
-    //     }
-    // }
-}
-
-void PlayWindow::spawnNotes() {// maybe error bug here
+void PlayWindow::spawnNotes() {// finished
     auto* measure = currentChart.ChartHead;
 
     double distance = scene->height() - checkerLine->y();// the distance the note need to pass
     double timeToPassDistance = distance / speed * perFrame;//the time the note to move to the checkerline
     double paintTime = gameTime - timeToPassDistance;// the time to paint the note
-    while (measure && paintTime >= measure -> timeStamp) {
+    double actualPaintTime = paintTime ; // pre paint it or it will be delay
+    while (measure && actualPaintTime >= measure -> timeStamp) {
 
-    //     for (int i = 0; i < currentChart.Column; ++i) {
-    //         if (measure->Bar[i] > 0) { // A note exists in this column
-    //             if(measure->Bar[i] == 1)
-    //             {
-    //                 // Create a falling note
-    //                 int channelAreaWidth = scene -> width() * 1 / 3;
-    //                 //need to change the form of the note]
-    //                 int channelWidth = channelAreaWidth / currentChart.Column;
-    //                 int channelStartX = (scene->width() - channelAreaWidth) / 2; // Center the channels
-    //                 int x = channelStartX + i * channelWidth;
-    //                 QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, 20);
-    //                 note->setBrush(Qt::green); // Example color
-    //                 scene->addItem(note);
-    //                 notes.append(note); // Store in notes vector for updates
-    //             }
-    //             else // hold
-    //             {
-    //                 // // Create a falling note
-    //                 // int channelAreaWidth = scene -> width() * 1 / 3;
-    //                 // //need to change the form of the note]
-    //                 // int channelWidth = channelAreaWidth / currentChart.Column;
-    //                 // int channelStartX = (scene->width() - channelAreaWidth) / 2; // Center the channels
-    //                 // int x = channelStartX + i * channelWidth;
-    //                 // int holdheight = (measure->timeTable[i] - measure->timeStamp) * speed / perFrame ;
-    //                 // QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, holdheight);
-    //                 // note->setBrush(Qt::yellow); // Example color
-    //                 // scene->addItem(note);
-    //                 // notes.append(note); // Store in notes vector for updates
-    //             }
-    //         }
-    //     }
-
-    //     // Move to the next measure
-    //     currentChart.ChartHead = measure->NxtMea;
-    //     measure = measure->NxtMea;
+        for (int i = 0; i < currentChart.Column; ++i) {
+            if (measure->Bar[i] > 0) { // A note exists in this column
+                int channelAreaWidth = scene -> width() * 1 / 3;
+                int channelWidth = channelAreaWidth / currentChart.Column;
+                int channelStartX = (scene->width() - channelAreaWidth) / 2; // Center the channels
+                int x = channelStartX + i * channelWidth;
+                if(measure->Bar[i] == 1)// Create a falling note
+                {
+                    //need to change the form of the note]
+                    QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, 20);
+                    note->setBrush(Qt::green); // Example color
+                    scene->addItem(note);
+                    notes.append({note, 0, 0, 0, i}); // Store in notes vector for updates
+                }
+                else // Create a falling note that is hold
+                {
+                    //need to change the form of the note]
+                    int holdHeight = (measure->timeTable[i] - measure->timeStamp) * speed / perFrame ;
+                    QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, holdHeight);
+                    note->setBrush(Qt::yellow); // Example color
+                    scene->addItem(note);
+                    notes.append({note, 1, 0, static_cast<double>(holdHeight), i}); // Store in notes vector for updates
+                }
+            }
+        }
+        // Move to the next measure
+        currentChart.ChartHead = measure->NxtMea;
+        measure = measure->NxtMea;
     }
 }
 
@@ -521,21 +619,60 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
             showPauseMenu();
         }
     }
-
-    //GPT ALL
-    // Store the last key pressed for later collision detection
-    // if (keyToColumn.contains(event->key())) { // 1 2 3 4 all right
-    //     lastKeyPressed = event->key();
-    //     checkCollisions(); // Check if the player hit any notes
-    // }
+    short i = 0;
+    for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
+    if (i == currentChart.Column) return ;
+    for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
+        auto now = *ptr;
+        if (now.column != i || now.holdJudge) continue;
+        //distance judge, the dis is a place where you can put the macro
+        if (now.ifHold) now.holdJudge = true;
+        else {
+            scene->removeItem(now.item);
+            notes.erase(ptr);
+            delete now.item;
+            auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
+            for (short i = 0; MaxOffset[i] != InfOffset; ++i){
+                if (dis > MaxOffset[i]) continue;
+                ++ currentChart.Acting ->judgeResult[i];
+                ++ currentChart.Acting ->Combo;
+                currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
+                currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+            }
+        }
+        return ;
+    }
+    return ;
 }
 
-void PlayWindow::restartGame() {// actually bug here
-    hidePauseMenu();
+void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
+    short i = 0;
+    for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
+    if (i == currentChart.Column) return;
+    for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
+        auto now = *ptr;
+        if (now.ifHold && now.column == i && now.holdJudge){
+            auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
+            for (short i = 0; MaxOffset[i] != InfOffset; ++i){
+                if (dis > MaxOffset[i]) continue;
+                // ++ currentChart.Acting ->judgeResult[i];
+                // ++ currentChart.Acting ->Combo;
+                // currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
+                // currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+            }
+        }
+        //distance judge, then invalid but not delete the hold key
+        //I mean, it will be kept falling but cannot be judged
+        //So I set a bool named holdJudge to store whether the hold's head is judged.
+    }
+    return ;
+}
+
+void PlayWindow::restartGame() {//depart
+
     // Add logic to restart the game
     qDebug() << "Restarting game...";
 
-    startGame();
 }
 
 void PlayWindow::continueGame() {//finishd
@@ -543,12 +680,36 @@ void PlayWindow::continueGame() {//finishd
 
 }
 
-void PlayWindow::exitGame() {// cope with lyjy
+void PlayWindow::exitGame() {// i finished waiting for lyjy
     qDebug() << "Exiting game...";
+    emit requestToHomePage();
     //turn to home page
-    QApplication::quit();
+    // QApplication::quit();
+
 }
-void PlayWindow::addFileSource(QString path)
-{
-    fileSource = path;
+
+void PlayWindow::initGameState(){
+    gameTime = 0;
+    scene -> clear();
+    notes.clear();
+    pauseMenuBackground = nullptr;
+    continueButton = nullptr;
+    restartButton = nullptr;
+    exitButton = nullptr;
+    isPaused = false;
+    gameTimer->stop();
+    musicPlayer->stop();
+    musicPlayer->setPosition(0);
+    statsLabel->setText("Accuracy: 100.00\%\nScore: 0\nCombo: 0");
+    currentChart = stasticChart;
+}
+
+Chart::ChartAct PlayWindow::gameEnd(){
+    qDebug() << "Game ended!";
+    currentChart.Acting -> maxCombo = fmax(currentChart.Acting -> maxCombo, currentChart.Acting -> Combo);
+    //all stored in the currentChart.Acting
+    //then show the result
+    emit requestToResultPage();
+    //storage not finished
+    return *currentChart.Acting;
 }

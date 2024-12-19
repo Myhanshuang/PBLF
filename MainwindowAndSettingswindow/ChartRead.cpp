@@ -6,6 +6,10 @@
 #include <cstdio>
 #endif //_GLIBCXX_CSTDIO
 
+#ifndef _GLIBCXX_CSTRING
+#include <cstring>
+#endif //_GLIBCXX_CSTRING
+
 /**
  * @brief get value in file (int)
  * @param File
@@ -62,12 +66,12 @@ void getValueLDouble(FILE *File, long double& val){
 /**
  * @brief use KMP to get the position of the keyword
  * @param File
- * @param Length
  * @param KeyWord
  * @return \c bool ( 1 = found )
  ***/
-bool getKeyWord(FILE *File, const int Length, const char *KeyWord){
+bool getKeyWord(FILE *File, const char *KeyWord){
     char c = '\0';
+    auto Length = static_cast <short>(strlen(KeyWord));
     auto nxt = new short [Length+1];
     nxt[0] = -1;
     for (short i = 0, j = -1; i < Length-1; ){
@@ -98,14 +102,13 @@ bool getKeyWord(FILE *File, const int Length, const char *KeyWord){
 /**
  * @brief use multiple KMP to get the position of the keywords
  * @param File
- * @param Length1
- * @param Length2
  * @param KeyWord1
  * @param KeyWord2
  * @return \c short ( 1 = found 1, 2 = found 2, 0 = all not found)
  ***/
-short getKeyWords(FILE *File, const int Length1, const int Length2, const char *KeyWord1, const char *KeyWord2){
+short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
     char c = '\0';
+    auto Length1 = static_cast <short>(strlen(KeyWord1)), Length2 = static_cast <short>(strlen(KeyWord2));
     auto nxt1 = new short [Length1+1];
     auto nxt2 = new short [Length2+1];
     nxt1[0] = -1, nxt2[0] = -1;
@@ -159,4 +162,8 @@ short getKeyWords(FILE *File, const int Length1, const int Length2, const char *
     delete[] nxt1;
     delete[] nxt2;
     return 0;
+}
+
+void putWords(FILE *File, const char *Words){
+    for (short t = 0; Words[t] != '\0'; ++t) putc((int )Words[t], File);
 }

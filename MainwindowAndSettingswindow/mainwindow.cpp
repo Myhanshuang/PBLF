@@ -1,6 +1,6 @@
 #include "mainwindow.h"
-#include "settingswindow.h"  // 添加这一行
-
+#include "SettingsWindow.h"  // 添加这一行
+#include <QStackedWidget>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QLabel>
@@ -13,12 +13,27 @@
 #include <QCoreApplication> // 用于获取当前应用程序路径
 #include <QPixmapCache>     // 用于缓存图片
 #include "playwindow.h"  // 导入 PlayWindow
+#include "ResultPage.h"  // 包含 ResultPage 头文件
+
+ResultPage *resultPage;
+PlayWindow *playWindow;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), currentUserName("未登录"), baseSongIndex(1) {
-    // 主窗口设置
-    mainWidget = new QWidget(this);
-    setCentralWidget(mainWidget);
+    : QMainWindow(parent), currentUserName("未登录"),
+    baseSongIndex(1) {
+
+    // 创建 QStackedWidget 控件
+    stackedWidget = new QStackedWidget(this);
+    setCentralWidget(stackedWidget);
+
+    // 创建 MainWindow 页面，直接将页面布局添加到 QStackedWidget
+    QWidget *mainWidget = new QWidget(this);
+    stackedWidget->addWidget(mainWidget);
+
+
+
+    // 初始化显示主页面
+    stackedWidget->setCurrentIndex(0);  // 显示 MainWindow 页面
 
     // 顶部布局
     titleLabel = new QLabel("音游", this);
@@ -70,10 +85,37 @@ MainWindow::MainWindow(QWidget *parent)
     connect(settingsButton, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(importButton, &QPushButton::clicked, this, &MainWindow::importFolder);
     connect(usernameLabel, &QLabel::linkActivated, this, &MainWindow::showLogoutConfirmation);
-    connect(songList, &QListWidget::itemEntered, this, &MainWindow::displaySongImage);
+
 
     setWindowTitle("音游主界面");
     resize(1000, 800);
+
+    // 创建 SettingsWindow 页面
+    SettingsWindow *settingsWindow = new SettingsWindow();
+    stackedWidget->addWidget(settingsWindow);
+
+    connect(settingsWindow, &SettingsWindow::loginSuccess, this, &MainWindow::switchToMainPage);
+    connect(settingsWindow, &SettingsWindow::usernameUpdated, this, &MainWindow::updateUsername);
+    connect(settingsWindow, &SettingsWindow::backToMainPage, this, &MainWindow::switchToMainPage);  // 连接返回主页面的信号
+
+    // 创建 PlayWindow 页面
+    // PlayWindow *
+    playWindow = new PlayWindow();
+    stackedWidget->addWidget(playWindow);
+
+    connect(playWindow, &PlayWindow::requestToHomePage, this, &MainWindow:: switchToMainPage);
+    connect(playWindow, &PlayWindow::requestToResultPage, this, &MainWindow::onRequestToResultPage);
+    connect(playWindow, &PlayWindow::requestToRestartGame, this, &MainWindow::onRequestToRestartGame);
+
+    // 创建 ResultPage 页面
+    // ResultPage
+    resultPage = new ResultPage();
+    stackedWidget->addWidget(resultPage);
+
+    // 信号与槽连接
+    connect(resultPage, &ResultPage::requestToHomePage, this, &MainWindow::switchToMainPage);
+    connect(resultPage, &ResultPage::requestToRestartGame, this, &MainWindow::onRequestToRestartGame);
+
 }
 
 MainWindow::~MainWindow() {}
@@ -202,12 +244,13 @@ void MainWindow::updateUsername(const QString &name) {
     currentUserName = name;  // 更新用户名
     usernameLabel->setText("<a href='#'>" + currentUserName + "</a>");  // 更新界面上显示的用户名
 }
+
 void MainWindow::openSettings()
 {
-    SettingsWindow *settingsWindow = new SettingsWindow();
-    connect(settingsWindow, &SettingsWindow::usernameUpdated, this, &MainWindow::updateUsername);
-    settingsWindow->show();
+    stackedWidget->setCurrentIndex(1);
 }
+
+
 
 // 在MainWindow类中定义槽函数
 void MainWindow::showLogoutConfirmation()
@@ -233,9 +276,40 @@ void MainWindow::itemClicked(QListWidgetItem *item) {
         // 构造传递给游戏窗口的路径
         QString fileSource = ":/Chart/" + songFolderName + "/" + songFolderName;
 
-        // 创建并显示 PlayWindow
-        PlayWindow* playWindow = new PlayWindow();
-        playWindow->addFileSource(fileSource); // 将文件路径传递给游戏界面
-        playWindow->show();
+        // 获取 PlayWindow 并传递文件路径
+        PlayWindow *playWindow = qobject_cast<PlayWindow*>(stackedWidget->widget(2));
+        if (playWindow) {
+            playWindow->addFileSource(fileSource);  // 将文件路径传递给 PlayWindow
+            stackedWidget->setCurrentIndex(2);  // 切换到游戏页面
+        }
     }
+}
+// 切换到主页面
+void MainWindow::switchToMainPage() {
+    stackedWidget->setCurrentIndex(0);  // 切换到 MainWindow 页面
+}
+
+
+
+void MainWindow::onRequestToRestartGame() {
+    // 删除现有的 PlayWindow 实例
+    if (playWindow) {
+        stackedWidget->removeWidget(playWindow);  // 从 stackedWidget 中移除旧的 PlayWindow
+        delete playWindow;  // 销毁现有的 PlayWindow 实例
+        playWindow = nullptr;  // 将指针设为 nullptr，确保不再访问
+    }
+
+    // 创建新的 PlayWindow 实例
+    playWindow = new PlayWindow();  // 创建新的 PlayWindow 实例
+    stackedWidget->addWidget(playWindow);  // 将新的 PlayWindow 添加到 stackedWidget
+
+    // 切换到新的 PlayWindow 页面
+    stackedWidget->setCurrentIndex(2);  // 切换到新的 PlayWindow 页面
+    qDebug() << "Game Restarted";  // 输出调试信息，确认游戏重启
+}
+
+void MainWindow::onRequestToResultPage() {
+//记得写这个的时候看一眼上一个函数的逻辑对不对
+    stackedWidget->setCurrentIndex(3);  // 切换到结果页面
+    qDebug() << "Navigating to Result Page...";
 }

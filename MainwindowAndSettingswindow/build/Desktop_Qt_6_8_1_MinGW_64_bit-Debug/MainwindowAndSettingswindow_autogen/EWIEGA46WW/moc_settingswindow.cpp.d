@@ -1,5 +1,5 @@
-E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingswindow_autogen/EWIEGA46WW/moc_settingswindow.cpp: E:/QTPRO/PBLF/MainwindowAndSettingswindow/settingswindow.h \
-  E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingswindow_autogen/moc_predefs.h \
+E:/QTPRO/PBLF/MainwindowAndSettingsWindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/EWIEGA46WW/moc_SettingsWindow.cpp: E:/QTPRO/PBLF/MainwindowAndSettingsWindow/SettingsWindow.h \
+  E:/QTPRO/PBLF/MainwindowAndSettingsWindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/moc_predefs.h \
   E:/qt/6.8.1/mingw_64/include/QtCore/QFile \
   E:/qt/6.8.1/mingw_64/include/QtCore/QTextStream \
   E:/qt/6.8.1/mingw_64/include/QtCore/q20functional.h \

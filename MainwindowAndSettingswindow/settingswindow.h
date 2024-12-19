@@ -22,6 +22,7 @@ private slots:
     void login();
     void clearInputs();
     // 在 SettingsWindow 类的声明部分添加
+    void onBackClicked();  // 添加 onBackClicked 槽函数声明
 public:
     void startKeyBinding();
     // 在 SettingsWindow 类的声明部分添加
@@ -31,8 +32,12 @@ protected:
 
 signals:
     void usernameUpdated(const QString &name);
+    void loginSuccess();  // 登录成功的信号
+    void backToMainPage();  // 添加返回主页面的信号
 
 private:
+    QPushButton *backButton;  // 声明返回按钮
+
     // 登录部分
     QLineEdit *usernameInput;
     QLineEdit *passwordInput;

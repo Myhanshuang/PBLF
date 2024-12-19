@@ -11,6 +11,7 @@ ClickablePixmapItem::ClickablePixmapItem(const QPixmap& pixmap, QGraphicsItem* p
 void ClickablePixmapItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     emit clicked(); // Emit the signal when the item is clicked
     QGraphicsPixmapItem::mousePressEvent(event); // Call the base class implementation
+    //crashed here
 }
 
 // Add a method to scale the image dynamically

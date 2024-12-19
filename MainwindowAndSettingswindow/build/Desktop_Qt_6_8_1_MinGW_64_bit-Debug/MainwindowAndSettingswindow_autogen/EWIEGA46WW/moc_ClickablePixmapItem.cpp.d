@@ -1,5 +1,5 @@
-E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingswindow_autogen/EWIEGA46WW/moc_ClickablePixmapItem.cpp: E:/QTPRO/PBLF/MainwindowAndSettingswindow/ClickablePixmapItem.h \
-  E:/QTPRO/PBLF/MainwindowAndSettingswindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingswindow_autogen/moc_predefs.h \
+E:/QTPRO/PBLF/MainwindowAndSettingsWindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/EWIEGA46WW/moc_ClickablePixmapItem.cpp: E:/QTPRO/PBLF/MainwindowAndSettingsWindow/ClickablePixmapItem.h \
+  E:/QTPRO/PBLF/MainwindowAndSettingsWindow/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/moc_predefs.h \
   E:/qt/6.8.1/mingw_64/include/QtCore/QObject \
   E:/qt/6.8.1/mingw_64/include/QtCore/q20functional.h \
   E:/qt/6.8.1/mingw_64/include/QtCore/q20iterator.h \
