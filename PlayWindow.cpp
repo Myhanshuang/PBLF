@@ -9,10 +9,10 @@
 PlayWindow::PlayWindow(QWidget* parent)
     : QMainWindow(parent), scene(new QGraphicsScene(this)), view(new QGraphicsView(scene, this)), gameTimer(new QTimer(this)), gameTime(0) {//finished
 
-    keyToColumn[Qt::Key_D] = 1; // Column 1
-    keyToColumn[Qt::Key_F] = 2; // Column 2
-    keyToColumn[Qt::Key_J] = 3; // Column 3
-    keyToColumn[Qt::Key_K] = 4; // Column 4
+    keyToColumn[KeyCode[0]] = 1; // Column 1
+    keyToColumn[KeyCode[1]] = 2; // Column 2
+    keyToColumn[KeyCode[2]] = 3; // Column 3
+    keyToColumn[KeyCode[3]] = 4; // Column 4
     setupUI();
     connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
 }
@@ -535,6 +535,16 @@ void PlayWindow::updateGame() { // finished
 
         if(note.ifHold)
         {
+            if(note.item->y() > checkerLineHeight)
+            {
+                scene->removeItem(note.item); // Remove missed notes
+                notes.erase(pos);
+                delete note.item ;
+                currentChart.Acting -> Accuracy -= currentChart.accPerNote;
+                currentChart.Acting -> maxCombo = fmax(currentChart.Acting -> maxCombo, currentChart.Acting -> Combo);
+                currentChart.Acting -> Combo = 0;
+                updateStats();
+            }
             continue;
             auto t = note.item -> y();
             auto tt = note.length;
@@ -624,6 +634,11 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
     }
     qDebug() << "Key pressed:" << event->key();
     qDebug() << "Key pressed:" << event->key();
+    if (event->isAutoRepeat()){
+        qDebug() << "FUCK";
+        return ;
+    }
+
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return ;
@@ -639,35 +654,59 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
             delete now.item;
         }
         auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
-        for (short i = 0; MaxOffset[i] != InfOffset; ++i){
+        for (i = 0; MaxOffset[i] != InfOffset; ++i){
             if (dis > MaxOffset[i]) continue;
             ++ currentChart.Acting ->judgeResult[i];
             ++ currentChart.Acting ->Combo;
-            currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
-            currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+            if (!i) currentChart.Acting ->Score += 600;
+            else if (i == 4) currentChart.Acting ->Score += 50;
+            else currentChart.Acting ->Score += (4 - i) * 100;
+            currentChart.Acting ->Accuracy -= i * 1.0l * currentChart.accPerNote / 5.0l;
+            updateStats();
             break;
         }
-        return ;
+        if (i != 5) return ;
+        ++ currentChart.Acting ->judgeResult[i];
+        currentChart.Acting ->Combo = 0;
+        currentChart.Acting ->Accuracy -= 1.0l * currentChart.accPerNote;
+        updateStats();
     }
     return ;
 }
 
 void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
+    if (!event->isAutoRepeat()){
+        qDebug() << "ASS";
+        return ;
+    }
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return;
     for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
         auto now = *ptr;
         if (now.ifHold && now.column == i && now.holdJudge){
+
+            scene->removeItem(now.item);
+            notes.erase(ptr);
+            delete now.item;
+
             auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
-            for (short i = 0; MaxOffset[i] != InfOffset; ++i){
+            for (i = 0; MaxOffset[i] != InfOffset; ++i){
                 if (dis > MaxOffset[i]) continue;
                 ++ currentChart.Acting ->judgeResult[i];
                 ++ currentChart.Acting ->Combo;
-                currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
-                currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+                if (!i) currentChart.Acting ->Score += 600;
+                else if (i == 4) currentChart.Acting ->Score += 50;
+                else currentChart.Acting ->Score += (4 - i) * 100;
+                currentChart.Acting ->Accuracy -= i * 1.0l * currentChart.accPerNote / 5.0l;
+                updateStats();
                 break;
             }
+            if (i != 5) return ;
+            ++ currentChart.Acting ->judgeResult[i];
+            currentChart.Acting ->Combo = 0;
+            currentChart.Acting ->Accuracy -= 1.0l * currentChart.accPerNote;
+            updateStats();
         }
         //distance judge, then invalid but not delete the hold key
         //I mean, it will be kept falling but cannot be judged
