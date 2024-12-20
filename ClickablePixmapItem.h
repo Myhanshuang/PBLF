@@ -3,6 +3,7 @@
 
 #include <QGraphicsPixmapItem>
 #include <QObject>
+#include <QCursor>
 
 class ClickablePixmapItem : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT

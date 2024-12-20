@@ -20,6 +20,7 @@
 #include <windows.h>
 #include <QtMultimedia/QtMultimedia>
 #include <QtMultimedia/QMediaPlayer>
+#include <QGraphicsProxyWidget>
 
 #ifndef offsetFromLineToNote//(liney, notey)
 #define offsetFromLineToNote(liney, notey) abs(abs(notey - liney)* perFrame / speed - gameTime)
@@ -28,16 +29,18 @@
 // Replace QGraphicsPixmapItem* with ClickablePixmapItem*
 
 extern int KeyCode[9];
+extern int MaxOffset[8];
 
 class PlayWindow : public QMainWindow {
     Q_OBJECT
 public:
     explicit PlayWindow(QWidget* parent = nullptr);
     ~PlayWindow();
-
+    Chart currentChart;
     void loadChart();
     void startGame();
     void addFileSource(QString path);
+    QString readFileSource();
 
 signals:
     void requestToHomePage();
@@ -75,7 +78,7 @@ private:
     QLabel* statsLabel;
 
     QString fileSource;
-    Chart currentChart, stasticChart;
+    // Chart currentChart, stasticChart;
     QMediaPlayer* musicPlayer;
 
     struct TempStoreInScene{

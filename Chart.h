@@ -26,9 +26,9 @@
 #endif //_GLIBCXX_CMATH
 
 #ifndef BASE64_H
-extern "C"{
+// extern "C"{
 #include "base64/base64.h"
-}
+// }
 #endif
 
 #ifndef FloatMinute

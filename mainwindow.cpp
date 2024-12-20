@@ -309,7 +309,30 @@ void MainWindow::onRequestToRestartGame() {
 }
 
 void MainWindow::onRequestToResultPage() {
-//记得写这个的时候看一眼上一个函数的逻辑对不对
+    //上面这个函数能正常运作不re就对
+    //这个函数等wdx更新了就对了
+    char evaluation = 'F';
+    if(playWindow->currentChart.Acting->Accuracy >= 95){
+        evaluation = 'S';
+    } else if(playWindow->currentChart.Acting->Accuracy >= 90){
+        evaluation = 'A';
+    } else if(playWindow->currentChart.Acting->Accuracy >= 80){
+        evaluation = 'B';
+    } else if(playWindow->currentChart.Acting->Accuracy >= 70){
+        evaluation = 'C';
+    }
+
+ //    resultPage->setResults(playWindow->currentChart.Acting->judgeResult[0],
+ //                       playWindow->currentChart.Acting->judgeResult[1],
+ //                       playWindow->currentChart.Acting->judgeResult[2],
+ //                       playWindow->currentChart.Acting->judgeResult[3],
+ //                       playWindow->currentChart.noteCount - playWindow->currentChart.Acting->judgeResult[0] - playWindow->currentChart.Acting->judgeResult[1] - playWindow->currentChart.Acting->judgeResult[2] - playWindow->currentChart.Acting->judgeResult[3],
+ //                       playWindow->currentChart.Acting->Accuracy,
+ //                       playWindow->currentChart.Acting->maxCombo,
+ //                       evaluation,
+ //                       playWindow->currentChart.Acting->Score,
+ //                       playWindow->currentChart.songTitle,
+ //                       playWindow->readFileSource().append(".png"));
     stackedWidget->setCurrentIndex(3);  // 切换到结果页面
     qDebug() << "Navigating to Result Page...";
 }

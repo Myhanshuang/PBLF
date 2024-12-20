@@ -18,6 +18,7 @@ PlayWindow::PlayWindow(QWidget* parent)
 
 void PlayWindow::start(){
     //need to change
+
     keyToColumn[Qt::Key_D] = 1; // Column 1
     keyToColumn[Qt::Key_F] = 2; // Column 2
     keyToColumn[Qt::Key_J] = 3; // Column 3
@@ -27,7 +28,7 @@ void PlayWindow::start(){
     // keyToColumn[KeyCode[1]] = 2; // Column 2
     // keyToColumn[KeyCode[2]] = 3; // Column 3
     // keyToColumn[KeyCode[3]] = 4; // Column 4
-    setupUI();
+
     this->show();
     startGame();
 }
@@ -195,11 +196,12 @@ void PlayWindow::showPauseMenu() { // finished
     pauseMenuBackground->setZValue(99); // Ensure it's above other items
     scene->addItem(pauseMenuBackground);
 
+
     // Add buttons
     continueButton = new ClickablePixmapItem(QPixmap(":/img/continue.png"));
     continueButton -> setZValue(100);
-    // restartButton = new ClickablePixmapItem(QPixmap(":/img/restart.png"));
-    // restartButton -> setZValue(100);
+    restartButton = new ClickablePixmapItem(QPixmap(":/img/restart.png"));
+    restartButton -> setZValue(100);
     exitButton = new ClickablePixmapItem(QPixmap(":/img/exit.png"));
     exitButton -> setZValue(100);
 
@@ -208,24 +210,24 @@ void PlayWindow::showPauseMenu() { // finished
     int centerY = scene->height() / 2;
     QSize buttonSize(scene->width() / 5, scene->height() / 10);
     continueButton->setPos(centerX , centerY - 100);
-    // restartButton->setPos(centerX , centerY - 33);
+    restartButton->setPos(centerX , centerY - 33);
     exitButton->setPos(centerX , centerY + 33);
 
     // Add buttons to the scene
     scene->addItem(continueButton);
-    // scene->addItem(restartButton);
+    scene->addItem(restartButton);
     scene->addItem(exitButton);
-
 
     // Connect button clicks to slots
     connect(continueButton, &ClickablePixmapItem::clicked, this, &PlayWindow::continueGame);
-    // connect(restartButton, &ClickablePixmapItem::clicked, this, &PlayWindow::restartGame);
+    connect(restartButton, &ClickablePixmapItem::clicked, this, &PlayWindow::restartGame);
     connect(exitButton, &ClickablePixmapItem::clicked, this, &PlayWindow::exitGame);
 }
 
 void PlayWindow::hidePauseMenu() { // finished
 
     // attention word
+
     QGraphicsTextItem *waiting;
     waiting = new QGraphicsTextItem("Waiting for 1 second");
     //setting the size of waiting
@@ -237,6 +239,7 @@ void PlayWindow::hidePauseMenu() { // finished
     waiting -> setDefaultTextColor(Qt::red);
     waiting -> setZValue(100);
     scene -> addItem(waiting);
+
     isPaused = false;
     //wait 1000ms after pause to start
     QElapsedTimer timer;
@@ -270,7 +273,7 @@ void PlayWindow::hidePauseMenu() { // finished
 
 
     scene -> removeItem(waiting);
-    // delete waiting;
+    delete waiting;
     // Resume the game
     musicPlayer->play();
     gameTimer->start();
@@ -403,7 +406,7 @@ void PlayWindow::loadChart() { // finished
     try {
         // Parse the chart using the provided getChart function
         getChart(chartFile, currentChart);
-        stasticChart = currentChart;
+        // stasticChart = currentChart;
         // Log successful chart loading
         qDebug() << "Chart loaded successfully!";
 
@@ -440,6 +443,7 @@ void PlayWindow::startGame() {// finished
     //reset the data
     initGameState();
 
+    fileSource = ":/Chart/testChart";
     auto backgroundSource = fileSource;
     QPixmap darkenTheBackground = createDarkenedImage(backgroundSource.append(".png"), 0.4);
     if (!darkenTheBackground.isNull()) {
@@ -518,6 +522,11 @@ void PlayWindow::mediaStatusChanged(QMediaPlayer::MediaStatus status) {
 void PlayWindow::addFileSource(QString path)//finished
 {
     fileSource = path;
+}
+
+QString PlayWindow::readFileSource()
+{
+    return fileSource;
 }
 
 void PlayWindow::updateGame() { // finished
@@ -670,6 +679,7 @@ void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
 
 void PlayWindow::restartGame() {//depart
 
+    emit requestToRestartGame();
     // Add logic to restart the game
     qDebug() << "Restarting game...";
 
@@ -683,9 +693,6 @@ void PlayWindow::continueGame() {//finishd
 void PlayWindow::exitGame() {// i finished waiting for lyjy
     qDebug() << "Exiting game...";
     emit requestToHomePage();
-    //turn to home page
-    // QApplication::quit();
-
 }
 
 void PlayWindow::initGameState(){
@@ -701,7 +708,7 @@ void PlayWindow::initGameState(){
     musicPlayer->stop();
     musicPlayer->setPosition(0);
     statsLabel->setText("Accuracy: 100.00\%\nScore: 0\nCombo: 0");
-    currentChart = stasticChart;
+    // currentChart = stasticChart;
 }
 
 Chart::ChartAct PlayWindow::gameEnd(){
