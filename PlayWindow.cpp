@@ -325,12 +325,14 @@ void PlayWindow::resizeEvent(QResizeEvent* event) {//finished
 }
 
 void PlayWindow::updateStats() {//finished
+
     // Update combo, score, and accuracy dynamically
-    statsLabel->setText(QString("Accuracy: %1\%\nScore: %2\nCombo: %3")
-                            .arg(QString::number(currentChart.Acting->Accuracy, 'f', 2)
-                            .arg(currentChart.Acting->Score)
-                            .arg(currentChart.Acting->Combo))
-                            );
+    statsLabel->setText(QString("Accuracy: %1%\nScore: %2\nCombo: %3")
+                            .arg(QString::number(currentChart.Acting->Accuracy, 'f', 2))
+                            .arg(QString::number(currentChart.Acting->Score))
+                            .arg(QString::number(currentChart.Acting->Combo))
+                        );
+
 }
 
 void PlayWindow::drawChannels() {//finished
@@ -657,7 +659,7 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
         for (i = 0; MaxOffset[i] != InfOffset; ++i){
             if (dis > MaxOffset[i]) continue;
             ++ currentChart.Acting ->judgeResult[i];
-            ++ currentChart.Acting ->Combo;
+            ++ (currentChart.Acting ->Combo);
             if (!i) currentChart.Acting ->Score += 600;
             else if (i == 4) currentChart.Acting ->Score += 50;
             else currentChart.Acting ->Score += (4 - i) * 100;
