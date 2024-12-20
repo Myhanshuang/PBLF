@@ -19,15 +19,10 @@ PlayWindow::PlayWindow(QWidget* parent)
 void PlayWindow::start(){
     //need to change
 
-    keyToColumn[Qt::Key_D] = 1; // Column 1
-    keyToColumn[Qt::Key_F] = 2; // Column 2
-    keyToColumn[Qt::Key_J] = 3; // Column 3
-    keyToColumn[Qt::Key_K] = 4; // Column 4
-
-    // keyToColumn[KeyCode[0]] = 1; // Column 1
-    // keyToColumn[KeyCode[1]] = 2; // Column 2
-    // keyToColumn[KeyCode[2]] = 3; // Column 3
-    // keyToColumn[KeyCode[3]] = 4; // Column 4
+    keyToColumn[KeyCode[0]] = 1; // Column 1
+    keyToColumn[KeyCode[1]] = 2; // Column 2
+    keyToColumn[KeyCode[2]] = 3; // Column 3
+    keyToColumn[KeyCode[3]] = 4; // Column 4
 
     this->show();
     startGame();
@@ -628,6 +623,8 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
             showPauseMenu();
         }
     }
+    qDebug() << "Key pressed:" << event->key();
+    qDebug() << "Key pressed:" << event->key();
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return ;

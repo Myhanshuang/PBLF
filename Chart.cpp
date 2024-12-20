@@ -9,7 +9,7 @@
 #include <cstring>
 
 int MaxOffset[8] = {16, 64-27, 70, 100, 151-27, InfOffset, InfOffset};
-int KeyCode[9] = {0};
+int KeyCode[9] = {68, 70, 74, 75};
 
 /**
  * @class Chart
