@@ -696,6 +696,7 @@ void PlayWindow::continueGame() {//finishd
 
 void PlayWindow::exitGame() {// i finished waiting for lyjy
     qDebug() << "Exiting game...";
+    initGameState();
     emit requestToHomePage();
 }
 
