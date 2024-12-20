@@ -14,6 +14,7 @@ PlayWindow::PlayWindow(QWidget* parent)
     keyToColumn[Qt::Key_J] = 3; // Column 3
     keyToColumn[Qt::Key_K] = 4; // Column 4
     setupUI();
+    connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
 }
 
 void PlayWindow::start(){
@@ -401,7 +402,7 @@ void PlayWindow::loadChart() { // finished
     try {
         // Parse the chart using the provided getChart function
         getChart(chartFile, currentChart);
-        // stasticChart = currentChart;
+        stasticChart = currentChart;
         // Log successful chart loading
         qDebug() << "Chart loaded successfully!";
 
@@ -493,17 +494,16 @@ void PlayWindow::startGame() {// finished
     scene -> removeItem(waiting);
     delete waiting;
     // Load the first notes based on the chart
-    spawnNotes();
+    // spawnNotes();
 
 
     // 4. Start the game timer
     musicPlayer->setPosition(0);
+    // gameTimer->setInterval(perFrame); // ~60 FPS
     musicPlayer->play();
     connect(musicPlayer, &QMediaPlayer::mediaStatusChanged, this, &PlayWindow::mediaStatusChanged);
     musicPlayer->setPosition(0);
-
-    connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
-    gameTimer->start(perFrame); // ~60 FPS
+    gameTimer->start(perFrame);
     qDebug() << "Game started!";
     if(musicPlayer->isPlaying())qDebug() << "music is playing";
 }
@@ -641,7 +641,7 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
             for (short i = 0; MaxOffset[i] != InfOffset; ++i){
                 if (dis > MaxOffset[i]) continue;
                 ++ currentChart.Acting ->judgeResult[i];
-                ++ currentChart.Acting ->Combo;
+                ++ (currentChart.Acting ->Combo);
                 currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
                 currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
             }
@@ -661,10 +661,10 @@ void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
             auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
             for (short i = 0; MaxOffset[i] != InfOffset; ++i){
                 if (dis > MaxOffset[i]) continue;
-                // ++ currentChart.Acting ->judgeResult[i];
-                // ++ currentChart.Acting ->Combo;
-                // currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
-                // currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+                ++ currentChart.Acting ->judgeResult[i];
+                ++ (currentChart.Acting ->Combo);
+                currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
+                currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
             }
         }
         //distance judge, then invalid but not delete the hold key
@@ -676,7 +676,14 @@ void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
 
 void PlayWindow::restartGame() {//depart
 
-    emit requestToRestartGame();
+    // emit requestToRestartGame();
+
+
+
+    initGameState();
+    startGame();
+
+
     // Add logic to restart the game
     qDebug() << "Restarting game...";
 
@@ -693,6 +700,7 @@ void PlayWindow::exitGame() {// i finished waiting for lyjy
 }
 
 void PlayWindow::initGameState(){
+
     gameTime = 0;
     scene -> clear();
     notes.clear();
@@ -705,7 +713,7 @@ void PlayWindow::initGameState(){
     musicPlayer->stop();
     musicPlayer->setPosition(0);
     statsLabel->setText("Accuracy: 100.00\%\nScore: 0\nCombo: 0");
-    // currentChart = stasticChart;
+    currentChart = stasticChart;
 }
 
 Chart::ChartAct PlayWindow::gameEnd(){

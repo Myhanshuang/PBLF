@@ -76,6 +76,7 @@ private:
     QGraphicsLineItem* checkerLine;
     QTimer* gameTimer;
     QLabel* statsLabel;
+    Chart stasticChart;
 
     QString fileSource;
     // Chart currentChart, stasticChart;
