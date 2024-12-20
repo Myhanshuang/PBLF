@@ -635,19 +635,21 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
         auto now = *ptr;
         if (now.column != i || now.holdJudge) continue;
         //distance judge, the dis is a place where you can put the macro
+
         if (now.ifHold) now.holdJudge = true;
         else {
             scene->removeItem(now.item);
             notes.erase(ptr);
             delete now.item;
-            auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
-            for (short i = 0; MaxOffset[i] != InfOffset; ++i){
-                if (dis > MaxOffset[i]) continue;
-                ++ currentChart.Acting ->judgeResult[i];
-                ++ currentChart.Acting ->Combo;
-                currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
-                currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
-            }
+        }
+        auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
+        for (short i = 0; MaxOffset[i] != InfOffset; ++i){
+            if (dis > MaxOffset[i]) continue;
+            ++ currentChart.Acting ->judgeResult[i];
+            ++ currentChart.Acting ->Combo;
+            currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
+            currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+            break;
         }
         return ;
     }
@@ -659,15 +661,16 @@ void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return;
     for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
-        auto now = *ptr;
+        auto now = *ptr;g
         if (now.ifHold && now.column == i && now.holdJudge){
             auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
             for (short i = 0; MaxOffset[i] != InfOffset; ++i){
                 if (dis > MaxOffset[i]) continue;
-                // ++ currentChart.Acting ->judgeResult[i];
-                // ++ currentChart.Acting ->Combo;
-                // currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
-                // currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+                ++ currentChart.Acting ->judgeResult[i];
+                ++ currentChart.Acting ->Combo;
+                currentChart.Acting ->Score += (4 - i) * 100 + ( (i)? 0 : 200 );
+                currentChart.Acting ->Accuracy -= i * 1.0 * currentChart.accPerNote / 4;
+                break;
             }
         }
         //distance judge, then invalid but not delete the hold key
