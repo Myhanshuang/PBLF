@@ -14,21 +14,16 @@ PlayWindow::PlayWindow(QWidget* parent)
     keyToColumn[Qt::Key_J] = 3; // Column 3
     keyToColumn[Qt::Key_K] = 4; // Column 4
     setupUI();
+    connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
 }
 
 void PlayWindow::start(){
     //need to change
 
-    keyToColumn[Qt::Key_D] = 1; // Column 1
-    keyToColumn[Qt::Key_F] = 2; // Column 2
-    keyToColumn[Qt::Key_J] = 3; // Column 3
-    keyToColumn[Qt::Key_K] = 4; // Column 4
-
-    // keyToColumn[KeyCode[0]] = 1; // Column 1
-    // keyToColumn[KeyCode[1]] = 2; // Column 2
-    // keyToColumn[KeyCode[2]] = 3; // Column 3
-    // keyToColumn[KeyCode[3]] = 4; // Column 4
-
+    keyToColumn[KeyCode[0]] = 1; // Column 1
+    keyToColumn[KeyCode[1]] = 2; // Column 2
+    keyToColumn[KeyCode[2]] = 3; // Column 3
+    keyToColumn[KeyCode[3]] = 4; // Column 4
     this->show();
     startGame();
 }
@@ -406,7 +401,7 @@ void PlayWindow::loadChart() { // finished
     try {
         // Parse the chart using the provided getChart function
         getChart(chartFile, currentChart);
-        // stasticChart = currentChart;
+        stasticChart = currentChart;
         // Log successful chart loading
         qDebug() << "Chart loaded successfully!";
 
@@ -498,17 +493,16 @@ void PlayWindow::startGame() {// finished
     scene -> removeItem(waiting);
     delete waiting;
     // Load the first notes based on the chart
-    spawnNotes();
+    //spawnNotes();
 
 
     // 4. Start the game timer
     musicPlayer->setPosition(0);
+    // gameTimer->setInterval(perFrame); // ~60 FPS
     musicPlayer->play();
     connect(musicPlayer, &QMediaPlayer::mediaStatusChanged, this, &PlayWindow::mediaStatusChanged);
     musicPlayer->setPosition(0);
-
-    connect(gameTimer, &QTimer::timeout, this, &PlayWindow::updateGame);
-    gameTimer->start(perFrame); // ~60 FPS
+    gameTimer->start(perFrame);
     qDebug() << "Game started!";
     if(musicPlayer->isPlaying())qDebug() << "music is playing";
 }
@@ -628,6 +622,8 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
             showPauseMenu();
         }
     }
+    qDebug() << "Key pressed:" << event->key();
+    qDebug() << "Key pressed:" << event->key();
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return ;
@@ -661,7 +657,7 @@ void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return;
     for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
-        auto now = *ptr;g
+        auto now = *ptr;
         if (now.ifHold && now.column == i && now.holdJudge){
             auto dis = offsetFromLineToNote(now.item->y(), checkerLineHeight);
             for (short i = 0; MaxOffset[i] != InfOffset; ++i){
@@ -682,7 +678,14 @@ void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
 
 void PlayWindow::restartGame() {//depart
 
-    emit requestToRestartGame();
+    // emit requestToRestartGame();
+
+
+
+    initGameState();
+    startGame();
+
+
     // Add logic to restart the game
     qDebug() << "Restarting game...";
 
@@ -695,10 +698,12 @@ void PlayWindow::continueGame() {//finishd
 
 void PlayWindow::exitGame() {// i finished waiting for lyjy
     qDebug() << "Exiting game...";
+    initGameState();
     emit requestToHomePage();
 }
 
 void PlayWindow::initGameState(){
+
     gameTime = 0;
     scene -> clear();
     notes.clear();
@@ -711,7 +716,7 @@ void PlayWindow::initGameState(){
     musicPlayer->stop();
     musicPlayer->setPosition(0);
     statsLabel->setText("Accuracy: 100.00\%\nScore: 0\nCombo: 0");
-    // currentChart = stasticChart;
+    currentChart = stasticChart;
 }
 
 Chart::ChartAct PlayWindow::gameEnd(){
