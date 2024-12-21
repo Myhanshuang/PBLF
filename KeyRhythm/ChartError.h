@@ -14,6 +14,10 @@
 #include <exception>
 #endif
 
+#ifndef NO_ERROR
+#include <error.h>
+#endif
+
 /**
  * @defgroup ErrorException
  * @brief all of error exception
@@ -58,6 +62,18 @@
 ///< @brief a new user need be saved before correct
 ///< @addtogroup ErrorException
 
+#define Exception10 "Saving data error: Invalid history path"
+///< @brief history should be a name of dir, which is used to save history info
+///< @addtogroup ErrorException
+
+#define Exception11 "Character encoding error"
+///< @brief wchar_t should read several bytes to encode a character
+///< @addtogroup ErrorException
+
+#define Exception12 "Unknown error for wchar_t"
+///< @brief using wchar_t as the source of error
+///< @addtogroup ErrorException
+
 class ChartError : public std :: exception{
 public :
     short *ErrorCode;
@@ -84,6 +100,9 @@ public :
             case 7: return Exception7;
             case 8: return Exception8;
             case 9: return Exception9;
+            case 10: return Exception10;
+            case 11: return Exception11;
+            case 12: return Exception12;
 
             default :
                 return nullptr;

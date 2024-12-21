@@ -55,6 +55,11 @@ void getChart(FILE *chartFile, Chart &NowPlay){
 	    },
      */
     if ( !getKeyWord(chartFile, "meta") ) throw ChartError(1);
+    if ( !getKeyWord(chartFile, "song") ) throw ChartError(1);
+    if ( !getKeyWord(chartFile, "title") ) throw ChartError(1);
+    getWords_w(chartFile, NowPlay.songTitle);
+    if ( !getKeyWord(chartFile, "artist") ) throw ChartError(1);
+    getWords_w(chartFile, NowPlay.Artist);
     if ( !getKeyWord(chartFile, "mode_ext") ) throw ChartError(2);
     if ( !getKeyWord(chartFile, "column") ) throw ChartError(2);
     getValueShort(chartFile, t);

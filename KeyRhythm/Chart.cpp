@@ -6,7 +6,9 @@
 #include "Chart.h"
 #endif
 
+#ifndef _GLIBCXX_CSTRING
 #include <cstring>
+#endif
 
 int MaxOffset[8] = {16, 64-27, 70, 100, 151-27, InfOffset, InfOffset};
 int KeyCode[9] = {0};
@@ -44,7 +46,21 @@ Chart ::Chart(const Chart &C) {
     this ->beatsPerMinute = C.beatsPerMinute;
     this ->everyBeat = C.everyBeat;
     this ->noteCount = C.noteCount;
-    this ->Acting = C.Acting;
+    if (C.Acting != nullptr){
+        this ->Acting = new Chart :: ChartAct;
+        *this ->Acting = *(C.Acting);
+    }
+    else this ->Acting = C.Acting;
+    if (C.songTitle != nullptr){
+        this ->songTitle = new wchar_t [wcslen(C.songTitle)+2];
+        memcpy(this ->songTitle, C.songTitle, sizeof (wchar_t )*(wcslen(C.songTitle)+2));
+        this ->songTitle[wcslen(C.songTitle)] = this ->songTitle[wcslen(C.songTitle)+1] = L'\0';
+    }
+    if (C.Artist != nullptr){
+        this ->Artist = new wchar_t [wcslen(C.Artist)+2];
+        memcpy(this ->Artist, C.Artist, sizeof (wchar_t )*(wcslen(C.Artist)+2));
+        this ->Artist[wcslen(C.Artist)] = this ->Artist[wcslen(C.Artist)+1] = L'\0';
+    }
 }
 
 /**
@@ -64,6 +80,12 @@ Chart :: ~Chart(){
         }
         delete ChartHead;
     }
+    delete[] this ->songTitle;
+    delete[] this ->Artist;
+    delete Acting;
+    this ->beatsPerMinute = this ->everyBeat = this ->accPerNote = 0.0l;
+    this ->noteCount = this ->Offset = 0;
+    this ->Column = 0;
 }
 
 /**
@@ -122,8 +144,25 @@ Chart :: Measure :: Measure(const Chart :: Measure &M) {
     this ->NxtMea = M.NxtMea;
 }
 
+/**
+ * @class ChartAct
+ * @brief constructor of ChartAct
+ */
 Chart :: ChartAct :: ChartAct(){
     memset(this ->judgeResult, 0, sizeof (int )*9);
+}
+
+/**
+ * @class ChartAct
+ * @brief initialize new ChartAct with old one
+ * @param CA
+ */
+Chart :: ChartAct :: ChartAct(const ChartAct &CA){
+    this ->Score = CA.Score;
+    this ->Accuracy = CA.Accuracy;
+    this ->Combo = CA.Combo;
+    this ->maxCombo = CA.maxCombo;
+    memcpy(this ->judgeResult, CA.judgeResult, sizeof (int )*9);
 }
 
 /**

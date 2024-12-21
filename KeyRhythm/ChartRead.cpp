@@ -10,6 +10,41 @@
 #include <cstring>
 #endif //_GLIBCXX_CSTRING
 
+#ifndef _GLIBCXX_CSTDLIB
+#include <cstdlib>
+#endif //_GLIBCXX_CSTDLIB
+
+#ifndef _GLIBCXX_CTIME
+#include <ctime>
+#endif
+
+#ifndef _GLIBCXX_IOSTREAM
+#include <iostream>
+#endif //_GLIBCXX_IOSTREAM
+
+#ifndef NO_ERROR
+#include <error.h>
+#endif
+
+#ifndef KEYRHYTHM_CHARTERROR_H
+#include "ChartError.h"
+#endif //KEYRHYTHM_CHARTERROR_H
+
+/**
+ * @brief get value in file (time_t)
+ * @param File
+ * @param val
+ */
+void getValueTT(FILE *File, time_t & val){
+    val = 0;
+    char ch = (char )getc(File);
+    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    while (ch < '9'+1 && ch > '0'-1){
+        val = (val << 3) + (val << 1) + ch - '0';
+        ch = (char )getc(File);
+    }
+}
+
 /**
  * @brief get value in file (int)
  * @param File
@@ -98,6 +133,45 @@ bool getKeyWord(FILE *File, const char *KeyWord){
     return false;
 }
 
+/**
+ * @brief use KMP to get the position of the keyword, with wide char
+ * @param File
+ * @param KeyWord
+ * @return \c bool ( 1 = found )
+ ***/
+bool getKeyWord_w(FILE *File, const wchar_t *KeyWord){
+    wchar_t c = L'\0';
+    auto Length = static_cast <short>(wcslen(KeyWord));
+    auto nxt = new short [Length+1];
+    nxt[0] = -1;
+    for (short i = 0, j = -1; i < Length-1; ){
+        if (j == -1 || KeyWord[i] == KeyWord[j]){
+            ++i;
+            ++j;
+            nxt[i] = j;
+        }
+        else j = nxt[j];
+    }
+    short j = -1;
+    while (!feof(File)){
+        if (j == -1 || c == KeyWord[j]){
+            c = (wchar_t )fgetwc(File);
+            ++j;
+        }
+        else j = nxt[j];
+        if (j == Length){
+            delete[] nxt;
+            return true;
+        }
+        if (c == WEOF){
+            if (errno == EILSEQ) throw ChartError(11);
+            if (ferror(File)) throw ChartError(12);
+            return false;
+        }
+    }
+    delete[] nxt;
+    return false;
+}
 
 /**
  * @brief use multiple KMP to get the position of the keywords
@@ -164,6 +238,30 @@ short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
     return 0;
 }
 
-void putWords(FILE *File, const char *Words){
-    for (short t = 0; Words[t] != '\0'; ++t) putc((int )Words[t], File);
+/**
+ * @brief to get wide chars from file, which use \" to sign start and end;
+ * @param File
+ * @param src
+ */
+void getWords_w(FILE *File, wchar_t *src){
+    auto tmp = new wchar_t [258];
+    wcsset(tmp, L'\0');
+    char c = (char )fgetc(File);
+    while (c != '\"') c = (char )fgetc(File);
+    wchar_t wc = fgetwc(File);
+    short i = 0;
+    while (wc != L'\"'){
+        if (wc == WEOF){
+            delete[] tmp;
+            if (errno == EILSEQ) throw ChartError(11);
+            throw ChartError(12);
+        }
+        tmp[i++] = wc;
+        wc = fgetwc(File);
+    }
+    //tmp[i] = tmp[i+1] = L'\0';
+    tmp[i] = L'\0';
+    src = new wchar_t [i+1];
+    wcscpy(src, tmp);
+    delete[] tmp;
 }

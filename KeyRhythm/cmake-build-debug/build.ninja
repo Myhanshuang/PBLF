@@ -61,8 +61,8 @@ build CMakeFiles/KeyRhythm.dir/Try_Catch_template.cpp.obj: CXX_COMPILER__KeyRhyt
   OBJECT_DIR = CMakeFiles\KeyRhythm.dir
   OBJECT_FILE_DIR = CMakeFiles\KeyRhythm.dir
 
-build CMakeFiles/KeyRhythm.dir/base64/base64.c.obj: C_COMPILER__KeyRhythm_unscanned_Debug E$:/Gits/PBLF/KeyRhythm/base64/base64.c || cmake_object_order_depends_target_KeyRhythm
-  DEP_FILE = CMakeFiles\KeyRhythm.dir\base64\base64.c.obj.d
+build CMakeFiles/KeyRhythm.dir/base64/base64.cpp.obj: CXX_COMPILER__KeyRhythm_unscanned_Debug E$:/Gits/PBLF/KeyRhythm/base64/base64.cpp || cmake_object_order_depends_target_KeyRhythm
+  DEP_FILE = CMakeFiles\KeyRhythm.dir\base64\base64.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\KeyRhythm.dir
   OBJECT_FILE_DIR = CMakeFiles\KeyRhythm.dir\base64
@@ -99,7 +99,7 @@ build CMakeFiles/KeyRhythm.dir/User.cpp.obj: CXX_COMPILER__KeyRhythm_unscanned_D
 #############################################
 # Link the executable KeyRhythm.exe
 
-build KeyRhythm.exe: CXX_EXECUTABLE_LINKER__KeyRhythm_Debug CMakeFiles/KeyRhythm.dir/main.cpp.obj CMakeFiles/KeyRhythm.dir/Try_Catch_template.cpp.obj CMakeFiles/KeyRhythm.dir/base64/base64.c.obj CMakeFiles/KeyRhythm.dir/Chart.cpp.obj CMakeFiles/KeyRhythm.dir/ChartWork.cpp.obj CMakeFiles/KeyRhythm.dir/ChartRead.cpp.obj CMakeFiles/KeyRhythm.dir/User.cpp.obj
+build KeyRhythm.exe: CXX_EXECUTABLE_LINKER__KeyRhythm_Debug CMakeFiles/KeyRhythm.dir/main.cpp.obj CMakeFiles/KeyRhythm.dir/Try_Catch_template.cpp.obj CMakeFiles/KeyRhythm.dir/base64/base64.cpp.obj CMakeFiles/KeyRhythm.dir/Chart.cpp.obj CMakeFiles/KeyRhythm.dir/ChartWork.cpp.obj CMakeFiles/KeyRhythm.dir/ChartRead.cpp.obj CMakeFiles/KeyRhythm.dir/User.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\KeyRhythm.dir

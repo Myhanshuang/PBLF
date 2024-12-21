@@ -36,18 +36,19 @@ int main() {
         }
         fprintf(t, "     %10d\n", ptr ->timeStamp);
     }*/
-    User uu, uc;
+    User uu;
     scanf("%s", uu.userName);
-    printf("tt\n");
     scanf("%s", uu.Password);
-    printf("aa\n");
-    uu.save(u);
-    printf("%s\n%s\n", uu.userName, uu.Password);
-    if (!uu.newUser(u)) printf("00\n");
-    scanf("%s", uc.userName);
-    scanf("%s", uc.Password);
-    printf("%s\n%s\n", uc.userName, uc.Password);
-    if (!uc.newUser(u)) printf("0c\n");
-    if (!uc.correct(u)) printf("ff\n");
+    Chart :: ChartAct CA;
+    wchar_t *chs = nullptr;
+
+    FILE *f =fopen("in.txt", "r+");
+    //printf("tt\n");
+    getWords_w(f, chs);
+    //printf("aa\n");
+    printf("%ls\n", chs);
+    UserSaveData USD(uu, CA, chs);
+    USD.save("userdata/history");
+    //printf("ss\n");
     return 0;
 }
