@@ -435,6 +435,35 @@ void PlayWindow::removeWaiting(QGraphicsTextItem * waiting) {
     delete waiting;
 }
 
+void PlayWindow::playColumnEffect(int column) {
+    // 创建特效的图形项目
+    int sceneWidth = scene->width();
+    int sceneHeight = scene->height();
+    int channelAreaWidth = sceneWidth * 1 / 3;
+    int channelStartX = (sceneWidth - channelAreaWidth) / 2; // Center the channels
+    // Width of each channel
+    int channelWidth = channelAreaWidth / currentChart.Column;
+    int x = channelStartX + column * channelWidth;
+    QGraphicsRectItem* effect = new QGraphicsRectItem(x, checkerLineHeight, channelWidth, 15); // 根据需要调整大小
+    effect->setBrush(QBrush(Qt::green)); // 设置特效的颜色，可以是任何颜色或渐变
+    // effect->setPos(scene->width() / 2, scene->height() / 2);
+
+    // 添加特效到场景中
+    scene->addItem(effect);
+
+    // 设置特效的动画，例如淡出或缩放
+    QTimer *timer = new QTimer(this); // Create the timer with the parent as 'this'
+    connect(timer, &QTimer::timeout, this, [=]() {
+        if (effect->opacity() > 0) {
+            effect->setOpacity(effect->opacity() - 0.05);
+        } else {
+            timer->stop();
+        }
+    });
+    timer->start(perFrame);
+
+}
+
 void PlayWindow::startGame() {// finished
 
     //reset the data
@@ -455,8 +484,7 @@ void PlayWindow::startGame() {// finished
     }
 
     // Re-add the checker line
-    int checkerLineY = scene->height() * 3 / 4;
-    checkerLine = new QGraphicsLineItem(0, checkerLineY, scene->width(), checkerLineY);
+    checkerLine = new QGraphicsLineItem(0, checkerLineHeight, scene->width(), checkerLineHeight);
     checkerLine->setPen(QPen(Qt::yellow, 4));
     scene->addItem(checkerLine);
 
@@ -605,7 +633,7 @@ void PlayWindow::spawnNotes() {// finished
                 {
                     //need to change the form of the note]
                     QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, 20);
-                    note->setBrush(Qt::green); // Example color
+                    note->setBrush(Qt::cyan); // Example color
                     scene->addItem(note);
                     notes.append({note, 0, 0, 0, i}); // Store in notes vector for updates
                 }
@@ -634,16 +662,18 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
             showPauseMenu();
         }
     }
-    qDebug() << "Key pressed:" << event->key();
-    qDebug() << "Key pressed:" << event->key();
+
     if (event->isAutoRepeat()){
-        qDebug() << "FUCK";
+        qDebug() << "long press";
         return ;
     }
 
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return ;
+
+    playColumnEffect(i);
+
     for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
         auto now = *ptr;
         if (now.column != i || now.holdJudge) continue;

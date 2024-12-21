@@ -69,6 +69,7 @@ private:
     void initGameState();
     void addWaiting(QGraphicsTextItem *waiting);
     void removeWaiting(QGraphicsTextItem *waiting);
+    void playColumnEffect(int column);
     QPixmap setOpacityImage(const QString &imagePath, qreal opacity);
     QPixmap createDarkenedImage(const QString& imagePath, qreal opacity = 0.5);
     QGraphicsScene* scene;
@@ -92,7 +93,7 @@ private:
 
     QVector<TempStoreInScene> notes;
     int gameTime;
-    int checkerLineHeight;
+    int checkerLineHeight = 720 * 3 / 4;
 
     // Pause Menu
     QGraphicsRectItem* pauseMenuBackground;
