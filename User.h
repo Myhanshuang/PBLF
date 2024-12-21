@@ -5,6 +5,22 @@
 #ifndef KEYRHYTHM_USER_H
 #define KEYRHYTHM_USER_H
 
+#ifndef _DIRENT_H_
+#include <dirent.h>
+#endif
+
+#ifndef _INC_TYPES
+#include <sys/types.h>
+#endif
+
+#ifndef _INC_STAT
+#include <sys/stat.h>
+#endif
+
+#ifndef _GLIBCXX_CTIME
+#include <ctime>
+#endif
+
 /**
  * @class User
  * @brief to save user data
@@ -23,14 +39,19 @@ public :
     bool correct(FILE *Saving);
 };
 
-class UserSaveData : public User, public Chart :: ChartAct{
+class UserSaveData{
 public :
-    int missKeys;
-    char ChartName[257]{};
+    char userName[13]{};
+    time_t timeSign = time(nullptr);
+    wchar_t *songTitle = nullptr;
+    Chart :: ChartAct playData;
 
     UserSaveData();
+    UserSaveData(User U, Chart :: ChartAct &CA, wchar_t *ch);
+    ~UserSaveData();
 
-    void save(FILE *History);
+    void save(const char* historyPath);
+
 };
 
 #endif //KEYRHYTHM_USER_H
