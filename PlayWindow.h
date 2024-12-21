@@ -23,7 +23,7 @@
 #include <QGraphicsProxyWidget>
 
 #ifndef offsetFromLineToNote//(liney, notey)
-#define offsetFromLineToNote(liney, notey) abs(abs(notey - liney)* perFrame / speed - gameTime)
+#define offsetFromLineToNote(liney, notey) abs(abs(notey - liney)/ speed * perFrame)
 #endif
 
 // Replace QGraphicsPixmapItem* with ClickablePixmapItem*

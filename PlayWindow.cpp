@@ -678,7 +678,7 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
 
 void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
     if (!event->isAutoRepeat()){
-        qDebug() << "ASS";
+        // qDebug() << "ASS";
         return ;
     }
     short i = 0;
