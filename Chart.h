@@ -91,6 +91,7 @@ public :
         this ->Column = Right ->Column;
         this ->Offset = Right ->Offset;
         this ->ChartHead = Right ->ChartHead;
+        this ->Acting = Right ->Acting;
         return *this;
     }
 };

@@ -758,6 +758,13 @@ void PlayWindow::initGameState(){
     musicPlayer->setPosition(0);
     statsLabel->setText("Accuracy: 100.00\%\nScore: 0\nCombo: 0");
     currentChart = stasticChart;
+    //reload the '=' failed
+    currentChart.Acting ->Accuracy = 100.0l;
+    currentChart.Acting ->Combo = 0;
+    currentChart.Acting ->Score = 0;
+    currentChart.Acting ->maxCombo = 0;
+    memset(currentChart.Acting ->judgeResult, 0, sizeof (int) * 9);
+
 }
 
 Chart::ChartAct PlayWindow::gameEnd(){
