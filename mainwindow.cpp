@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget *parent)
     songList = new QListWidget(this);
     previewImage = new QLabel(this);
     previewImage->setAlignment(Qt::AlignCenter);
-    previewImage->setFixedSize(800, 800);//修改主页图片大小！！！！
+    previewImage->setFixedSize(800, 720);//修改主页图片大小！！！！
 
     QHBoxLayout *mainLayout = new QHBoxLayout();
     mainLayout->addWidget(songList, 1);
@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     setWindowTitle("音游主界面");
-    resize(1000, 800);
+    resize(1280, 720);
 
     // 创建 SettingsWindow 页面
     SettingsWindow *settingsWindow = new SettingsWindow();
@@ -100,16 +100,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     // 创建 PlayWindow 页面
     // PlayWindow *
-    playWindow = new PlayWindow();
+    playWindow = new PlayWindow(this);
     stackedWidget->addWidget(playWindow);
 
     connect(playWindow, &PlayWindow::requestToHomePage, this, &MainWindow:: switchToMainPage);
-    connect(playWindow, &PlayWindow::requestToResultPage, this, &MainWindow::onRequestToResultPage);
-    connect(playWindow, &PlayWindow::requestToRestartGame, this, &MainWindow::onRequestToRestartGame);
+
 
     // 创建 ResultPage 页面
     // ResultPage
-    resultPage = new ResultPage();
+    resultPage = new ResultPage(this);
     stackedWidget->addWidget(resultPage);
 
     // 信号与槽连接
@@ -275,12 +274,18 @@ void MainWindow::itemClicked(QListWidgetItem *item) {
     if (reply == QMessageBox::Yes) {
         // 构造传递给游戏窗口的路径
         QString fileSource = ":/Chart/" + songFolderName + "/" + songFolderName;
+        /* qDebug() << "fileSource: " << fileSource;
+        if (!QFile::exists(fileSource)) {
+            qDebug() << "File does not exist!";
+            return;//测试用
+        }*/
 
         // 获取 PlayWindow 并传递文件路径
         PlayWindow *playWindow = qobject_cast<PlayWindow*>(stackedWidget->widget(2));
         if (playWindow) {
             playWindow->addFileSource(fileSource);  // 将文件路径传递给 PlayWindow
             stackedWidget->setCurrentIndex(2);  // 切换到游戏页面
+            playWindow->start();
         }
     }
 }
@@ -292,20 +297,8 @@ void MainWindow::switchToMainPage() {
 
 
 void MainWindow::onRequestToRestartGame() {
-    // 删除现有的 PlayWindow 实例
-    if (playWindow) {
-        stackedWidget->removeWidget(playWindow);  // 从 stackedWidget 中移除旧的 PlayWindow
-        delete playWindow;  // 销毁现有的 PlayWindow 实例
-        playWindow = nullptr;  // 将指针设为 nullptr，确保不再访问
-    }
-
-    // 创建新的 PlayWindow 实例
-    playWindow = new PlayWindow();  // 创建新的 PlayWindow 实例
-    stackedWidget->addWidget(playWindow);  // 将新的 PlayWindow 添加到 stackedWidget
-
-    // 切换到新的 PlayWindow 页面
-    stackedWidget->setCurrentIndex(2);  // 切换到新的 PlayWindow 页面
-    qDebug() << "Game Restarted";  // 输出调试信息，确认游戏重启
+    stackedWidget->setCurrentIndex(2);
+    playWindow->restartGame();
 }
 
 void MainWindow::onRequestToResultPage() {
@@ -322,17 +315,17 @@ void MainWindow::onRequestToResultPage() {
         evaluation = 'C';
     }
 
- //    resultPage->setResults(playWindow->currentChart.Acting->judgeResult[0],
- //                       playWindow->currentChart.Acting->judgeResult[1],
- //                       playWindow->currentChart.Acting->judgeResult[2],
- //                       playWindow->currentChart.Acting->judgeResult[3],
- //                       playWindow->currentChart.noteCount - playWindow->currentChart.Acting->judgeResult[0] - playWindow->currentChart.Acting->judgeResult[1] - playWindow->currentChart.Acting->judgeResult[2] - playWindow->currentChart.Acting->judgeResult[3],
- //                       playWindow->currentChart.Acting->Accuracy,
- //                       playWindow->currentChart.Acting->maxCombo,
- //                       evaluation,
- //                       playWindow->currentChart.Acting->Score,
- //                       playWindow->currentChart.songTitle,
- //                       playWindow->readFileSource().append(".png"));
+    //    resultPage->setResults(playWindow->currentChart.Acting->judgeResult[0],
+    //                       playWindow->currentChart.Acting->judgeResult[1],
+    //                       playWindow->currentChart.Acting->judgeResult[2],
+    //                       playWindow->currentChart.Acting->judgeResult[3],
+    //                       playWindow->currentChart.noteCount - playWindow->currentChart.Acting->judgeResult[0] - playWindow->currentChart.Acting->judgeResult[1] - playWindow->currentChart.Acting->judgeResult[2] - playWindow->currentChart.Acting->judgeResult[3],
+    //                       playWindow->currentChart.Acting->Accuracy,
+    //                       playWindow->currentChart.Acting->maxCombo,
+    //                       evaluation,
+    //                       playWindow->currentChart.Acting->Score,
+    //                       playWindow->currentChart.songTitle,
+    //                       playWindow->readFileSource().append(".png"));
     stackedWidget->setCurrentIndex(3);  // 切换到结果页面
     qDebug() << "Navigating to Result Page...";
 }

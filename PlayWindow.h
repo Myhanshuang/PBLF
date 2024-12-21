@@ -109,9 +109,10 @@ private:
     const int perFrame = 8; // 60 FPS, remember the perFrame is the 1 frame is 16ms, means it is the ms/p
 private slots:
     void continueGame();
-    void restartGame();
     void exitGame();
     void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+public slots:
+    void restartGame();
 
 };
 
