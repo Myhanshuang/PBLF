@@ -118,6 +118,7 @@ UserSaveData :: ~UserSaveData() {
     this->timeSign = 0;
 }
 
+/** BUG UNDER but not very serious */
 
 /**
  * @class UserSaveData
@@ -151,14 +152,7 @@ void UserSaveData :: save(const char *historyPath) {
     memcpy(path, base, sizeof (char )*(strlen(base)));
     FILE *fp = nullptr;
     time_t last;
-    int t;/*
-#ifdef WIN32
-    t = chdir(base);
-#endif
-#ifdef linux
-    t = _chdir(base);
-#endif
-    if (t == -1) throw ChartError(10);*/
+    short t;
     char *st = new char [29];
     char *se = new char [29];
     {

@@ -238,6 +238,9 @@ short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
     return 0;
 }
 
+
+/** BUG UNDER */
+
 /**
  * @brief to get wide chars from file, which use \" to sign start and end;
  * @param File
