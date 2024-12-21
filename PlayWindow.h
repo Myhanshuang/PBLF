@@ -94,7 +94,7 @@ private:
     QVector<TempStoreInScene> notes;
     int gameTime;
     int checkerLineHeight = 720 * 3 / 4;
-
+    bool gameStatus = 0;//allow change
     // Pause Menu
     QGraphicsRectItem* pauseMenuBackground;
     ClickablePixmapItem* continueButton;

@@ -184,7 +184,7 @@ void PlayWindow::showPauseMenu() { // finished
     musicPlayer->pause();
     gameTimer->stop();
     isPaused = true;
-
+    gameStatus = 1;
     // Add a semi-transparent background
     pauseMenuBackground = new QGraphicsRectItem(0, 0, scene->width(), scene->height());
     pauseMenuBackground->setBrush(QBrush(QColor(0, 0, 0, 150))); // Semi-transparent black
@@ -236,6 +236,7 @@ void PlayWindow::hidePauseMenu() { // finished
     scene -> addItem(waiting);
 
     isPaused = false;
+    gameStatus = 1;
     //wait 1000ms after pause to start
     QElapsedTimer timer;
     timer.start();
@@ -244,6 +245,7 @@ void PlayWindow::hidePauseMenu() { // finished
         QCoreApplication::processEvents();
     }
 
+    gameStatus = 0;
     // Remove pause menu items
     if (pauseMenuBackground) {
         scene->removeItem(pauseMenuBackground);
@@ -270,8 +272,10 @@ void PlayWindow::hidePauseMenu() { // finished
     scene -> removeItem(waiting);
     delete waiting;
     // Resume the game
+    gameStatus = 0;
     musicPlayer->play();
     gameTimer->start();
+
 }
 
 void PlayWindow::resizeEvent(QResizeEvent* event) {//finished
@@ -514,6 +518,7 @@ void PlayWindow::startGame() {// finished
     waiting -> setZValue(100);
     scene -> addItem(waiting);
 
+    gameStatus = 1;
     QElapsedTimer timer;
     timer.start();
     while (timer.elapsed() < 2000) {
@@ -524,7 +529,7 @@ void PlayWindow::startGame() {// finished
     delete waiting;
     // Load the first notes based on the chart
     //spawnNotes();
-
+    gameStatus = 0;
 
     // 4. Start the game timer
     musicPlayer->setPosition(0);
@@ -659,15 +664,21 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
         if (isPaused) {
             hidePauseMenu();
         } else {
+            if(gameStatus)return ;
             showPauseMenu();
         }
     }
 
     if (event->isAutoRepeat()){
-        qDebug() << "long press";
+        // qDebug() << "long press";
         return ;
     }
 
+    if(gameStatus)
+    {
+        // qDebug() << "refused to press";
+        return ;
+    }
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return ;
