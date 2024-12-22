@@ -336,7 +336,7 @@ void MainWindow::onRequestToRestartGame() {
 void MainWindow::onRequestToResultPage() {
     //上面这个函数能正常运作不re就对
     //这个函数等wdx更新了就对了
-    // UserSaveData(user, playWindow->currentChart.Acting, playWindow->currentChart.songTitle);
+    UserSaveData(currentUser, *playWindow->currentChart.Acting, playWindow->currentChart.songTitle);
     QString evaluation = "F";
     if(playWindow->currentChart.Acting->Accuracy >= 95){
         evaluation = "S";
