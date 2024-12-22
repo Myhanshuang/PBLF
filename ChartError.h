@@ -78,6 +78,10 @@
 ///< @brief when searching, you need at least one chart
 ///< @addtogroup ErrorException
 
+#define Exception14 "Wrong history timestamp"
+///< @brief delete a history record need it be existed before
+///< @addtogroup ErrorException
+
 class ChartError : public std :: exception{
 public :
     short *ErrorCode;
@@ -108,6 +112,7 @@ public :
             case 11: return Exception11;
             case 12: return Exception12;
             case 13: return Exception13;
+            case 14: return Exception14;
 
             default :
                 return nullptr;

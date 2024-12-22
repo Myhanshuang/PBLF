@@ -18,6 +18,10 @@
 #include <ctime>
 #endif
 
+#ifndef _GLIBCXX_CWCHAR
+#include <cwchar>
+#endif //_GLIBCXX_CWCHAR
+
 #ifndef _GLIBCXX_IOSTREAM
 #include <iostream>
 #endif //_GLIBCXX_IOSTREAM
@@ -38,9 +42,9 @@
 #include <error.h>
 #endif
 
-#ifndef KEYRHYTHM_CHARTERROR_H
-#include "ChartError.h"
-#endif //KEYRHYTHM_CHARTERROR_H
+#ifndef KEYRHYTHM_CHARTWORK_H
+#include "ChartWork.h"
+#endif //KEYRHYTHM_CHARTWORK_H
 
 /**
  * @brief get value in file (time_t)
@@ -271,32 +275,158 @@ short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
  * @brief to get wide chars from file, which use \" to sign start and end;
  * @param File
  * @param src
+ * @return \c bool (0 is finished, 1 is failed)
  */
-void getWords_w(FILE *File, wchar_t *src){
+bool getWords_w(FILE *File, wchar_t *src){
     wcsset(src, L'\0');
     wchar_t tmp[5];
     wcsset(tmp, L'\0');
     char c = (char )fgetc(File);
-    while (c!='\"') c = (char )fgetc(File);
+    if (c == EOF) return true;
+    while (c!='\"'){
+        c = (char )fgetc(File);
+        if (c == EOF) return true;
+    }
     wchar_t wc = fgetwc(File);
     while (wc != L'\"'){
+        if (wc == WEOF){
+            if (errno == EILSEQ) throw ChartError(11);
+            throw ChartError(12);
+            return true;
+        }
+        wcsset(tmp, L'\0');
+        tmp[0] = wc;
+        wcscat(src, tmp);
+        wc = fgetwc(File);
+    }
+    return false;
+}
+
+/**
+ * @brief to get wide chars from file, which use nothing to sign start and end;
+ * @param File
+ * @param src
+ */
+void getWordsW(FILE *File, wchar_t *src){
+    wcsset(src, L'\0');
+    wchar_t tmp[5];
+    wcsset(tmp, L'\0');
+    wchar_t wc = fgetwc(File);
+    while (wc != L'\n'){
         if (wc == WEOF){
             if (errno == EILSEQ) throw ChartError(11);
             throw ChartError(12);
         }
         wcsset(tmp, L'\0');
         tmp[0] = wc;
-        putwchar(wc);
         wcscat(src, tmp);
         wc = fgetwc(File);
     }
 }
 
+/**
+ * @brief set search index
+ * @brief if charts have changed, we also need to reset it, by this func
+ * @param chartPath
+ */
 void searchInit(const char *chartPath){
+    char *nowPath = new char [strlen(chartPath)+99];
+    strcpy(nowPath, chartPath);
+    nowPath[strlen(chartPath)] = '\0';
     DIR *ptr = opendir(chartPath);
     struct dirent *now = readdir(ptr);
     while (strcmp(now->d_name, "..")!=0) now = readdir(ptr);
     now = readdir(ptr);
+    strcat(nowPath, "/chartIndex");
+    FILE *idx = fopen(nowPath, "w");
+    nowPath[strlen(chartPath)+1] = '\0';
+    if (now == nullptr) throw ChartError(13);
+    wchar_t songTitle[258]{};
+    wchar_t Artist[258]{};
+    while (now != nullptr){
+        if (strcmp(now->d_name, "chartIndex")==0 || strcmp(now->d_name, "result")==0){
+            now = readdir(ptr);
+            continue;
+        }
+        strcat(nowPath, now->d_name);
+        strcat(nowPath, "/");
+        strcat(nowPath, now->d_name);
+        strcat(nowPath, ".mc");
+        printf("%s\n", nowPath);
+        FILE *fp = fopen(nowPath, "r");
+        getChartMeta(fp, songTitle, Artist);
+        fclose(fp);
+        fputs("\"\"", idx);
+        fputs(now->d_name, idx);
+        fputs("\"\"\n", idx);
+        fputws(songTitle, idx);
+        fputwc(L'\t', idx);
+        fputws(Artist, idx);
+        fputwc(L'\n', idx);
+        nowPath[strlen(chartPath)+1] = '\0';
+        printf("%s\n", nowPath);
+        now = readdir(ptr);
+    }
+    delete[] nowPath;
+    fclose(idx);
+    closedir(ptr);
+}
 
+/**
+ * @brief search key words in index
+ * @param keyWord
+ * @param result
+ * @param chartPath
+ * @return \c bool (1 = found, 0 = not found)
+ */
+bool searchSong(const char *keyWord, const char *chartPath){
+    char *nowPath = new char [strlen(chartPath)+29];
+    strcpy(nowPath, chartPath);
+    nowPath[strlen(chartPath)] = '\0';
+    strcat(nowPath, "/chartIndex");
+    FILE *fp = fopen(nowPath, "r");
+    if (fp == nullptr){
+        searchInit(chartPath);
+        fp = fopen(nowPath, "r");
+    }
+    nowPath[strlen(chartPath)] = '\0';
+    strcat(nowPath, "/result");
+    FILE *r = fopen(nowPath, "w");
 
+    bool flag = false;
+
+    char *t = new char [2048];
+    char *p = new char [60];
+    memset(t, 0, 2048);
+    //memcpy(p, keyWord, sizeof(res)/sizeof(wchar_t ));
+   // printf( "%ls", keyWord);
+    while (!feof(fp)){
+        fgets(t, 2024, fp);
+        if (feof(fp)){
+            delete[] t;
+            delete[] p;
+            delete[] nowPath;
+            fclose(fp);
+            fclose(r);
+            return flag;
+        }
+        if (t[0] == '\"' && t[1] == '\"' && t[strlen(t)-3] == '\"'
+            && t[strlen(t)-2] == '\"' && t[strlen(t)-1] == '\n'){
+            memset(p, 0, sizeof(char )*60);
+            memcpy(p, t+2, sizeof(char )* (strlen(t)-5));
+        }
+        else{
+            if (strstr(t, keyWord) != nullptr){
+                fputs(p, r);
+                flag = true;
+                fputc((int )'\n', r);
+            }
+        }
+    }
+    delete[] t;
+    delete[] p;
+    delete[] nowPath;
+    fclose(fp);
+    fclose(r);
+    return flag;
 }

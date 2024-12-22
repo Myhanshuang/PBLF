@@ -25,9 +25,9 @@
 #include <cmath>
 #endif //_GLIBCXX_CMATH
 
-#ifndef _GLIBCXX_HAVE_WCHAR_H
+#ifndef _GLIBCXX_CWCHAR
 #include <cwchar>
-#endif //_GLIBCXX_HAVE_WCHAR_H
+#endif //_GLIBCXX_CWCHAR
 
 #ifndef _GLIBCXX_IOSTREAM
 #include <iostream>
@@ -103,6 +103,8 @@ public :
         this ->Offset = Right ->Offset;
         this ->ChartHead = Right ->ChartHead;
         this ->Acting = Right ->Acting;
+        wcsset(this ->songTitle, L'\0');
+        wcsset(this ->Artist, L'\0');
         wcscpy(this ->songTitle, Right ->songTitle);
         wcscpy(this ->Artist, Right ->Artist);
         return *this;
