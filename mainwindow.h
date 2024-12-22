@@ -47,6 +47,7 @@ public slots:
     void switchToMainPage();  // 切换到主页面
     void onRequestToRestartGame();  // 重新开始游戏
     void onRequestToResultPage();
+    void updateUsernameAfterLogout();
 };
 
 #ifndef KEYRHYTHM_SETTINGSWINDOW_H

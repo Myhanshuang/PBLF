@@ -119,10 +119,12 @@ SettingsWindow::SettingsWindow(QWidget *parent)
 
     // 信号与槽
     connect(loginButton, &QPushButton::clicked, this, &SettingsWindow::login);
-    connect(cancelButton, &QPushButton::clicked, this, &SettingsWindow::clearInputs);
+    connect(cancelButton, &QPushButton::clicked, this, &SettingsWindow::logout);
+    connect(cancelButton, &QPushButton::clicked, this, &SettingsWindow::onCancelLogout);
     connect(changeKeysButton, &QPushButton::clicked, this, &SettingsWindow::startKeyBinding);
     connect(backButton, &QPushButton::clicked, this, &SettingsWindow::onBackClicked);  // 返回按钮点击信号
     connect(registerButton, &QPushButton::clicked, this, &SettingsWindow::registerUser);
+    connect(this, &SettingsWindow::usernameUpdated, this, &SettingsWindow::loadHistory);
 
 }
 
@@ -257,8 +259,50 @@ void SettingsWindow::resizeEvent(QResizeEvent *event) {
     updateBackground();          // 动态更新背景图片
 }
 
-void SettingsWindow::clearInputs()
-{
+void SettingsWindow::logout() {
+    // 清空历史记录
+    clearHistory();
+
+    // 清空输入框内容
     usernameInput->clear();
     passwordInput->clear();
+
+}
+void SettingsWindow::loadHistory(const QString &username) {
+    historyList->clear();
+
+    QString userDir = "../../history/" + username + "/";
+    QDir dir(userDir);
+
+    if (!dir.exists()) {
+        historyList->addItem("暂无历史记录");
+        return;
+    }
+
+    QStringList files = dir.entryList(QDir::Files);
+    for (const QString &fileName : files) {
+        QFile file(userDir + fileName);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+            QString songTitle = in.readLine();
+            QString score = in.readLine();
+            QString accuracy = in.readLine();
+            QString maxCombo = in.readLine();
+
+            QString displayText = QString("%1 - 分数: %2 准确率: %3% 最大连击: %4")
+                                      .arg(songTitle, score, accuracy, maxCombo);
+            historyList->addItem(displayText);
+            file.close();
+        }
+    }
+}
+
+void SettingsWindow::clearHistory() {
+    historyList->clear();  // 清空历史记录列表
+    historyList->addItem("暂无历史记录");  // 显示占位信息
+}
+
+void SettingsWindow::onCancelLogout() {
+    // 发出取消登录的信号
+    emit logoutCancelled();
 }

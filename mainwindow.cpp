@@ -17,6 +17,7 @@
 
 ResultPage *resultPage;
 PlayWindow *playWindow;
+SettingsWindow *settingsWindow;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), currentUserName("未登录"),
@@ -131,13 +132,13 @@ QWidget {
     resize(1280, 720);
 
     // 创建 SettingsWindow 页面
-    SettingsWindow *settingsWindow = new SettingsWindow();
+    settingsWindow = new SettingsWindow(this);
     stackedWidget->addWidget(settingsWindow);
 
     connect(settingsWindow, &SettingsWindow::loginSuccess, this, &MainWindow::switchToMainPage);
     connect(settingsWindow, &SettingsWindow::usernameUpdated, this, &MainWindow::updateUsername);
     connect(settingsWindow, &SettingsWindow::backToMainPage, this, &MainWindow::switchToMainPage);  // 连接返回主页面的信号
-
+    connect(settingsWindow, &SettingsWindow::logoutCancelled, this, &MainWindow::updateUsernameAfterLogout);
     // 创建 PlayWindow 页面
     // PlayWindow *
     playWindow = new PlayWindow(this);
@@ -324,6 +325,7 @@ void MainWindow::showLogoutConfirmation()
         if (reply == QMessageBox::Yes) {
             currentUserName = "未登录";  // 清空当前用户名
             usernameLabel->setText(currentUserName); // 更新显示的用户名
+            settingsWindow->logout();
 
         }
     }
@@ -405,4 +407,10 @@ void MainWindow::onRequestToResultPage() {
     //                       playWindow->readFileSource().append(".png"));
     stackedWidget->setCurrentIndex(3);  // 切换到结果页面
     qDebug() << "Navigating to Result Page...";
+}
+
+
+void MainWindow::updateUsernameAfterLogout() {
+    currentUserName = "未登录";  // 更新用户名为“未登录”
+    usernameLabel->setText(currentUserName);  // 更新显示的用户名
 }
