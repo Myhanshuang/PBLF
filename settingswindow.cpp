@@ -4,7 +4,10 @@
 #include <QFileDialog>
 #include <QKeyEvent>
 #include "Chart.h"
-#include "User.h"  // 引入 User 类
+#include "User.h"
+#include <QPalette>
+#include <QBrush>
+#include <QPixmap>
 
 // 在 settingswindow.cpp 中引用 KeyCode
 extern int KeyCode[9];
@@ -14,7 +17,7 @@ SettingsWindow::SettingsWindow(QWidget *parent)
 {
     // 添加返回按钮
     backButton = new QPushButton("<", this);  // 创建返回按钮
-    backButton->setFixedSize(30, 30);         // 设置按钮大小
+    backButton->setFixedSize(40, 40);         // 设置按钮大小
     backButton->setStyleSheet("font-size: 20px; font-weight: bold;");  // 设置按钮样式，便于显示 "<"
 
 
@@ -36,6 +39,10 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     key4Label = new QLabel("未设置", this);
     changeKeysButton = new QPushButton("开始修改键位", this);
 
+    // 历史记录部分
+    historyList = new QListWidget(this); // 创建一个空的列表控件
+    historyList->addItem("暂无历史记录"); // 初始显示一条占位信息
+
     // 登录部分布局
     QVBoxLayout *loginLayout = new QVBoxLayout;
     loginLayout->addWidget(new QLabel("用户名:"));
@@ -45,6 +52,7 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     loginLayout->addWidget(loginButton);
     loginLayout->addWidget(cancelButton);
     loginLayout->addWidget(registerButton);  // 将注册按钮添加到布局中
+    loginLayout->setSpacing(10); // 减少控件之间的空白
 
     // 键位设置部分布局
     QVBoxLayout *keyLayout = new QVBoxLayout;
@@ -57,14 +65,57 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     keyLayout->addWidget(new QLabel("键位4:"));
     keyLayout->addWidget(key4Label);
     keyLayout->addWidget(changeKeysButton);
+    keyLayout->setSpacing(10); // 减少控件之间的空白
 
-    // 总布局
+
+    // 左侧布局（登录 + 键位）
+    QVBoxLayout *leftLayout = new QVBoxLayout;
+    leftLayout->addLayout(loginLayout);
+    leftLayout->addLayout(keyLayout);
+    leftLayout->addStretch(); // 动态填充底部空白
+
+    // 主布局
     QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addWidget(backButton);  // 将返回按钮添加到布局
-    mainLayout->addLayout(loginLayout);
-    mainLayout->addLayout(keyLayout);
+    mainLayout->addLayout(leftLayout, 1);       // 左侧为登录和键位模块，权重1
+    mainLayout->addWidget(historyList, 2);      // 右侧为历史记录模块，权重2
+    mainLayout->setSpacing(20);                // 左右模块间距
 
-    setLayout(mainLayout);
+    // 最外层布局
+    QVBoxLayout *outerLayout = new QVBoxLayout(this);
+    outerLayout->addWidget(backButton, 0, Qt::AlignLeft | Qt::AlignTop); // 左上角对齐
+    outerLayout->addLayout(mainLayout);     // 主布局
+    outerLayout->setContentsMargins(10, 10, 10, 10); // 设置边距
+
+    setLayout(outerLayout);
+
+
+
+    setStyleSheet(R"(
+    QLineEdit, QPushButton, QListWidget, QLabel {
+        background-color: rgba(255, 255, 255, 200); /* 半透明白色背景 */
+        color: black; /* 字体颜色为黑色 */
+        border: 2px solid black; /* 加粗的黑色边框 */
+        border-radius: 5px; /* 圆角效果 */
+        padding: 5px; /* 内边距 */
+        font-size: 18px; /* 字体大小 */
+    }
+    QPushButton:hover {
+        background-color: rgba(200, 200, 200, 255); /* 鼠标悬浮时更亮 */
+    }
+    QListWidget::item {
+        color: black; /* 列表项字体颜色 */
+    }
+    QListWidget {
+        background-color: rgba(255, 255, 255, 200); /* 列表背景半透明 */
+        border: 2px solid black; /* 加粗边框 */
+    }
+)");
+
+
+    updateBackground();
+
+    // 设置可接受键盘事件
+    setFocusPolicy(Qt::StrongFocus);
 
     // 信号与槽
     connect(loginButton, &QPushButton::clicked, this, &SettingsWindow::login);
@@ -73,8 +124,7 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     connect(backButton, &QPushButton::clicked, this, &SettingsWindow::onBackClicked);  // 返回按钮点击信号
     connect(registerButton, &QPushButton::clicked, this, &SettingsWindow::registerUser);
 
-    // 设置可接受键盘事件
-    setFocusPolicy(Qt::StrongFocus);
+
 }
 
 SettingsWindow::~SettingsWindow() {}
@@ -165,6 +215,14 @@ void SettingsWindow::startKeyBinding() {
 void SettingsWindow::keyPressEvent(QKeyEvent *event) {
     if (keysPressed.size() < 4) {  // 限制最多只记录四个按键
         int key = event->key();
+
+        // 检查当前按下的按键是否已经存在于 keysPressed 中
+        if (keysPressed.contains(key)) {
+            // 如果按键已经存在，给出提示信息
+            QMessageBox::warning(this, "键位重复", "该键位已被绑定，请选择其他按键！");
+            return;  // 忽略当前按键
+        }
+
         keysPressed.append(key);  // 保存按下的键
 
         // 更新界面上的标签
@@ -186,8 +244,19 @@ void SettingsWindow::keyPressEvent(QKeyEvent *event) {
 }
 
 
+void SettingsWindow::updateBackground() {
+    QPalette palette;
+    QPixmap background("../../SettingsWindowBackground/SettingsWindow.jpg"); // 替换为你的图片路径
+    background = background.scaled(size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    palette.setBrush(QPalette::Window, QBrush(background));
+    setPalette(palette);
+    setAutoFillBackground(true);
+}
 
-
+void SettingsWindow::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event); // 保持父类的行为
+    updateBackground();          // 动态更新背景图片
+}
 
 void SettingsWindow::clearInputs()
 {

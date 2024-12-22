@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QTextStream>
 #include <QFile>
+#include <QListWidget>
 
 class SettingsWindow : public QWidget
 {
@@ -29,6 +30,7 @@ public:
     // 在 SettingsWindow 类的声明部分添加
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;  // 声明 resizeEvent 方法
 
 
 signals:
@@ -52,8 +54,10 @@ private:
     QLabel *key3Label;
     QLabel *key4Label;
     QPushButton *changeKeysButton;
+    QListWidget *historyList;  // 声明历史记录列表变量
 
     QList<int> keysPressed;  // 存储按下的键
+    void updateBackground();  // 声明 updateBackground 方法
 
 };
 

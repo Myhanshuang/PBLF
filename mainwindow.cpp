@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), currentUserName("未登录"),
     baseSongIndex(1) {
 
+
     // 创建 QStackedWidget 控件
     stackedWidget = new QStackedWidget(this);
     setCentralWidget(stackedWidget);
@@ -45,9 +46,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     importButton = new QPushButton("导入", this);
     usernameLabel = new QLabel(currentUserName, this);
-    // 设置用户名标签为可点击链接
-    usernameLabel->setText("<a href='#'>" + currentUserName + "</a>");
-    usernameLabel->setTextInteractionFlags(Qt::TextBrowserInteraction); // 使其成为可点击链接
+
+    usernameLabel->setText("未登录");
+
 
     settingsButton = new QPushButton("⚙️", this);
     settingsButton->setFixedSize(30, 30);
@@ -75,6 +76,46 @@ MainWindow::MainWindow(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(mainWidget);
     layout->addLayout(topLayout);
     layout->addLayout(mainLayout);
+
+    setStyleSheet(R"(
+    QMainWindow {
+        background-color: white;  /* 设置主窗口背景为白色 */
+    }
+
+QWidget {
+        background-color: white;  /* 所有 QWidget 派生类背景为白色 */
+    }
+
+    QLineEdit, QPushButton, QListWidget, QLabel {
+        background-color: white;  /* 设置控件背景为白色 */
+        color: black;  /* 字体颜色为黑色 */
+        border: 2px solid black; /* 黑色边框 */
+        border-radius: 5px; /* 圆角效果 */
+        padding: 5px; /* 内边距 */
+        font-size: 18px; /* 字体大小 */
+    }
+
+    QPushButton:hover {
+        background-color: rgba(200, 200, 200, 255); /* 鼠标悬浮时更亮 */
+    }
+
+    QListWidget::item {
+        color: black; /* 列表项字体颜色 */
+    }
+
+    QListWidget {
+        background-color: white; /* 设置列表背景为白色 */
+        border: 2px solid black; /* 列表项边框颜色 */
+    }
+
+    QLabel#titleLabel {
+        font-size: 28px; /* 标题字体更大 */
+        font-weight: bold;
+        color: black; /* 标题文字颜色为黑色 */
+    }
+)");
+
+
 
     // 加载歌曲列表
     loadSongs();
@@ -123,6 +164,9 @@ MainWindow::~MainWindow() {}
 void MainWindow::loadSongs() {
     songList->clear();
 
+    // 临时断开信号连接，避免加载过程中触发点击事件
+    disconnect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
+
     // 构造正确的相对路径
     QString baseDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("../../..");
     QString chartPath = baseDir + "/KeyRhythm/chart";
@@ -158,6 +202,10 @@ void MainWindow::loadSongs() {
             }
         }
     }
+
+    // 重新连接信号
+    connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
+
     // 启用悬停信号
     connect(songList, &QListWidget::itemEntered, this, &MainWindow::displaySongImage);
     connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
@@ -241,8 +289,17 @@ void MainWindow::importFolder() {
 
 void MainWindow::updateUsername(const QString &name) {
     currentUserName = name;  // 更新用户名
-    usernameLabel->setText("<a href='#'>" + currentUserName + "</a>");  // 更新界面上显示的用户名
+    if (currentUserName == "未登录") {
+        // 未登录时禁用点击事件
+        usernameLabel->setText(currentUserName);
+        usernameLabel->setTextInteractionFlags(Qt::NoTextInteraction);  // 禁用文本交互
+    } else {
+        // 已登录时设置为可点击链接
+        usernameLabel->setText("<a href='#'>" + currentUserName + "</a>");
+        usernameLabel->setTextInteractionFlags(Qt::TextBrowserInteraction); // 启用文本交互
+    }
 }
+
 
 void MainWindow::openSettings()
 {
@@ -251,19 +308,38 @@ void MainWindow::openSettings()
 
 
 
-// 在MainWindow类中定义槽函数
+
+
 void MainWindow::showLogoutConfirmation()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "退出登录", "您确定要退出登录吗？",
-                                  QMessageBox::Yes | QMessageBox::No);
-    if (reply == QMessageBox::Yes) {
-        currentUserName = "未登录"; // 清空当前用户名
-        usernameLabel->setText(currentUserName); // 更新显示的用户名
+    if (currentUserName != "未登录") {
+        // 用户已登录，弹出退出登录确认框
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "退出登录", "您确定要退出登录吗？",
+                                      QMessageBox::Yes | QMessageBox::No);
+        // 设置对话框背景为白色
+        QMessageBox *msgBox = qobject_cast<QMessageBox*>(this->sender());
+        if (msgBox) {
+            msgBox->setStyleSheet("QMessageBox { background-color: white; }");
+        }
+        if (reply == QMessageBox::Yes) {
+            currentUserName = "未登录";  // 清空当前用户名
+            usernameLabel->setText(currentUserName); // 更新显示的用户名
+
+        }
     }
 }
 
+
+
+
 void MainWindow::itemClicked(QListWidgetItem *item) {
+    // 防止多次弹出对话框，可以使用一个状态标志来标记是否已经弹出过对话框
+    static bool isDialogOpen = false;
+    if (isDialogOpen) return;  // 如果对话框已经弹出，直接返回
+
+    isDialogOpen = true;  // 标记对话框已弹出
+
     QString songFolderName = item->text();  // 获取歌曲文件夹名
     QString folderPath = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("../../..") + "/KeyRhythm/chart/" + songFolderName;
 
@@ -288,6 +364,8 @@ void MainWindow::itemClicked(QListWidgetItem *item) {
             playWindow->start();
         }
     }
+    // 重置标志，允许下一次点击
+    isDialogOpen = false;
 }
 // 切换到主页面
 void MainWindow::switchToMainPage() {
