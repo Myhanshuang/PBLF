@@ -77,43 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addLayout(topLayout);
     layout->addLayout(mainLayout);
 
-    setStyleSheet(R"(
-    QMainWindow {
-        background-color: white;  /* 设置主窗口背景为白色 */
-    }
 
-QWidget {
-        background-color: white;  /* 所有 QWidget 派生类背景为白色 */
-    }
-
-    QLineEdit, QPushButton, QListWidget, QLabel {
-        background-color: white;  /* 设置控件背景为白色 */
-        color: black;  /* 字体颜色为黑色 */
-        border: 2px solid black; /* 黑色边框 */
-        border-radius: 5px; /* 圆角效果 */
-        padding: 5px; /* 内边距 */
-        font-size: 18px; /* 字体大小 */
-    }
-
-    QPushButton:hover {
-        background-color: rgba(200, 200, 200, 255); /* 鼠标悬浮时更亮 */
-    }
-
-    QListWidget::item {
-        color: black; /* 列表项字体颜色 */
-    }
-
-    QListWidget {
-        background-color: white; /* 设置列表背景为白色 */
-        border: 2px solid black; /* 列表项边框颜色 */
-    }
-
-    QLabel#titleLabel {
-        font-size: 28px; /* 标题字体更大 */
-        font-weight: bold;
-        color: black; /* 标题文字颜色为黑色 */
-    }
-)");
 
 
 
@@ -168,7 +132,7 @@ void MainWindow::loadSongs() {
     songList->clear();
 
     // 临时断开信号连接，避免加载过程中触发点击事件
-    disconnect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
+    // disconnect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
 
     // 构造正确的相对路径
     QString baseDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("../../..");
@@ -207,7 +171,7 @@ void MainWindow::loadSongs() {
     }
 
     // 重新连接信号
-    connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
+    // connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
 
     // 启用悬停信号
     connect(songList, &QListWidget::itemEntered, this, &MainWindow::displaySongImage);

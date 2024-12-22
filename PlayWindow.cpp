@@ -762,7 +762,7 @@ void PlayWindow::restartGame() {//depart
 
     // emit requestToRestartGame();
 
-
+    if(gameStatus && (!isPaused))return ;
 
     initGameState();
     startGame();
@@ -774,12 +774,14 @@ void PlayWindow::restartGame() {//depart
 }
 
 void PlayWindow::continueGame() {//finishd
+    if(gameStatus && (!isPaused))return ;
     hidePauseMenu();
 
 }
 
 void PlayWindow::exitGame() {// i finished waiting for lyjy
     qDebug() << "Exiting game...";
+    if(gameStatus && (!isPaused))return ;
     initGameState();
     emit requestToHomePage();
 }
@@ -787,6 +789,7 @@ void PlayWindow::exitGame() {// i finished waiting for lyjy
 void PlayWindow::initGameState(){
 
     gameTime = 0;
+    gameStatus = 0;
     scene -> clear();
     notes.clear();
     pauseMenuBackground = nullptr;

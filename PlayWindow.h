@@ -95,6 +95,7 @@ private:
     int gameTime;
     int checkerLineHeight = 720 * 3 / 4;
     bool gameStatus = 0;//allow change
+    bool pauseStatus = 0;
     // Pause Menu
     QGraphicsRectItem* pauseMenuBackground;
     ClickablePixmapItem* continueButton;
