@@ -43,7 +43,7 @@ class UserSaveData{
 public :
     char userName[13]{};
     time_t timeSign = time(nullptr);
-    wchar_t *songTitle = nullptr;
+    wchar_t songTitle[258]{};
     Chart :: ChartAct playData;
 
     UserSaveData();

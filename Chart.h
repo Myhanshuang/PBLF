@@ -86,8 +86,8 @@ public :
     Measure *ChartHead = nullptr;
     ChartAct *Acting = nullptr;
 
-    wchar_t *songTitle = nullptr;
-    wchar_t *Artist = nullptr;
+    wchar_t songTitle[258]{};
+    wchar_t Artist[258]{};
 
     explicit Chart(short Keys);
     Chart(const Chart& C);
@@ -103,6 +103,8 @@ public :
         this ->Offset = Right ->Offset;
         this ->ChartHead = Right ->ChartHead;
         this ->Acting = Right ->Acting;
+        wcscpy(this ->songTitle, Right ->songTitle);
+        wcscpy(this ->Artist, Right ->Artist);
         return *this;
     }
 };

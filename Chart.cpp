@@ -22,6 +22,8 @@ Chart :: Chart(const short Keys){
     this ->Column = Keys;
     this ->ChartHead = nullptr;
     this ->Acting = new Chart :: ChartAct;
+    wcsset(this ->songTitle, L'\0');
+    wcsset(this ->Artist, L'\0');
 }
 
 /**
@@ -32,6 +34,8 @@ Chart :: Chart(){
      this ->Column = 4;
      this ->ChartHead = nullptr;
     this ->Acting = new Chart :: ChartAct;
+    wcsset(this ->songTitle, L'\0');
+    wcsset(this ->Artist, L'\0');
 }
 
 /**
@@ -51,6 +55,9 @@ Chart ::Chart(const Chart &C) {
         *this ->Acting = *(C.Acting);
     }
     else this ->Acting = C.Acting;
+    wcscpy(this ->songTitle, C.songTitle);
+    wcscpy(this ->Artist, C.Artist);
+    /*
     if (C.songTitle != nullptr){
         this ->songTitle = new wchar_t [wcslen(C.songTitle)+2];
         memcpy(this ->songTitle, C.songTitle, sizeof (wchar_t )*(wcslen(C.songTitle)+2));
@@ -60,7 +67,7 @@ Chart ::Chart(const Chart &C) {
         this ->Artist = new wchar_t [wcslen(C.Artist)+2];
         memcpy(this ->Artist, C.Artist, sizeof (wchar_t )*(wcslen(C.Artist)+2));
         this ->Artist[wcslen(C.Artist)] = this ->Artist[wcslen(C.Artist)+1] = L'\0';
-    }
+    }*/
 }
 
 /**
@@ -80,8 +87,10 @@ Chart :: ~Chart(){
         }
         delete ChartHead;
     }
-    delete[] this ->songTitle;
-    delete[] this ->Artist;
+    wcsset(this ->songTitle, L'\0');
+    wcsset(this ->Artist, L'\0');
+    /*delete[] this ->songTitle;
+    delete[] this ->Artist;*/
     delete Acting;
     this ->beatsPerMinute = this ->everyBeat = this ->accPerNote = 0.0l;
     this ->noteCount = this ->Offset = 0;

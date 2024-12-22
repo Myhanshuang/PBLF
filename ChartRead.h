@@ -61,6 +61,13 @@ bool getKeyWord_w(FILE *File, const wchar_t *KeyWord);
  ***/
 short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2);
 
+/**
+ * @brief to get wide chars from file, which use \" to sign start and end;
+ * @param File
+ * @param src
+ */
 void getWords_w(FILE *File, wchar_t *src);
+
+void searchInit(const char *chartPath);
 
 #endif //KEYRHYTHM_CHARTREAD_H

@@ -89,6 +89,7 @@ UserSaveData :: UserSaveData() {
     this ->playData = Chart :: ChartAct();
     memset(this ->userName, 0, sizeof(char )*13);
     this->timeSign = time(nullptr);
+    wcsset(this ->songTitle, L'\0');
 }
 
 /**
@@ -100,7 +101,6 @@ UserSaveData :: UserSaveData() {
  */
 UserSaveData :: UserSaveData(User U, Chart::ChartAct &CA, wchar_t *title) {
     memcpy(this ->userName, U.userName, sizeof(U.userName));
-    this ->songTitle = new wchar_t[wcslen(title)+2];
     wcscpy(this ->songTitle, title);
     this ->playData = CA;
     this->timeSign = time(nullptr);
@@ -113,12 +113,12 @@ UserSaveData :: UserSaveData(User U, Chart::ChartAct &CA, wchar_t *title) {
 UserSaveData :: ~UserSaveData() {
     this ->playData = Chart :: ChartAct();
     memset(this ->userName, 0, sizeof(char )*13);
-    delete[] this ->songTitle;
-    this ->songTitle = nullptr;
+    wcsset(this ->songTitle, L'\0');
     this->timeSign = 0;
 }
 
 /** BUG UNDER but not very serious */
+/** bug fixed easily, it happened because I set too much char[], then mistook */
 
 /**
  * @class UserSaveData
@@ -163,31 +163,25 @@ void UserSaveData :: save(const char *historyPath) {
         memset(st, 0, sizeof (char )*29);
     }
     while (strcmp(now->d_name, "..")!=0) now = readdir(ptr);
-
     now = readdir(ptr);
     while (now != nullptr){
         strcat(path, now->d_name);
-
         fp = fopen(path, "r+");
 
         if (fp == nullptr) throw ChartError(10);//error
-        printf("%s\n", base);
         if (getKeyWord_w(fp, this ->songTitle)){
-            fseek(fp, -(t+5), SEEK_END);
+            fseek(fp, -t, SEEK_END);
             while (!feof(fp)) getValueTT(fp, last);
             sprintf(st, "%lld", last);
             sprintf(se,"%s", now->d_name);
-            printf("%s\n", base);
             //To search according to index(timestamp) to find the history record of the last play
             while (strcmp(st, se) != 0){
                 sprintf(se, "%s", st);
                 fclose(fp);
-                memset(path + strlen(base), 0, strlen(se));
-                path[strlen(historyPath)] = '\0';
-                path[strlen(historyPath) + 1] = '\0';
+                path[strlen(base)] = '\0';
                 strcat(path, st);
                 fp = fopen(path, "r+");
-                fseek(fp, -t-1, SEEK_END);
+                fseek(fp, -t, SEEK_END);
                 while (!feof(fp)) getValueTT(fp, last);
                 sprintf(st, "%lld", last);
             }
@@ -197,9 +191,7 @@ void UserSaveData :: save(const char *historyPath) {
             sprintf(st, "%lld", this ->timeSign);
             fputs(st, fp);
             fclose(fp);
-            memset(path + strlen(base), 0, strlen(se));
-            path[strlen(historyPath)] = '\0';
-            path[strlen(historyPath) + 1] = '\0';
+            path[strlen(base)] = '\0';
             strcat(path, st);
             fp = fopen(path, "w+");
             fputws(this ->songTitle, fp);
@@ -224,23 +216,13 @@ void UserSaveData :: save(const char *historyPath) {
                 delete[] st;
                 fclose(fp);
                 closedir(ptr);
-                base[strlen(base)-1-strlen(this ->userName)-1-7-1]='\0';
-#ifdef WIN32
-                t = chdir(base);
-#endif
-#ifdef linux
-                t = _chdir(base);
-#endif
-                if (t == -1) throw ChartError(10);
                 delete[] path;
                 delete[] base;
             }
             return ;
         }
         fclose(fp);
-        memset(path + strlen(base), 0, strlen(now->d_name));
-        path[strlen(historyPath)] = '\0';
-        path[strlen(historyPath) + 1] = '\0';
+        path[strlen(base)] = '\0';
         now = readdir(ptr);
     }
 
@@ -250,7 +232,6 @@ void UserSaveData :: save(const char *historyPath) {
     path[strlen(base) + 1] = '\0';
     strcat(path, st);
     fp = fopen(path, "w+");
-    wprintf(L"%s\n", this ->songTitle);
     fputws(this ->songTitle, fp);
     fputwc(L'\n', fp);
     char *ss = new char [87];
@@ -276,6 +257,5 @@ void UserSaveData :: save(const char *historyPath) {
         delete[] path;
         delete[] base;
     }
-
 
 }
