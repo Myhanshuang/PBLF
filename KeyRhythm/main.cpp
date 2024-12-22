@@ -40,7 +40,8 @@ int main() {
     scanf("%s", uu.userName);
     scanf("%s", uu.Password);
     Chart :: ChartAct CA;
-    wchar_t *chs = nullptr;
+    wchar_t chs[258]{};
+    wcsset(chs, L'\0');
 
     FILE *f =fopen("in.txt", "r+");
     //printf("tt\n");

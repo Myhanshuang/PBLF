@@ -74,6 +74,10 @@
 ///< @brief using wchar_t as the source of error
 ///< @addtogroup ErrorException
 
+#define Exception13 "Empty chart folder"
+///< @brief when searching, you need at least one chart
+///< @addtogroup ErrorException
+
 class ChartError : public std :: exception{
 public :
     short *ErrorCode;
@@ -103,6 +107,7 @@ public :
             case 10: return Exception10;
             case 11: return Exception11;
             case 12: return Exception12;
+            case 13: return Exception13;
 
             default :
                 return nullptr;

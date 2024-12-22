@@ -22,6 +22,18 @@
 #include <iostream>
 #endif //_GLIBCXX_IOSTREAM
 
+#ifndef _DIRENT_H_
+#include <dirent.h>
+#endif
+
+#ifndef _INC_TYPES
+#include <sys/types.h>
+#endif
+
+#ifndef _INC_STAT
+#include <sys/stat.h>
+#endif
+
 #ifndef NO_ERROR
 #include <error.h>
 #endif
@@ -36,9 +48,13 @@
  * @param val
  */
 void getValueTT(FILE *File, time_t & val){
-    val = 0;
     char ch = (char )getc(File);
-    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    if (ch == EOF) return ;
+    while (ch > '9' || ch < '0'){
+        ch = (char )getc(File);
+        if (ch == EOF) return ;
+    }
+    val = 0;
     while (ch < '9'+1 && ch > '0'-1){
         val = (val << 3) + (val << 1) + ch - '0';
         ch = (char )getc(File);
@@ -51,9 +67,13 @@ void getValueTT(FILE *File, time_t & val){
  * @param val
  */
 void getValueInt(FILE *File, int& val){
-    val = 0;
     char ch = (char )getc(File);
-    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    if (ch == EOF) return ;
+    while (ch > '9' || ch < '0'){
+        ch = (char )getc(File);
+        if (ch == EOF) return ;
+    }
+    val = 0;
     while (ch < '9'+1 && ch > '0'-1){
         val = (val << 3) + (val << 1) + ch - '0';
         ch = (char )getc(File);
@@ -66,9 +86,13 @@ void getValueInt(FILE *File, int& val){
  * @param val
  */
 void getValueShort(FILE *File, short & val){
-    val = 0;
     char ch = (char )getc(File);
-    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    if (ch == EOF) return ;
+    while (ch > '9' || ch < '0'){
+        ch = (char )getc(File);
+        if (ch == EOF) return ;
+    }
+    val = 0;
     while (ch < '9'+1 && ch > '0'-1){
         val = static_cast <short>((val << 3) + (val << 1) + ch - '0');
         ch = (char )getc(File);
@@ -239,7 +263,9 @@ short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
 }
 
 
-/** BUG UNDER */
+/** BUG UNDER but fixed */
+/** Which made me surprised is wchar_t doesn't have a well support for "new" */
+/** I mean, it is a piece of shit, totally */
 
 /**
  * @brief to get wide chars from file, which use \" to sign start and end;
@@ -247,24 +273,30 @@ short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
  * @param src
  */
 void getWords_w(FILE *File, wchar_t *src){
-    auto tmp = new wchar_t [258];
+    wcsset(src, L'\0');
+    wchar_t tmp[5];
     wcsset(tmp, L'\0');
     char c = (char )fgetc(File);
-    while (c != '\"') c = (char )fgetc(File);
+    while (c!='\"') c = (char )fgetc(File);
     wchar_t wc = fgetwc(File);
-    short i = 0;
     while (wc != L'\"'){
         if (wc == WEOF){
-            delete[] tmp;
             if (errno == EILSEQ) throw ChartError(11);
             throw ChartError(12);
         }
-        tmp[i++] = wc;
+        wcsset(tmp, L'\0');
+        tmp[0] = wc;
+        putwchar(wc);
+        wcscat(src, tmp);
         wc = fgetwc(File);
     }
-    //tmp[i] = tmp[i+1] = L'\0';
-    tmp[i] = L'\0';
-    src = new wchar_t [i+1];
-    wcscpy(src, tmp);
-    delete[] tmp;
+}
+
+void searchInit(const char *chartPath){
+    DIR *ptr = opendir(chartPath);
+    struct dirent *now = readdir(ptr);
+    while (strcmp(now->d_name, "..")!=0) now = readdir(ptr);
+    now = readdir(ptr);
+
+
 }
