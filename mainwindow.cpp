@@ -126,6 +126,7 @@ QWidget {
     connect(settingsButton, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(importButton, &QPushButton::clicked, this, &MainWindow::importFolder);
     connect(usernameLabel, &QLabel::linkActivated, this, &MainWindow::showLogoutConfirmation);
+    connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
 
 
     setWindowTitle("音游主界面");
@@ -208,7 +209,6 @@ void MainWindow::loadSongs() {
 
     // 启用悬停信号
     connect(songList, &QListWidget::itemEntered, this, &MainWindow::displaySongImage);
-    connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
     songList->setMouseTracking(true);
     songList->setAttribute(Qt::WA_Hover);
 }
@@ -383,28 +383,29 @@ void MainWindow::onRequestToRestartGame() {
 void MainWindow::onRequestToResultPage() {
     //上面这个函数能正常运作不re就对
     //这个函数等wdx更新了就对了
-    char evaluation = 'F';
+    // UserSaveData(user, playWindow->currentChart.Acting, playWindow->currentChart.songTitle);
+    QString evaluation = "F";
     if(playWindow->currentChart.Acting->Accuracy >= 95){
-        evaluation = 'S';
+        evaluation = "S";
     } else if(playWindow->currentChart.Acting->Accuracy >= 90){
-        evaluation = 'A';
+        evaluation = "A";
     } else if(playWindow->currentChart.Acting->Accuracy >= 80){
-        evaluation = 'B';
+        evaluation = "B";
     } else if(playWindow->currentChart.Acting->Accuracy >= 70){
-        evaluation = 'C';
+        evaluation = "C";
     }
 
-    //    resultPage->setResults(playWindow->currentChart.Acting->judgeResult[0],
-    //                       playWindow->currentChart.Acting->judgeResult[1],
-    //                       playWindow->currentChart.Acting->judgeResult[2],
-    //                       playWindow->currentChart.Acting->judgeResult[3],
-    //                       playWindow->currentChart.noteCount - playWindow->currentChart.Acting->judgeResult[0] - playWindow->currentChart.Acting->judgeResult[1] - playWindow->currentChart.Acting->judgeResult[2] - playWindow->currentChart.Acting->judgeResult[3],
-    //                       playWindow->currentChart.Acting->Accuracy,
-    //                       playWindow->currentChart.Acting->maxCombo,
-    //                       evaluation,
-    //                       playWindow->currentChart.Acting->Score,
-    //                       playWindow->currentChart.songTitle,
-    //                       playWindow->readFileSource().append(".png"));
+       resultPage->setResults(playWindow->currentChart.Acting->judgeResult[0],
+                          playWindow->currentChart.Acting->judgeResult[1],
+                          playWindow->currentChart.Acting->judgeResult[2],
+                          playWindow->currentChart.Acting->judgeResult[3],
+                          playWindow->currentChart.noteCount - playWindow->currentChart.Acting->judgeResult[0] - playWindow->currentChart.Acting->judgeResult[1] - playWindow->currentChart.Acting->judgeResult[2] - playWindow->currentChart.Acting->judgeResult[3],
+                          playWindow->currentChart.Acting->Accuracy,
+                          playWindow->currentChart.Acting->maxCombo,
+                          evaluation,
+                          playWindow->currentChart.Acting->Score,
+                           QString (playWindow->currentChart.songTitle),
+                          playWindow->readFileSource().append(".png"));
     stackedWidget->setCurrentIndex(3);  // 切换到结果页面
     qDebug() << "Navigating to Result Page...";
 }
