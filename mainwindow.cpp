@@ -14,7 +14,7 @@
 #include <QPixmapCache>     // 用于缓存图片
 #include "playwindow.h"  // 导入 PlayWindow
 #include "ResultPage.h"  // 包含 ResultPage 头文件
-
+#include "Chart.h"
 ResultPage *resultPage;
 PlayWindow *playWindow;
 SettingsWindow *settingsWindow;
@@ -126,6 +126,7 @@ QWidget {
     connect(settingsButton, &QPushButton::clicked, this, &MainWindow::openSettings);
     connect(importButton, &QPushButton::clicked, this, &MainWindow::importFolder);
     connect(usernameLabel, &QLabel::linkActivated, this, &MainWindow::showLogoutConfirmation);
+    connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
 
 
     setWindowTitle("音游主界面");
@@ -136,9 +137,11 @@ QWidget {
     stackedWidget->addWidget(settingsWindow);
 
     connect(settingsWindow, &SettingsWindow::loginSuccess, this, &MainWindow::switchToMainPage);
-    connect(settingsWindow, &SettingsWindow::usernameUpdated, this, &MainWindow::updateUsername);
+
     connect(settingsWindow, &SettingsWindow::backToMainPage, this, &MainWindow::switchToMainPage);  // 连接返回主页面的信号
     connect(settingsWindow, &SettingsWindow::logoutCancelled, this, &MainWindow::updateUsernameAfterLogout);
+    connect(settingsWindow, &SettingsWindow::loginSuccess, this, &MainWindow::handleLoginSuccess);
+
     // 创建 PlayWindow 页面
     // PlayWindow *
     playWindow = new PlayWindow(this);
@@ -208,7 +211,6 @@ void MainWindow::loadSongs() {
 
     // 启用悬停信号
     connect(songList, &QListWidget::itemEntered, this, &MainWindow::displaySongImage);
-    connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
     songList->setMouseTracking(true);
     songList->setAttribute(Qt::WA_Hover);
 }
@@ -285,19 +287,6 @@ void MainWindow::importFolder() {
 
     QMessageBox::information(this, "导入成功", "歌曲已导入！");
     loadSongs();
-}
-
-void MainWindow::updateUsername(const QString &name) {
-    currentUserName = name;  // 更新用户名
-    if (currentUserName == "未登录") {
-        // 未登录时禁用点击事件
-        usernameLabel->setText(currentUserName);
-        usernameLabel->setTextInteractionFlags(Qt::NoTextInteraction);  // 禁用文本交互
-    } else {
-        // 已登录时设置为可点击链接
-        usernameLabel->setText("<a href='#'>" + currentUserName + "</a>");
-        usernameLabel->setTextInteractionFlags(Qt::TextBrowserInteraction); // 启用文本交互
-    }
 }
 
 
@@ -413,4 +402,26 @@ void MainWindow::onRequestToResultPage() {
 void MainWindow::updateUsernameAfterLogout() {
     currentUserName = "未登录";  // 更新用户名为“未登录”
     usernameLabel->setText(currentUserName);  // 更新显示的用户名
+}
+
+// MainWindow.cpp
+void MainWindow::clearUserData() {
+    // 清空 currentUser 数据
+    memset(currentUser.userName, 0, sizeof(currentUser.userName));
+    memset(currentUser.Password, 0, sizeof(currentUser.Password));
+}
+
+void MainWindow::handleLoginSuccess(const QString &username) {
+    // 更新用户名
+    currentUserName = username;
+    strncpy(currentUser.userName, username.toStdString().c_str(), sizeof(currentUser.userName));
+
+    // 更新 UI
+    if (currentUserName == "未登录") {
+        usernameLabel->setText(currentUserName);
+        usernameLabel->setTextInteractionFlags(Qt::NoTextInteraction);  // 禁用文本交互
+    } else {
+        usernameLabel->setText("<a href='#'>" + currentUserName + "</a>");
+        usernameLabel->setTextInteractionFlags(Qt::TextBrowserInteraction); // 启用文本交互
+    }
 }

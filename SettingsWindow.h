@@ -10,6 +10,8 @@
 #include <QTextStream>
 #include <QFile>
 #include <QListWidget>
+#include "User.h"  // 添加这一行来包含 User 类的头文件
+
 
 class SettingsWindow : public QWidget
 {
@@ -18,6 +20,8 @@ class SettingsWindow : public QWidget
 public:
     SettingsWindow(QWidget *parent = nullptr);
     ~SettingsWindow();
+
+
 
 private slots:
     void login();
@@ -38,7 +42,7 @@ protected:
 
 signals:
     void usernameUpdated(const QString &name);
-    void loginSuccess();  // 登录成功的信号
+    void loginSuccess(const QString &username);
     void backToMainPage();  // 添加返回主页面的信号
     void logoutCancelled();
 

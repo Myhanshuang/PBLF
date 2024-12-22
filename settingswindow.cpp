@@ -1,10 +1,10 @@
-#include "SettingsWindow.h"
+
 #include "MainWindow.h"  // 包含 MainWindow.h 头文件，以便能够识别 MainWindow 类
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QKeyEvent>
 #include "Chart.h"
-#include "User.h"
+#include "SettingsWindow.h"
 #include <QPalette>
 #include <QBrush>
 #include <QPixmap>
@@ -127,7 +127,6 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     connect(this, &SettingsWindow::usernameUpdated, this, &SettingsWindow::loadHistory);
 
 }
-
 SettingsWindow::~SettingsWindow() {}
 // 登录功能
 void SettingsWindow::login()
@@ -139,6 +138,7 @@ void SettingsWindow::login()
     User user;
     strncpy(user.userName, username.toStdString().c_str(), sizeof(user.userName));
     strncpy(user.Password, password.toStdString().c_str(), sizeof(user.Password));
+
 
     // 打开文件进行验证
     FILE *file = fopen("../../user_credentials.txt", "r");  // 打开文件用于验证用户
@@ -154,7 +154,8 @@ void SettingsWindow::login()
         // 检查密码是否正确
         if (user.correct(file)) {
             QMessageBox::information(this, "登录成功", "登录成功！");
-            emit loginSuccess();
+            // 更新 currentUser
+            emit loginSuccess(username);
             emit usernameUpdated(username);
             close();  // 登录成功后关闭设置窗口
         } else {
@@ -178,7 +179,6 @@ void SettingsWindow::registerUser()
     User user;
     strncpy(user.userName, username.toStdString().c_str(), sizeof(user.userName));
     strncpy(user.Password, password.toStdString().c_str(), sizeof(user.Password));
-
     // 打开文件进行保存
     FILE *file = fopen("../../user_credentials.txt", "a");  // 打开文件用于保存新用户
     if (file == nullptr) {
@@ -189,6 +189,8 @@ void SettingsWindow::registerUser()
     try {
         user.save(file);  // 保存用户数据
         QMessageBox::information(this, "注册成功", "用户注册成功！");
+        // 发射信号，通知登录成功，并更新 currentUser
+        emit loginSuccess(username);  // 发射登录成功的信号
         emit usernameUpdated(username);
 
     } catch (ChartError &e) {
@@ -266,6 +268,12 @@ void SettingsWindow::logout() {
     // 清空输入框内容
     usernameInput->clear();
     passwordInput->clear();
+    // 通过信号调用 MainWindow 中的槽来清空 currentUser 的数据
+    MainWindow *mainWindow = dynamic_cast<MainWindow*>(parent());
+    if (mainWindow) {
+        mainWindow->clearUserData();  // 清空用户数据
+    }
+
 
 }
 void SettingsWindow::loadHistory(const QString &username) {
