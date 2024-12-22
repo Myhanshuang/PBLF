@@ -51,6 +51,7 @@ public :
     ~UserSaveData();
 
     void save(const char* historyPath);
+    bool removeData(const char *historyPath, time_t timeStamp);
 
 };
 

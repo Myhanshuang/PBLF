@@ -168,7 +168,7 @@ void UserSaveData :: save(const char *historyPath) {
         strcat(path, now->d_name);
         fp = fopen(path, "r+");
 
-        if (fp == nullptr) throw ChartError(10);//error
+        if (fp == nullptr) throw ChartError(10);
         if (getKeyWord_w(fp, this ->songTitle)){
             fseek(fp, -t, SEEK_END);
             while (!feof(fp)) getValueTT(fp, last);
@@ -257,5 +257,105 @@ void UserSaveData :: save(const char *historyPath) {
         delete[] path;
         delete[] base;
     }
+}
 
+/**
+ * @class UserSaveData
+ * @brief remove history record which named for timestamp from history path
+ * @param historyPath
+ * @param timeStamp
+ * @return \c bool (0 = done, 1 = failed)
+ */
+bool UserSaveData :: removeData(const char *historyPath, time_t timeStamp){
+    DIR *ptr = opendir(historyPath);
+    if (ptr == nullptr) throw ChartError(10);
+    char *base = new char [strlen(historyPath)+39];
+    memset(base, 0, sizeof (char )*(strlen(historyPath)+39));
+    memcpy(base, historyPath, strlen(historyPath));
+    strcat(base, "/");
+    strcat(base, this ->userName);
+    ptr = opendir(base);
+    if (ptr == nullptr) throw ChartError(10);
+    strcat(base, "/");
+
+    struct dirent *now = readdir(ptr);
+    char *path = new char [strlen(base)+59];
+    memset(path, 0, sizeof (char )*(strlen(base)+59));
+    memcpy(path, base, sizeof (char )*(strlen(base)));
+    FILE *fp = nullptr;
+    time_t last, cur;
+    short t;
+    char *st = new char [29];
+    char *se = new char [29];
+    {
+        memset(st, 0, sizeof (char )*29);
+        memset(se, 0, sizeof (char )*29);
+        sprintf(st, "%lld", timeStamp);
+        t = static_cast <short> (strlen(st)+2);
+        strcat(path, st);
+        FILE *del = fopen(path, "r");
+        if (del == nullptr) throw ChartError(14);
+
+        getWordsW(del, this ->songTitle);
+        //fgetws(this ->songTitle, sizeof (this ->songTitle)/ sizeof (wchar_t ), del);
+        fseek(del, -t, SEEK_END);
+        while (!feof(del)) getValueTT(del, cur);
+        fclose(del);
+        remove(path);
+        path[strlen(base)] = '\0';
+        memset(st, 0, sizeof (char )*29);
+    }
+    while (strcmp(now->d_name, "..")!=0) now = readdir(ptr);
+    now = readdir(ptr);
+    while (now != nullptr) {
+        strcat(path, now->d_name);
+        fp = fopen(path, "r+");
+
+        if (fp == nullptr) throw ChartError(10);
+        if (getKeyWord_w(fp, this->songTitle)) {
+            fseek(fp, -t, SEEK_END);
+            while (!feof(fp)) getValueTT(fp, last);
+            sprintf(st, "%lld", last);
+            sprintf(se, "%s", now->d_name);
+            //To search according to index(timestamp) to find the history record of the last play before the removed one
+            while (last != timeStamp) {
+                sprintf(se, "%s", st);
+                fclose(fp);
+                path[strlen(base)] = '\0';
+                strcat(path, st);
+                fp = fopen(path, "r+");
+                fseek(fp, -t, SEEK_END);
+                while (!feof(fp)) getValueTT(fp, last);
+                sprintf(st, "%lld", last);
+            }
+            //se is now's name, st is now's next
+
+            //To modify the history record
+            fseek(fp, -t, SEEK_END);
+
+            if (timeStamp != cur) sprintf(se, "%lld", cur);
+            fputs(se, fp);
+
+            fclose(fp);
+            {
+                delete[] se;
+                delete[] st;
+                fclose(fp);
+                closedir(ptr);
+                delete[] path;
+                delete[] base;
+            }
+            return false;
+        }
+        fclose(fp);
+        path[strlen(base)] = '\0';
+        now = readdir(ptr);
+    }
+    delete[] se;
+    delete[] st;
+    fclose(fp);
+    closedir(ptr);
+    delete[] path;
+    delete[] base;
+    return true;
 }

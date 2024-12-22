@@ -55,6 +55,8 @@ Chart ::Chart(const Chart &C) {
         *this ->Acting = *(C.Acting);
     }
     else this ->Acting = C.Acting;
+    wcsset(this ->songTitle, L'\0');
+    wcsset(this ->Artist, L'\0');
     wcscpy(this ->songTitle, C.songTitle);
     wcscpy(this ->Artist, C.Artist);
     /*

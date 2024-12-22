@@ -21,9 +21,20 @@
 /**
  * @brief　to get chart
  *
- * @param chartFile, NowPlay
+ * @param chartFile
+ * @param NowPlay
  ***/
 void getChart(FILE *chartFile, Chart& NowPlay);
+
+
+/**
+ * @brief　to get chart meta data
+ *
+ * @param chartFile
+ * @param songTitle
+ * @param Artist
+ ***/
+void getChartMeta(FILE *chartFile, wchar_t *songTitle, wchar_t *Artist);
 
 
 void changeJudgment(const int *NewJudge);

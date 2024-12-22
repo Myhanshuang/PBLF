@@ -9,6 +9,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDir>
+#include "Chart.h"
 
 #include <QStackedWidget>
 class MainWindow : public QMainWindow {
@@ -18,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    User currentUser;
 private:
     QWidget *mainWidget;
     QLabel *titleLabel;
@@ -39,15 +41,20 @@ private slots:
     void displaySongImage(QListWidgetItem *item);
     void searchSongs();
     void importFolder();
-    void updateUsername(const QString &username);
+
     void openSettings();
     void showLogoutConfirmation();
     void itemClicked(QListWidgetItem *item); // 在这里声明 itemClicked 槽函数
+
+
 public slots:
     void switchToMainPage();  // 切换到主页面
     void onRequestToRestartGame();  // 重新开始游戏
     void onRequestToResultPage();
     void updateUsernameAfterLogout();
+    void clearUserData();  // 新增清空用户数据的槽函数
+    void handleLoginSuccess(const QString &username);
+
 };
 
 #ifndef KEYRHYTHM_SETTINGSWINDOW_H
