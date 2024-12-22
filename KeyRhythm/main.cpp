@@ -36,20 +36,23 @@ int main() {
         }
         fprintf(t, "     %10d\n", ptr ->timeStamp);
     }*/
-    User uu;
-    scanf("%s", uu.userName);
-    scanf("%s", uu.Password);
-    Chart :: ChartAct CA;
-    wchar_t chs[258]{};
-    wcsset(chs, L'\0');
+//    User uu;
+//    scanf("%s", uu.userName);
+//    scanf("%s", uu.Password);
+//    Chart :: ChartAct CA;
+//    wchar_t chs[258]{};
+//    wcsset(chs, L'\0');
+//
+//    FILE *f =fopen("in.txt", "r+");
+//    //printf("tt\n");
+//    getWords_w(f, chs);
+//    //printf("aa\n");
+//    printf("%ls\n", chs);
+//    UserSaveData USD(uu, CA, chs);
+//    USD.save("userdata/history");
+    printf("ss\n");
+    if (searchSong("t", "Chart")) printf("e\n");
+    printf("dd\n");
 
-    FILE *f =fopen("in.txt", "r+");
-    //printf("tt\n");
-    getWords_w(f, chs);
-    //printf("aa\n");
-    printf("%ls\n", chs);
-    UserSaveData USD(uu, CA, chs);
-    USD.save("userdata/history");
-    //printf("ss\n");
     return 0;
 }

@@ -22,7 +22,8 @@
 /**
  * @brief　to get chart
  *
- * @param chartFile, NowPlay
+ * @param chartFile
+ * @param NowPlay
  ***/
 void getChart(FILE *chartFile, Chart &NowPlay){
 
@@ -210,6 +211,49 @@ void getChart(FILE *chartFile, Chart &NowPlay){
     fclose(chartFile);
 }
 
+/**
+ * @brief　to get chart meta data
+ *
+ * @param chartFile
+ * @param songTitle
+ * @param Artist
+ ***/
+void getChartMeta(FILE *chartFile, wchar_t *songTitle, wchar_t *Artist) {
+
+    //打开谱面文件，我这段先写malody谱面的情况，osu谱面以后再考虑，因为两种的格式不大一样
+    if (chartFile == nullptr) throw ChartError(0);
+/*
+ * 打算采用时间戳取代具体的节拍，即导入时算出时间戳
+ */
+    //获取谱面元数据
+    /*
+     * 该位置js代码如下（.mc文件中无换行与缩进，该代码为样例）
+     * "meta": {
+		    "$ver": 0,
+		    "creator": "红色电音极地大冲击",
+		    "background": "BG (2).jpg",
+		    "version": "4K HI HandStream",
+		    "id": 0,
+		    "mode": 0,
+		    "time": 1702658284,
+		    "song": {
+		    	"title": "我想对你说Baby(Yu vs. CTM Radio Mix)",
+			    "artist": "VAVA",
+		    	"id": 0
+		    },
+		    "mode_ext": {
+			    "column": 4,
+			    "bar_begin": 0
+		    }
+	    },
+     */
+    if (!getKeyWord(chartFile, "meta")) throw ChartError(1);
+    if (!getKeyWord(chartFile, "song")) throw ChartError(1);
+    if (!getKeyWord(chartFile, "title")) throw ChartError(1);
+    getWords_w(chartFile, songTitle);
+    if (!getKeyWord(chartFile, "artist")) throw ChartError(1);
+    getWords_w(chartFile, Artist);
+}
 
 void changeJudgment(const int *NewJudge){
     int ptr = 0;
