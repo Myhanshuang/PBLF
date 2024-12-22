@@ -124,7 +124,6 @@ SettingsWindow::SettingsWindow(QWidget *parent)
     connect(backButton, &QPushButton::clicked, this, &SettingsWindow::onBackClicked);  // 返回按钮点击信号
     connect(registerButton, &QPushButton::clicked, this, &SettingsWindow::registerUser);
 
-
 }
 
 SettingsWindow::~SettingsWindow() {}

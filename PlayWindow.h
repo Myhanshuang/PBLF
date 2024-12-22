@@ -23,7 +23,7 @@
 #include <QGraphicsProxyWidget>
 
 #ifndef offsetFromLineToNote//(liney, notey)
-#define offsetFromLineToNote(liney, notey) abs(abs(notey - liney)* perFrame / speed - gameTime)
+#define offsetFromLineToNote(liney, notey) abs(abs(notey - liney)/ speed * perFrame)
 #endif
 
 // Replace QGraphicsPixmapItem* with ClickablePixmapItem*
@@ -49,7 +49,6 @@ signals:
 
 public slots:
     void start();
-    void restartGame();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -70,6 +69,7 @@ private:
     void initGameState();
     void addWaiting(QGraphicsTextItem *waiting);
     void removeWaiting(QGraphicsTextItem *waiting);
+    void playColumnEffect(int column);
     QPixmap setOpacityImage(const QString &imagePath, qreal opacity);
     QPixmap createDarkenedImage(const QString& imagePath, qreal opacity = 0.5);
     QGraphicsScene* scene;
@@ -93,8 +93,8 @@ private:
 
     QVector<TempStoreInScene> notes;
     int gameTime;
-    int checkerLineHeight;
-
+    int checkerLineHeight = 720 * 3 / 4;
+    bool gameStatus = 0;//allow change
     // Pause Menu
     QGraphicsRectItem* pauseMenuBackground;
     ClickablePixmapItem* continueButton;
@@ -110,9 +110,10 @@ private:
     const int perFrame = 8; // 60 FPS, remember the perFrame is the 1 frame is 16ms, means it is the ms/p
 private slots:
     void continueGame();
-
     void exitGame();
     void mediaStatusChanged(QMediaPlayer::MediaStatus status);
+public slots:
+    void restartGame();
 
 };
 

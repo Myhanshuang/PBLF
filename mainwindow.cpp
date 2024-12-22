@@ -22,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), currentUserName("未登录"),
     baseSongIndex(1) {
 
-
     // 创建 QStackedWidget 控件
     stackedWidget = new QStackedWidget(this);
     setCentralWidget(stackedWidget);

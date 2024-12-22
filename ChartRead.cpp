@@ -10,15 +10,70 @@
 #include <cstring>
 #endif //_GLIBCXX_CSTRING
 
+#ifndef _GLIBCXX_CSTDLIB
+#include <cstdlib>
+#endif //_GLIBCXX_CSTDLIB
+
+#ifndef _GLIBCXX_CTIME
+#include <ctime>
+#endif
+
+#ifndef _GLIBCXX_IOSTREAM
+#include <iostream>
+#endif //_GLIBCXX_IOSTREAM
+
+#ifndef _DIRENT_H_
+#include <dirent.h>
+#endif
+
+#ifndef _INC_TYPES
+#include <sys/types.h>
+#endif
+
+#ifndef _INC_STAT
+#include <sys/stat.h>
+#endif
+
+#ifndef NO_ERROR
+#include <error.h>
+#endif
+
+#ifndef KEYRHYTHM_CHARTERROR_H
+#include "ChartError.h"
+#endif //KEYRHYTHM_CHARTERROR_H
+
+/**
+ * @brief get value in file (time_t)
+ * @param File
+ * @param val
+ */
+void getValueTT(FILE *File, time_t & val){
+    char ch = (char )getc(File);
+    if (ch == EOF) return ;
+    while (ch > '9' || ch < '0'){
+        ch = (char )getc(File);
+        if (ch == EOF) return ;
+    }
+    val = 0;
+    while (ch < '9'+1 && ch > '0'-1){
+        val = (val << 3) + (val << 1) + ch - '0';
+        ch = (char )getc(File);
+    }
+}
+
 /**
  * @brief get value in file (int)
  * @param File
  * @param val
  */
 void getValueInt(FILE *File, int& val){
-    val = 0;
     char ch = (char )getc(File);
-    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    if (ch == EOF) return ;
+    while (ch > '9' || ch < '0'){
+        ch = (char )getc(File);
+        if (ch == EOF) return ;
+    }
+    val = 0;
     while (ch < '9'+1 && ch > '0'-1){
         val = (val << 3) + (val << 1) + ch - '0';
         ch = (char )getc(File);
@@ -31,9 +86,13 @@ void getValueInt(FILE *File, int& val){
  * @param val
  */
 void getValueShort(FILE *File, short & val){
-    val = 0;
     char ch = (char )getc(File);
-    while (ch > '9' || ch < '0') ch = (char )getc(File);
+    if (ch == EOF) return ;
+    while (ch > '9' || ch < '0'){
+        ch = (char )getc(File);
+        if (ch == EOF) return ;
+    }
+    val = 0;
     while (ch < '9'+1 && ch > '0'-1){
         val = static_cast <short>((val << 3) + (val << 1) + ch - '0');
         ch = (char )getc(File);
@@ -98,6 +157,45 @@ bool getKeyWord(FILE *File, const char *KeyWord){
     return false;
 }
 
+/**
+ * @brief use KMP to get the position of the keyword, with wide char
+ * @param File
+ * @param KeyWord
+ * @return \c bool ( 1 = found )
+ ***/
+bool getKeyWord_w(FILE *File, const wchar_t *KeyWord){
+    wchar_t c = L'\0';
+    auto Length = static_cast <short>(wcslen(KeyWord));
+    auto nxt = new short [Length+1];
+    nxt[0] = -1;
+    for (short i = 0, j = -1; i < Length-1; ){
+        if (j == -1 || KeyWord[i] == KeyWord[j]){
+            ++i;
+            ++j;
+            nxt[i] = j;
+        }
+        else j = nxt[j];
+    }
+    short j = -1;
+    while (!feof(File)){
+        if (j == -1 || c == KeyWord[j]){
+            c = (wchar_t )fgetwc(File);
+            ++j;
+        }
+        else j = nxt[j];
+        if (j == Length){
+            delete[] nxt;
+            return true;
+        }
+        if (c == WEOF){
+            if (errno == EILSEQ) throw ChartError(11);
+            if (ferror(File)) throw ChartError(12);
+            return false;
+        }
+    }
+    delete[] nxt;
+    return false;
+}
 
 /**
  * @brief use multiple KMP to get the position of the keywords
@@ -164,6 +262,41 @@ short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2){
     return 0;
 }
 
-void putWords(FILE *File, const char *Words){
-    for (short t = 0; Words[t] != '\0'; ++t) putc((int )Words[t], File);
+
+/** BUG UNDER but fixed */
+/** Which made me surprised is wchar_t doesn't have a well support for "new" */
+/** I mean, it is a piece of shit, totally */
+
+/**
+ * @brief to get wide chars from file, which use \" to sign start and end;
+ * @param File
+ * @param src
+ */
+void getWords_w(FILE *File, wchar_t *src){
+    wcsset(src, L'\0');
+    wchar_t tmp[5];
+    wcsset(tmp, L'\0');
+    char c = (char )fgetc(File);
+    while (c!='\"') c = (char )fgetc(File);
+    wchar_t wc = fgetwc(File);
+    while (wc != L'\"'){
+        if (wc == WEOF){
+            if (errno == EILSEQ) throw ChartError(11);
+            throw ChartError(12);
+        }
+        wcsset(tmp, L'\0');
+        tmp[0] = wc;
+        putwchar(wc);
+        wcscat(src, tmp);
+        wc = fgetwc(File);
+    }
+}
+
+void searchInit(const char *chartPath){
+    DIR *ptr = opendir(chartPath);
+    struct dirent *now = readdir(ptr);
+    while (strcmp(now->d_name, "..")!=0) now = readdir(ptr);
+    now = readdir(ptr);
+
+
 }

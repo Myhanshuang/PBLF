@@ -184,7 +184,7 @@ void PlayWindow::showPauseMenu() { // finished
     musicPlayer->pause();
     gameTimer->stop();
     isPaused = true;
-
+    gameStatus = 1;
     // Add a semi-transparent background
     pauseMenuBackground = new QGraphicsRectItem(0, 0, scene->width(), scene->height());
     pauseMenuBackground->setBrush(QBrush(QColor(0, 0, 0, 150))); // Semi-transparent black
@@ -236,6 +236,7 @@ void PlayWindow::hidePauseMenu() { // finished
     scene -> addItem(waiting);
 
     isPaused = false;
+    gameStatus = 1;
     //wait 1000ms after pause to start
     QElapsedTimer timer;
     timer.start();
@@ -244,6 +245,7 @@ void PlayWindow::hidePauseMenu() { // finished
         QCoreApplication::processEvents();
     }
 
+    gameStatus = 0;
     // Remove pause menu items
     if (pauseMenuBackground) {
         scene->removeItem(pauseMenuBackground);
@@ -270,8 +272,10 @@ void PlayWindow::hidePauseMenu() { // finished
     scene -> removeItem(waiting);
     delete waiting;
     // Resume the game
+    gameStatus = 0;
     musicPlayer->play();
     gameTimer->start();
+
 }
 
 void PlayWindow::resizeEvent(QResizeEvent* event) {//finished
@@ -435,6 +439,35 @@ void PlayWindow::removeWaiting(QGraphicsTextItem * waiting) {
     delete waiting;
 }
 
+void PlayWindow::playColumnEffect(int column) {
+    // 创建特效的图形项目
+    int sceneWidth = scene->width();
+    int sceneHeight = scene->height();
+    int channelAreaWidth = sceneWidth * 1 / 3;
+    int channelStartX = (sceneWidth - channelAreaWidth) / 2; // Center the channels
+    // Width of each channel
+    int channelWidth = channelAreaWidth / currentChart.Column;
+    int x = channelStartX + column * channelWidth;
+    QGraphicsRectItem* effect = new QGraphicsRectItem(x, checkerLineHeight, channelWidth, 15); // 根据需要调整大小
+    effect->setBrush(QBrush(Qt::green)); // 设置特效的颜色，可以是任何颜色或渐变
+    // effect->setPos(scene->width() / 2, scene->height() / 2);
+
+    // 添加特效到场景中
+    scene->addItem(effect);
+
+    // 设置特效的动画，例如淡出或缩放
+    QTimer *timer = new QTimer(this); // Create the timer with the parent as 'this'
+    connect(timer, &QTimer::timeout, this, [=]() {
+        if (effect->opacity() > 0) {
+            effect->setOpacity(effect->opacity() - 0.05);
+        } else {
+            timer->stop();
+        }
+    });
+    timer->start(perFrame);
+
+}
+
 void PlayWindow::startGame() {// finished
 
     //reset the data
@@ -455,8 +488,7 @@ void PlayWindow::startGame() {// finished
     }
 
     // Re-add the checker line
-    int checkerLineY = scene->height() * 3 / 4;
-    checkerLine = new QGraphicsLineItem(0, checkerLineY, scene->width(), checkerLineY);
+    checkerLine = new QGraphicsLineItem(0, checkerLineHeight, scene->width(), checkerLineHeight);
     checkerLine->setPen(QPen(Qt::yellow, 4));
     scene->addItem(checkerLine);
 
@@ -486,6 +518,7 @@ void PlayWindow::startGame() {// finished
     waiting -> setZValue(100);
     scene -> addItem(waiting);
 
+    gameStatus = 1;
     QElapsedTimer timer;
     timer.start();
     while (timer.elapsed() < 2000) {
@@ -496,7 +529,7 @@ void PlayWindow::startGame() {// finished
     delete waiting;
     // Load the first notes based on the chart
     //spawnNotes();
-
+    gameStatus = 0;
 
     // 4. Start the game timer
     musicPlayer->setPosition(0);
@@ -605,7 +638,7 @@ void PlayWindow::spawnNotes() {// finished
                 {
                     //need to change the form of the note]
                     QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, 20);
-                    note->setBrush(Qt::green); // Example color
+                    note->setBrush(Qt::cyan); // Example color
                     scene->addItem(note);
                     notes.append({note, 0, 0, 0, i}); // Store in notes vector for updates
                 }
@@ -631,19 +664,27 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
         if (isPaused) {
             hidePauseMenu();
         } else {
+            if(gameStatus)return ;
             showPauseMenu();
         }
     }
-    qDebug() << "Key pressed:" << event->key();
-    qDebug() << "Key pressed:" << event->key();
+
     if (event->isAutoRepeat()){
-        qDebug() << "FUCK";
+        // qDebug() << "long press";
         return ;
     }
 
+    if(gameStatus)
+    {
+        // qDebug() << "refused to press";
+        return ;
+    }
     short i = 0;
     for (; i<currentChart.Column; ++i) if (event->key() == KeyCode[i]) break;
     if (i == currentChart.Column) return ;
+
+    playColumnEffect(i);
+
     for (auto ptr = notes.begin(); ptr < notes.end(); ++ptr){
         auto now = *ptr;
         if (now.column != i || now.holdJudge) continue;
@@ -678,7 +719,7 @@ void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
 
 void PlayWindow::keyReleaseEvent(QKeyEvent* event) {
     if (!event->isAutoRepeat()){
-        qDebug() << "ASS";
+        // qDebug() << "ASS";
         return ;
     }
     short i = 0;

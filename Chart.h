@@ -25,10 +25,18 @@
 #include <cmath>
 #endif //_GLIBCXX_CMATH
 
+#ifndef _GLIBCXX_HAVE_WCHAR_H
+#include <cwchar>
+#endif //_GLIBCXX_HAVE_WCHAR_H
+
+#ifndef _GLIBCXX_IOSTREAM
+#include <iostream>
+#endif //_GLIBCXX_IOSTREAM
+
 #ifndef BASE64_H
-// extern "C"{
+//extern "C"{
 #include "base64/base64.h"
-// }
+//}
 #endif
 
 #ifndef FloatMinute
@@ -78,6 +86,9 @@ public :
     Measure *ChartHead = nullptr;
     ChartAct *Acting = nullptr;
 
+    wchar_t songTitle[258]{};
+    wchar_t Artist[258]{};
+
     explicit Chart(short Keys);
     Chart(const Chart& C);
     Chart();
@@ -92,10 +103,11 @@ public :
         this ->Offset = Right ->Offset;
         this ->ChartHead = Right ->ChartHead;
         this ->Acting = Right ->Acting;
+        wcscpy(this ->songTitle, Right ->songTitle);
+        wcscpy(this ->Artist, Right ->Artist);
         return *this;
     }
 };
-
 
 /**
  * @class Measure
@@ -137,7 +149,7 @@ public :
  * @class ChartAct
  * @brief the variable data in playing chart
  * @details judgeResult is used to save judging results
- * and the [8] can be used to save misses
+ * and can be used to save misses
  * \n or can use minus to show misses
  */
 class Chart :: ChartAct{
@@ -147,6 +159,7 @@ public :
     int judgeResult[9]{};
 
     ChartAct();
+    ChartAct(const ChartAct &CA);
 
     ChartAct& operator =(ChartAct *Right){
         this ->Accuracy = Right ->Accuracy;

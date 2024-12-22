@@ -15,6 +15,13 @@
 #endif //_GLIBCXX_CSTDIO
 
 /**
+ * @brief get value in file (time_t)
+ * @param File
+ * @param val
+ */
+void getValueTT(FILE *File, time_t & val);
+
+/**
  * @brief get value in file (int)
  * @param File
  * @param val
@@ -43,6 +50,8 @@ void getValueLDouble(FILE *File, long double& val);
  ***/
 bool getKeyWord(FILE *File, const char *KeyWord);
 
+bool getKeyWord_w(FILE *File, const wchar_t *KeyWord);
+
 /**
  * @brief use multiple KMP to get the position of the keywords
  * @param File
@@ -52,6 +61,13 @@ bool getKeyWord(FILE *File, const char *KeyWord);
  ***/
 short getKeyWords(FILE *File, const char *KeyWord1, const char *KeyWord2);
 
-void putWords(FILE *File, const char *Words);
+/**
+ * @brief to get wide chars from file, which use \" to sign start and end;
+ * @param File
+ * @param src
+ */
+void getWords_w(FILE *File, wchar_t *src);
+
+void searchInit(const char *chartPath);
 
 #endif //KEYRHYTHM_CHARTREAD_H
