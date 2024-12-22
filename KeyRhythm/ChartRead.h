@@ -59,12 +59,11 @@ bool getKeyWord(FILE *File, const char *KeyWord);
 bool getKeyWord_w(FILE *File, const wchar_t *KeyWord);
 
 /**
- * @brief use KMP to get the position of the keyword in src, with wide char
+ * @brief to get wide chars from file, which use nothing to sign start and end;
+ * @param File
  * @param src
- * @param KeyWord
- * @return \c bool ( 1 = found )
- ***/
-bool getKeyWordWide(const wchar_t *src, const wchar_t *KeyWord);
+ */
+void getWordsW(FILE *File, wchar_t *src);
 
 /**
  * @brief use multiple KMP to get the position of the keywords

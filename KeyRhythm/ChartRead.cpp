@@ -303,6 +303,28 @@ bool getWords_w(FILE *File, wchar_t *src){
 }
 
 /**
+ * @brief to get wide chars from file, which use nothing to sign start and end;
+ * @param File
+ * @param src
+ */
+void getWordsW(FILE *File, wchar_t *src){
+    wcsset(src, L'\0');
+    wchar_t tmp[5];
+    wcsset(tmp, L'\0');
+    wchar_t wc = fgetwc(File);
+    while (wc != L'\n'){
+        if (wc == WEOF){
+            if (errno == EILSEQ) throw ChartError(11);
+            throw ChartError(12);
+        }
+        wcsset(tmp, L'\0');
+        tmp[0] = wc;
+        wcscat(src, tmp);
+        wc = fgetwc(File);
+    }
+}
+
+/**
  * @brief set search index
  * @brief if charts have changed, we also need to reset it, by this func
  * @param chartPath
