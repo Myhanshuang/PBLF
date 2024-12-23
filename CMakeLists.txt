@@ -15,30 +15,28 @@ find_package(Qt6 REQUIRED COMPONENTS Multimedia)
 
 set(PROJECT_SOURCES
     main.cpp
-       MainWindow.cpp
-       MainWindow.h
-       SettingsWindow.h
-       SettingsWindow.cpp
+       ./src/MainWindow.cpp
+       ./inc/MainWindow.h
+       ./inc/SettingsWindow.h
+       ./src/SettingsWindow.cpp
        Mainwindow.ui
-       ClickablePixmapItem.cpp
-       ClickablePixmapItem.h
-       PlayWindow.cpp
-       PlayWindow.h
-       testChart.qrc
-       "Try_Catch template.cpp"
-       ./base64/base64.h
-       ./base64/base64.cpp
-       Chart.h
-       Chart.cpp
-       ChartWork.h
-       ChartWork.cpp
-       ChartError.h
-       ChartRead.h
-       ChartRead.cpp
-       User.h
-       User.cpp
-        ResultPage.cpp
-        ResultPage.h
+       ./src/ClickablePixmapItem.cpp
+       ./inc/ClickablePixmapItem.h
+       ./src/PlayWindow.cpp
+       ./inc/PlayWindow.h
+       ./src/base64/base64.cpp
+       ./inc/base64/base64.h
+       ./inc/Chart.h
+       ./src/Chart.cpp
+       ./inc/ChartWork.h
+       ./src/ChartWork.cpp
+       ./inc/ChartError.h
+       ./inc/ChartRead.h
+       ./src/ChartRead.cpp
+       ./inc/User.h
+       ./src/User.cpp
+        ./src/ResultPage.cpp
+        ./inc/ResultPage.h
 
 )
 
