@@ -76,6 +76,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
 
 
     if ( !getKeyWord(chartFile, "time") ) throw ChartError(3);
+    if ( !getKeyWord(chartFile, "beat") ) throw ChartError(3);
     do {
         getValueShort(chartFile, t);
     }
@@ -83,7 +84,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
     NowPlay.everyBeat = FloatMinute / (float )t;
     if ( !getKeyWord(chartFile, "bpm") ) throw ChartError(3);
     getValueLDouble(chartFile, NowPlay.beatsPerMinute);
-    NowPlay.everyBeat /= NowPlay.beatsPerMinute;
+    NowPlay.everyBeat = NowPlay.everyBeat /(double )((int )(NowPlay.beatsPerMinute*10000)) * 10000.0l;
 
     //接下来写入谱面文件到Chart内
     /*

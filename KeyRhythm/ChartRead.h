@@ -84,7 +84,7 @@ bool getWords_w(FILE *File, wchar_t *src);
 
 /**
  * @brief set search index
- * @brief if charts have changed, we also need to reset it, by this func
+ * @details if charts have changed, we also need to reset it, by this func
  * @param chartPath
  */
 void searchInit(const char *chartPath);

@@ -4,12 +4,13 @@
 using namespace std;
 
 int main() {
+    FILE *fp = fopen("1584661107.mc", "r");
     //FILE *fp = fopen("1689619069.mc", "r");
     FILE *t = fopen("out.txt", "w");
-    FILE *u = fopen("user.txt", "w+");
-    //Chart A;
-    //agetChart(fp, A);
-    /*for (auto ptr = A.ChartHead;  ptr != nullptr ; ptr = ptr ->NxtMea) {
+    //FILE *u = fopen("user.txt", "w+");
+    Chart A;
+    getChart(fp, A);
+    for (auto ptr = A.ChartHead;  ptr != nullptr ; ptr = ptr ->NxtMea) {
         for (int i = 0; i < A.Column; ++i){
             switch (ptr ->Bar[i]) {
                 case 0:
@@ -35,7 +36,8 @@ int main() {
             }
         }
         fprintf(t, "     %10d\n", ptr ->timeStamp);
-    }*/
+    }
+    /*
     User uu;
     scanf("%s", uu.userName);
     scanf("%s", uu.Password);
@@ -51,6 +53,7 @@ int main() {
     UserSaveData USD(uu, CA, chs);
     USD.save("userdata/history");
     USD.removeData("userdata/history", 1734841445);
+     */
 
     return 0;
 }

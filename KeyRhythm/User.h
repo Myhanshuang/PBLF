@@ -47,12 +47,18 @@ public :
     Chart :: ChartAct playData;
 
     UserSaveData();
+    UserSaveData(User U);
     UserSaveData(User U, Chart :: ChartAct &CA, wchar_t *ch);
     ~UserSaveData();
 
     void save(const char* historyPath);
     bool removeData(const char *historyPath, time_t timeStamp);
+    bool getData(const char *historyPath, time_t timeStamp);
+    bool getAnyData(const char *historyPath, int count);
+    time_t getSongData(const char *historyPath, wchar_t *ch);
 
+private:
+    void getFromFile(FILE *his);
 };
 
 #endif //KEYRHYTHM_USER_H
