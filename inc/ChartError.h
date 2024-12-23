@@ -5,6 +5,7 @@
 /**
  * @author \b Logib
  *
+ * @brief all of error exception
  ***/
 
 #ifndef KEYRHYTHM_CHARTERROR_H
@@ -20,7 +21,6 @@
 
 /**
  * @defgroup ErrorException
- * @brief all of error exception
  ***/
 #define Exception0 "No chart file"
 ///< @brief cannot find the \b chart \b file
@@ -78,8 +78,12 @@
 ///< @brief when searching, you need at least one chart
 ///< @addtogroup ErrorException
 
-#define Exception14 "Wrong history timestamp"
+#define Exception14 "History visit error: Wrong history timestamp"
 ///< @brief delete a history record need it be existed before
+///< @addtogroup ErrorException
+
+#define Exception15 "History visit error: Invalid user name"
+///< @brief only valid user name has its history records
 ///< @addtogroup ErrorException
 
 class ChartError : public std :: exception{
@@ -113,6 +117,7 @@ public :
             case 12: return Exception12;
             case 13: return Exception13;
             case 14: return Exception14;
+            case 15: return Exception15;
 
             default :
                 return nullptr;
