@@ -52,23 +52,19 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
-    void keyReleaseEvent(QKeyEvent* event)override;
+    void keyPressEvent(QKeyEvent* event) override; // judge the click
+    void keyReleaseEvent(QKeyEvent* event)override;// judge the hold
 private:
     void debug();
     Chart::ChartAct gameEnd();
     void setupUI();
-    void updateGame();
-    void spawnNotes();
-    void checkJudgment();
+    void updateGame(); //timer to trigger the update
+    void spawnNotes(); // generate notes
     void updateStats();
     void showPauseMenu();
     void hidePauseMenu();
     void drawChannels();
-    void checkCollisions();
     void initGameState();
-    void addWaiting(QGraphicsTextItem *waiting);
-    void removeWaiting(QGraphicsTextItem *waiting);
     void playColumnEffect(int column);
     QPixmap setOpacityImage(const QString &imagePath, qreal opacity);
     QPixmap createDarkenedImage(const QString& imagePath, qreal opacity = 0.5);
@@ -80,7 +76,6 @@ private:
     Chart stasticChart;
 
     QString fileSource;
-    // Chart currentChart, stasticChart;
     QMediaPlayer* musicPlayer;
 
     struct TempStoreInScene{
@@ -91,7 +86,7 @@ private:
         int column;
     };
 
-    QVector<TempStoreInScene> notes;
+    QVector<TempStoreInScene> notes;// store the notes in the scene
     int gameTime;
     int checkerLineHeight = 720 * 3 / 4;
     bool gameStatus = 0;//allow change
