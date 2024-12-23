@@ -39,15 +39,22 @@ public :
     bool correct(FILE *Saving);
 };
 
+/**
+ * @class UserSaveData
+ * @brief to save one user's info and play record
+ *
+ * @brief its timeSign (timestamp) equals to 0 when initialized
+ * \n but when setting it with play data, it will equals to time now
+ */
 class UserSaveData{
 public :
     char userName[13]{};
-    time_t timeSign = time(nullptr);
+    time_t timeSign = 0;
     wchar_t songTitle[258]{};
     Chart :: ChartAct playData;
 
     UserSaveData();
-    UserSaveData(User U);
+    explicit UserSaveData(User U);
     UserSaveData(User U, Chart :: ChartAct &CA, wchar_t *ch);
     ~UserSaveData();
 

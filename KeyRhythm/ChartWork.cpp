@@ -84,7 +84,7 @@ void getChart(FILE *chartFile, Chart &NowPlay){
     NowPlay.everyBeat = FloatMinute / (float )t;
     if ( !getKeyWord(chartFile, "bpm") ) throw ChartError(3);
     getValueLDouble(chartFile, NowPlay.beatsPerMinute);
-    NowPlay.everyBeat = NowPlay.everyBeat /(double )((int )(NowPlay.beatsPerMinute*10000)) * 10000.0l;
+    NowPlay.everyBeat = NowPlay.everyBeat * 10000.0l /(double )((int )(NowPlay.beatsPerMinute*10000)) ;
 
     //接下来写入谱面文件到Chart内
     /*
