@@ -28,7 +28,6 @@ ResultPage::ResultPage(QWidget* parent)
     // Apply shadow effect
     QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
     shadowEffect->setOffset(3, 3);
-    // shadowEffect->setBlurRadius(1);
     shadowEffect->setColor(Qt::darkGray);
     setGraphicsEffect(shadowEffect);
     // Set up main layout

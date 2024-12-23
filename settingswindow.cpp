@@ -270,7 +270,6 @@ void SettingsWindow::updateBackground() {
 }
 
 
-
 void SettingsWindow::logout() {
     // 清空历史记录
     clearHistory();
