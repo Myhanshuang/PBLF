@@ -8,8 +8,8 @@
         "id": "",
         "mode": 0,
         "song": {
-            "title": "Zhong Wen Die Bao#2",
-            "artist": "Various Artists",
+            "title": "让风告诉你",
+            "artist": "ChiliChill feat.花玲,喵*酱,宴宁ccccc,kinsen",
             "id": "",
             "source": "ChiliChill feat.花玲,喵*酱,宴宁ccccc,kinsen - 让风告诉你",
             "org": {

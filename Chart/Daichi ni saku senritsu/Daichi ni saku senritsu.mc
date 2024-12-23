@@ -8,7 +8,7 @@
         "id": "",
         "mode": 0,
         "song": {
-            "title": "Daichi ni Saku Senritsu",
+            "title": "Daichi ni Saku Senritsu（大地に咲く旋律）",
             "artist": "senya",
             "id": "",
             "source": "",
