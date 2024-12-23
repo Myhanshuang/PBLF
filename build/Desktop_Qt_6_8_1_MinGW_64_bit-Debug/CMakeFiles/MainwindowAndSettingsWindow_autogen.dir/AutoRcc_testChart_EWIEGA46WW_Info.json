@@ -1,0 +1,31 @@
+{
+	"BUILD_DIR" : "E:/KeyRHYTHM/PBLF/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen",
+	"CMAKE_BINARY_DIR" : "E:/KeyRHYTHM/PBLF/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "E:/KeyRHYTHM/PBLF/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "E:/KeyRHYTHM/PBLF",
+	"CMAKE_SOURCE_DIR" : "E:/KeyRHYTHM/PBLF",
+	"CROSS_CONFIG" : false,
+	"GENERATOR" : "Ninja",
+	"INCLUDE_DIR" : "E:/KeyRHYTHM/PBLF/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/MainwindowAndSettingsWindow_autogen/include",
+	"INPUTS" : 
+	[
+		"E:/KeyRHYTHM/PBLF/img/exit.png",
+		"E:/KeyRHYTHM/PBLF/img/continue.png",
+		"E:/KeyRHYTHM/PBLF/img/restart.png",
+		"E:/KeyRHYTHM/PBLF/img/testbackground.jpg",
+		"E:/KeyRHYTHM/PBLF/Chart/testChart.png",
+		"E:/KeyRHYTHM/PBLF/Chart/testChart.mc",
+		"E:/KeyRHYTHM/PBLF/Chart/testChart.mp3"
+	],
+	"LOCK_FILE" : "E:/KeyRHYTHM/PBLF/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/MainwindowAndSettingsWindow_autogen.dir/AutoRcc_testChart_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "--no-zstd", "-name", "testChart" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_testChart.cpp",
+	"RCC_EXECUTABLE" : "E:/qt/6.8.1/mingw_64/bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "E:/KeyRHYTHM/PBLF/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/MainwindowAndSettingsWindow_autogen.dir/AutoRcc_testChart_EWIEGA46WW_Used.txt",
+	"SOURCE" : "E:/KeyRHYTHM/PBLF/testChart.qrc",
+	"USE_BETTER_GRAPH" : true,
+	"VERBOSITY" : 0
+}
