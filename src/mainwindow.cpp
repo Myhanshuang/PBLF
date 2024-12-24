@@ -289,6 +289,7 @@ void MainWindow::importFolder() {
 
 void MainWindow::openSettings()
 {
+    settingsWindow->loadHistory(currentUserName);
     stackedWidget->setCurrentIndex(1);
 }
 
@@ -364,7 +365,12 @@ void MainWindow::onRequestToRestartGame() {
 void MainWindow::onRequestToResultPage() {
     //上面这个函数能正常运作不re就对
     //这个函数等wdx更新了就对了
-    UserSaveData(currentUser, *playWindow->currentChart.Acting, playWindow->currentChart.songTitle);
+    UserSaveData tempSave(currentUser, *playWindow->currentChart.Acting, playWindow->currentChart.songTitle);
+    qDebug() << currentUser.userName;
+    qDebug() << tempSave.timeSign;
+     tempSave.save("./history");
+    qDebug() << "Saving history record...";
+
     QString evaluation = "F";
     if(playWindow->currentChart.Acting->Accuracy >= 95){
         evaluation = "S";

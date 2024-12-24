@@ -56,7 +56,7 @@ private:
     QLineEdit *passwordInput;
     QPushButton *loginButton;
     QPushButton *cancelButton;
-
+    int keyStatus = 0;
     // 键位设置部分
     QLabel *key1Label;
     QLabel *key2Label;

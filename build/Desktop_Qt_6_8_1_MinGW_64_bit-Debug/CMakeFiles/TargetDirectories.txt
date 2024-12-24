@@ -1,0 +1,9 @@
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/MainwindowAndSettingsWindow.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/install.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/MainwindowAndSettingsWindow_autogen_timestamp_deps.dir
+E:/prerelease/build/Desktop_Qt_6_8_1_MinGW_64_bit-Debug/CMakeFiles/MainwindowAndSettingsWindow_autogen.dir

@@ -227,9 +227,12 @@ void SettingsWindow::startKeyBinding() {
     key3Label->setText("未设置");
     key4Label->setText("未设置");
     QMessageBox::information(this, "键位绑定", "开始按下四个键位！");
+    keyStatus = 4;
 }
 
 void SettingsWindow::keyPressEvent(QKeyEvent *event) {
+    if(keyStatus == 0)
+        return;
     if (keysPressed.size() < 4) {  // 限制最多只记录四个按键
         int key = event->key();
 
@@ -258,6 +261,7 @@ void SettingsWindow::keyPressEvent(QKeyEvent *event) {
             QMessageBox::information(this, "键位绑定", "四个键位已绑定！");
         }
     }
+    keyStatus --;
 }
 
 

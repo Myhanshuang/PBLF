@@ -621,6 +621,8 @@ void PlayWindow::spawnNotes() {// finished
  */
 void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
     if (event->key() == Qt::Key_Escape) {// to show the pausemenu when press esc
+        emit requestToResultPage();
+        return ;
         if (isPaused) {
             hidePauseMenu();
         } else {
