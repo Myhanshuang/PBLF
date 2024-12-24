@@ -2,7 +2,6 @@
 
 ResultPage::ResultPage(QWidget* parent)
     : QWidget(parent),
-    titleLabel(new QLabel(this)),
     songTitleLabel(new QLabel(this)),
     finalEvaluationLabel(new QLabel(this)),
     perfectLabel(new QLabel(this)),
@@ -20,7 +19,7 @@ ResultPage::ResultPage(QWidget* parent)
 
     // Apply shadow effect
     QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect();
-    shadowEffect->setOffset(3, 3);
+    shadowEffect->setOffset(1, 1);
     shadowEffect->setColor(Qt::darkGray);
     setGraphicsEffect(shadowEffect);
     // Set up main layout
@@ -38,7 +37,7 @@ ResultPage::ResultPage(QWidget* parent)
     QVBoxLayout* leftLayout = new QVBoxLayout();
     songTitleLabel->setAlignment(Qt::AlignCenter);
     QFont songTitleFont;
-    songTitleFont.setPointSize(40);
+    songTitleFont.setPointSize(80);
     songTitleFont.setBold(true);
     songTitleLabel->setFont(songTitleFont);
     songTitleLabel->setStyleSheet("color: #87CEEB;");
@@ -63,8 +62,8 @@ ResultPage::ResultPage(QWidget* parent)
     scoreFont.setPointSize(35);
     score->setAlignment(Qt::AlignCenter);
     score->setFont(scoreFont);
-    score->setStyleSheet("color: white;");
-    // score->setStyleSheet("color: black;");
+    // score->setStyleSheet("color: white;");
+    score->setStyleSheet("color: black;");
 
     // Stats labels (Perfect, Great, etc.)
     QFont statsFont;
@@ -77,21 +76,21 @@ ResultPage::ResultPage(QWidget* parent)
     accuracyLabel->setFont(statsFont);
     maxComboLabel->setFont(statsFont);
 
-    perfectLabel->setStyleSheet("color: white;");
-    greatLabel->setStyleSheet("color: white;");
-    goodLabel->setStyleSheet("color: white;");
-    badLabel->setStyleSheet("color: white;");
-    missLabel->setStyleSheet("color: white;");
-    accuracyLabel->setStyleSheet("color: white;");
-    maxComboLabel->setStyleSheet("color: white;");
+    // perfectLabel->setStyleSheet("color: white;");
+    // greatLabel->setStyleSheet("color: white;");
+    // goodLabel->setStyleSheet("color: white;");
+    // badLabel->setStyleSheet("color: white;");
+    // missLabel->setStyleSheet("color: white;");
+    // accuracyLabel->setStyleSheet("color: white;");
+    // maxComboLabel->setStyleSheet("color: white;");
 
-    // perfectLabel->setStyleSheet("color: black;");
-    // greatLabel->setStyleSheet("color: black;");
-    // goodLabel->setStyleSheet("color: black;");
-    // badLabel->setStyleSheet("color: black;");
-    // missLabel->setStyleSheet("color: black;");
-    // accuracyLabel->setStyleSheet("color: black;");
-    // maxComboLabel->setStyleSheet("color: black;");
+    perfectLabel->setStyleSheet("color: black;");
+    greatLabel->setStyleSheet("color: black;");
+    goodLabel->setStyleSheet("color: black;");
+    badLabel->setStyleSheet("color: black;");
+    missLabel->setStyleSheet("color: black;");
+    accuracyLabel->setStyleSheet("color: black;");
+    maxComboLabel->setStyleSheet("color: black;");
 
 
     rightLayout->addWidget(finalEvaluationLabel);
@@ -116,13 +115,13 @@ ResultPage::ResultPage(QWidget* parent)
     buttonLayout->addSpacerItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     //retry button
-    retryButton->setStyleSheet("background-image: url(:/img/restart.png);"
+    retryButton->setStyleSheet("background-image: url(./img/restart.png);"
                                "border: none; padding: 0;" );  // No border, no padding, just image
     retryButton->setFixedSize(50, 50);  // Set the size for the button
     buttonLayout->addWidget(retryButton);
 
     //exit button
-    exitButton->setStyleSheet("background-image: url(:/img/exit.png);"
+    exitButton->setStyleSheet("background-image: url(./img/exit.png);"
                               "border: none; padding: 0;");  // No border, no padding, just image
     exitButton->setFixedSize(50, 50);  // Set the size for the button
     buttonLayout->addWidget(exitButton);

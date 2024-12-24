@@ -81,16 +81,16 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    setObjectName("MainWindow"); // 在 MainWindow 构造函数中设置
     setStyleSheet(R"(
-    QMainWindow {
+    QMainWindow#MainWindow {
         background-color: white;  /* 设置主窗口背景为白色 */
     }
 
-    QWidget {
-        background-color: white;  /* 所有 QWidget 派生类背景为白色 */
-    }
-
-    QLineEdit, QPushButton, QListWidget, QLabel {
+    QMainWindow#MainWindow QLineEdit,
+    QMainWindow#MainWindow QPushButton,
+    QMainWindow#MainWindow QListWidget,
+    QMainWindow#MainWindow QLabel {
         background-color: rgba(240, 240, 240, 255); /* 控件背景为浅灰色 */
         color: black; /* 字体颜色为黑色 */
         border: 1px solid rgba(200, 200, 200, 255); /* 边框颜色为浅灰色 */
@@ -99,20 +99,20 @@ MainWindow::MainWindow(QWidget *parent)
         font-size: 18px; /* 字体大小 */
     }
 
-    QPushButton:hover {
+    QMainWindow#MainWindow QPushButton:hover {
         background-color: rgba(220, 220, 220, 255); /* 鼠标悬浮时更亮 */
     }
 
-    QListWidget::item {
+    QMainWindow#MainWindow QListWidget::item {
         color: black; /* 列表项字体颜色 */
     }
 
-    QListWidget {
+    QMainWindow#MainWindow QListWidget {
         background-color: rgba(240, 240, 240, 255); /* 列表背景为浅灰色 */
         border: 1px solid rgba(200, 200, 200, 255); /* 边框颜色为浅灰色 */
     }
 
-    QLabel#titleLabel {
+    QMainWindow#MainWindow QLabel#titleLabel {
         font-size: 28px; /* 标题字体更大 */
         font-weight: bold; /* 加粗 */
         color: black; /* 标题文字颜色为黑色 */

@@ -592,3 +592,4 @@ time_t UserSaveData :: getSongData(const char *historyPath, wchar_t *ch) {
         now = readdir(ptr);
     }
     return -1;
+}

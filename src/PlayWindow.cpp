@@ -496,12 +496,6 @@ void PlayWindow::startGame() {// finished
 
     gameTimer->start(perFrame);
 
-    QElapsedTimer timer1;
-    timer1.start();
-    while (timer1.elapsed() < offsetFronm0ToLine) {
-        QCoreApplication::processEvents();
-    }
-
     // Start the game timer and the music
     musicPlayer->setPosition(0);
     musicPlayer->play();
@@ -587,9 +581,7 @@ void PlayWindow::updateGame() { // finished
 void PlayWindow::spawnNotes() {// finished
     auto* measure = currentChart.ChartHead;
 
-    double distance = scene->height() - checkerLine->y();// the distance the note need to pass
-    double timeToPassDistance = distance * perFrame * 1.0 / speed ;//the time the note to move to the checkerline
-    double paintTime = gameTime + timeToPassDistance;// the time to paint the note
+    double paintTime = gameTime + offsetFronm0ToLine;// the time to paint the note
     double actualPaintTime = paintTime + currentChart.Offset; // pre paint it or it will be delay
     while (measure && actualPaintTime >= measure -> timeStamp) {
 
@@ -610,6 +602,7 @@ void PlayWindow::spawnNotes() {// finished
                 else // Create a falling note that is hold
                 {
                     //need to change the form of the note]
+                    qDebug() << "hold note";
                     int holdHeight = (measure->timeTable[i] - measure->timeStamp) * speed / perFrame ;
                     QGraphicsRectItem* note = new QGraphicsRectItem(x, 0, channelWidth, holdHeight);
                     note->setBrush(Qt::yellow); // Example color
