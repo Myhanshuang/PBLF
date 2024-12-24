@@ -385,7 +385,7 @@ void MainWindow::onRequestToResultPage() {
                           playWindow->currentChart.Acting->maxCombo,
                           evaluation,
                           playWindow->currentChart.Acting->Score,
-                           QString (playWindow->currentChart.songTitle),
+                            QString::fromWCharArray(playWindow->currentChart.songTitle),
                           playWindow->readFileSource().append(".png"));
     stackedWidget->setCurrentIndex(3);  // 切换到结果页面
     qDebug() << "Navigating to Result Page...";

@@ -103,9 +103,9 @@ private:
     double offsetFronm0ToLine;
     //in game
     int lastKeyPressed;
-    const double speed = 2.5; // Speed of notes falling, remember the speed is the px per frame
+    const double speed = 5; // Speed of notes falling, remember the speed is the px per frame
 
-    const int perFrame = 4; // remember the perFrame is the 1 frame is 16ms, means it is the ms/p
+    const int perFrame = 8; // remember the perFrame is the 1 frame is 16ms, means it is the ms/p
 private slots:
     void continueGame();
     void exitGame();
