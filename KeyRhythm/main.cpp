@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-    FILE *fp = fopen("1584661107.mc", "r");
+    FILE *fp = fopen("1689619069.mc", "r");
     //FILE *fp = fopen("1689619069.mc", "r");
     FILE *t = fopen("out.txt", "w");
     //FILE *u = fopen("user.txt", "w+");
@@ -54,6 +54,8 @@ int main() {
     USD.save("userdata/history");
     USD.removeData("userdata/history", 1734841445);
      */
+    searchInit("Chart");
+    searchSong("你","Chart");
 
     return 0;
 }

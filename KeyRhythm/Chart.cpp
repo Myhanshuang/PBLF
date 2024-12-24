@@ -77,7 +77,7 @@ Chart ::Chart(const Chart &C) {
  * @brief destructor of Chart
  ***/
 Chart :: ~Chart(){
-    Chart :: Measure *temp = ChartHead, *preMea = nullptr;
+    Chart :: Measure *temp = this ->ChartHead, *preMea = nullptr;
     if (temp != nullptr){
         while(temp -> NxtMea != nullptr)
         {
@@ -87,7 +87,8 @@ Chart :: ~Chart(){
             delete preMea;
             return ;
         }
-        delete ChartHead;
+        delete this ->ChartHead;
+        this ->ChartHead = nullptr;
     }
     wcsset(this ->songTitle, L'\0');
     wcsset(this ->Artist, L'\0');

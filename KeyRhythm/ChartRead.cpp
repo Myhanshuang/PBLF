@@ -349,10 +349,10 @@ void searchInit(const char *chartPath){
             continue;
         }
         strcat(nowPath, now->d_name);
-        strcat(nowPath, "/");
-        strcat(nowPath, now->d_name);
-        strcat(nowPath, ".mc");
-        printf("%s\n", nowPath);
+        strcat(nowPath, "/base.mc");
+        //strcat(nowPath, now->d_name);
+        //strcat(nowPath, ".mc");
+        //printf("%s\n", nowPath);
         FILE *fp = fopen(nowPath, "r");
         getChartMeta(fp, songTitle, Artist);
         fclose(fp);
@@ -364,7 +364,7 @@ void searchInit(const char *chartPath){
         fputws(Artist, idx);
         fputwc(L'\n', idx);
         nowPath[strlen(chartPath)+1] = '\0';
-        printf("%s\n", nowPath);
+        //printf("%s\n", nowPath);
         now = readdir(ptr);
     }
     delete[] nowPath;
