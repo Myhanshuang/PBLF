@@ -33,13 +33,13 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget *mainWidget = new QWidget(this);
     stackedWidget->addWidget(mainWidget);
 
-
+    connect(settingsWindow, &SettingsWindow::onRequestToLoadHistory, this, &MainWindow::loadHistoryForCurrentUser);
 
     // 初始化显示主页面
     stackedWidget->setCurrentIndex(0);  // 显示 MainWindow 页面
 
     // 顶部布局
-    titleLabel = new QLabel("音游", this);
+    titleLabel = new QLabel("KeyRhythm", this);
     titleLabel->setStyleSheet("font-size: 24px; font-weight: bold;");
 
     searchBox = new QLineEdit(this);
@@ -133,7 +133,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(songList, &QListWidget::itemClicked, this, &MainWindow::itemClicked);
 
 
-    setWindowTitle("音游主界面");
+    setWindowTitle("KeyRhythm");
     resize(1280, 720);
 
     // 创建 SettingsWindow 页面
@@ -286,14 +286,17 @@ void MainWindow::importFolder() {
     loadSongs();
 }
 
+void MainWindow::loadHistoryForCurrentUser()
+{
+    settingsWindow->loadHistory(currentUser.userName);
+}
+
 
 void MainWindow::openSettings()
 {
     settingsWindow->loadHistory(currentUserName);
     stackedWidget->setCurrentIndex(1);
 }
-
-
 
 
 
@@ -368,9 +371,19 @@ void MainWindow::onRequestToResultPage() {
     UserSaveData tempSave(currentUser, *playWindow->currentChart.Acting, playWindow->currentChart.songTitle);
     qDebug() << currentUser.userName;
     qDebug() << tempSave.timeSign;
-     tempSave.save("./history");
+    tempSave.save("./history");
     qDebug() << "Saving history record...";
 
+    std::string s = ("./history/" + QString(currentUser.userName).toStdString() + "/" + std::to_string(tempSave.timeSign));
+    FILE * songFile = fopen(s.c_str(), "r");
+    if(songFile == NULL){
+        qDebug() << "Saving history record failed...";
+        return;
+    }
+    char * songTitle = new char [256];
+    fgets(songTitle,255,songFile);
+    std::cout << songTitle << std::endl;
+    fclose(songFile);
     QString evaluation = "F";
     if(playWindow->currentChart.Acting->Accuracy >= 95){
         evaluation = "S";
@@ -391,7 +404,7 @@ void MainWindow::onRequestToResultPage() {
                           playWindow->currentChart.Acting->maxCombo,
                           evaluation,
                           playWindow->currentChart.Acting->Score,
-                            QString::fromWCharArray(playWindow->currentChart.songTitle),
+                           QString(songTitle),
                           playWindow->readFileSource().append(".png"));
     stackedWidget->setCurrentIndex(3);  // 切换到结果页面
     qDebug() << "Navigating to Result Page...";

@@ -100,7 +100,7 @@ QPixmap PlayWindow::setOpacityImage(const QString &imagePath, qreal opacity) {
  * draw the UI when new the object
  */
 void PlayWindow::PlayWindow::setupUI() { //finished
-    setWindowTitle("Just enjoy");
+    setWindowTitle("KeyRhythm");
     // x * y (size)
     const int windowWidth = 1280;
     const int windowHeight = 720;
@@ -621,8 +621,8 @@ void PlayWindow::spawnNotes() {// finished
  */
 void PlayWindow::keyPressEvent(QKeyEvent* event) {// cooperation with wdx
     if (event->key() == Qt::Key_Escape) {// to show the pausemenu when press esc
-        emit requestToResultPage();
-        return ;
+        // emit requestToResultPage();
+        // return ;
         if (isPaused) {
             hidePauseMenu();
         } else {

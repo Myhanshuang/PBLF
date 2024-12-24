@@ -42,7 +42,7 @@ private slots:
     void displaySongImage(QListWidgetItem *item);
     void searchSongs();
     void importFolder();
-
+    void loadHistoryForCurrentUser();
     void openSettings();
     void showLogoutConfirmation();
     void itemClicked(QListWidgetItem *item); // 在这里声明 itemClicked 槽函数

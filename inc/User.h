@@ -33,6 +33,7 @@ public :
     char Password[21]{};
 
     User();
+    User(char *name, char *pass);
 
     void save(FILE *Saving);
     bool newUser(FILE *Saving);

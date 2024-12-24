@@ -46,6 +46,7 @@ signals:
     void loginSuccess(const QString &username);
     void backToMainPage();  // 添加返回主页面的信号
     void logoutCancelled();
+    void onRequestToLoadHistory();
 
 private:
     QPushButton *backButton;  // 声明返回按钮

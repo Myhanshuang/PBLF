@@ -184,6 +184,11 @@ void SettingsWindow::registerUser()
     QString username = usernameInput->text();
     QString password = passwordInput->text();
 
+    if(username == "__GUEST") {
+        QMessageBox::warning(this, "注册失败", "用户名不可使用！");
+        return;
+    }
+
     if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "注册失败", "用户名或密码不能为空！");
         return;
@@ -361,7 +366,8 @@ void SettingsWindow::onHistoryItemClicked(QListWidgetItem *item){
     qDebug() << "Parts after split:" << parts;
     if (parts.size() >= 16) {  // 确保有时间部分
         // 去掉"时间:"，然后拼接日期和时间
-        QString dateString = parts[15] + " " + parts[16];  // parts[15] 是日期，parts[16] 是时间
+        int siz = parts.size();
+        QString dateString = parts[siz - 2] + " " + parts[siz - 1];  // parts[15] 是日期，parts[16] 是时间
         qDebug() << "Extracted time string:" << dateString;
 
         // 将字符串转换为 QDateTime 对象
@@ -399,11 +405,12 @@ void SettingsWindow::onHistoryItemClicked(QListWidgetItem *item){
 
                     // 调用 removeData 删除历史记录
                     try {
-                        if (userSaveData.removeData("./history", timeStamp)) {
+                        if (!userSaveData.removeData("./history", timeStamp)) {
                             QMessageBox::information(this, "删除成功", "历史记录已删除！");
                             loadHistory(mainWindow->currentUser.userName);  // 更新历史记录列表
                         } else {
                             QMessageBox::warning(this, "删除失败", "删除历史记录失败！");
+                            //loadHistory(mainWindow->currentUser.userName);  // 更新历史记录列表
                         }
                     } catch (const ChartError &e) {
                         qDebug() << "ChartError occurred: " << e.what();

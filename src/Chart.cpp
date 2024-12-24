@@ -86,6 +86,7 @@ Chart :: ~Chart(){
             return ;
         }
         delete ChartHead;
+        ChartHead = nullptr;
     }
     wcsset(this ->songTitle, L'\0');
     wcsset(this ->Artist, L'\0');

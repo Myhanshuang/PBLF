@@ -15,7 +15,26 @@
  */
 User :: User(){
     memset(this ->userName, 0, sizeof(char )*13);
-    memset(this ->userName, 0, sizeof(char )*21);
+    memset(this ->Password, 0, sizeof(char )*21);
+    this ->userName[0] = this ->userName[1] = '_';
+    this ->userName[2] = 'G';
+    this ->userName[3] = 'U';
+    this ->userName[4] = 'E';
+    this ->userName[5] = 'S';
+    this ->userName[6] = 'T';
+}
+
+/**
+ * @class User
+ * @brief initialize user data with name and pass
+ * @param name
+ * @param pass
+ */
+User :: User(char *name, char *pass){
+    memset(this ->userName, 0, sizeof(char )*13);
+    memset(this ->Password, 0, sizeof(char )*21);
+    memcpy(this ->userName, name, strlen(name));
+    memcpy(this ->Password, pass, strlen(pass));
 }
 
 /**
@@ -45,7 +64,7 @@ void User :: save(FILE *Saving){
  */
 bool User :: newUser(FILE *Saving) {
     fseek(Saving, 0, SEEK_SET);
-    return !( getKeyWord(Saving, this ->userName) );
+    return !( getKeyWord(Saving, this ->userName) || strcmp(this ->userName, "__GUEST")!=0);
 }
 
 /**
@@ -146,6 +165,7 @@ void UserSaveData :: save(const char *historyPath) {
     memcpy(base, historyPath, strlen(historyPath));
     strcat(base, "/");
     strcat(base, this ->userName);
+    if (this->userName[0] == '\0') return;
 
     ptr = opendir(base);
     if (ptr == nullptr){
@@ -314,7 +334,7 @@ bool UserSaveData :: removeData(const char *historyPath, time_t timeStamp){
         fseek(del, -t, SEEK_END);
         while (!feof(del)) getValueTT(del, cur);
         fclose(del);
-        remove(path);
+        if (remove(path) != 0) return true;
         path[strlen(base)] = '\0';
         memset(st, 0, sizeof (char )*29);
     }
@@ -370,7 +390,7 @@ bool UserSaveData :: removeData(const char *historyPath, time_t timeStamp){
     closedir(ptr);
     delete[] path;
     delete[] base;
-    return true;
+    return false;
 }
 
 /**
