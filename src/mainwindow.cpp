@@ -274,8 +274,8 @@ void MainWindow::importFolder() {
         QMessageBox::warning(this, "错误", "文件夹中缺少必要文件！");
         return;
     }
-
-    QString newFolder = QString(chartPath+"/base%1").arg(baseSongIndex++);
+    QString folderName = folder.dirName();
+    QString newFolder = QString("%1/%2").arg(chartPath).arg(folderName);
     QDir().mkdir(newFolder);
 
     for (const QString &file : requiredFiles) {
@@ -336,7 +336,7 @@ void MainWindow::itemClicked(QListWidgetItem *item) {
                                   QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         // 构造传递给游戏窗口的路径
-        QString fileSource = "./Chart/" + songFolderName + "/" + songFolderName;
+        QString fileSource = "./Chart/" + songFolderName + "/base";
      
         // 获取 PlayWindow 并传递文件路径
         PlayWindow *playWindow = qobject_cast<PlayWindow*>(stackedWidget->widget(2));
